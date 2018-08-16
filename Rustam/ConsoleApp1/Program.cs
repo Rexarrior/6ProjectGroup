@@ -16,13 +16,20 @@ namespace ConsoleApp1
     {
         private List<PhoneNumb> phones = new List<PhoneNumb>();
 
-        public void AddPhone()
+        public void AddPhone(String a, String b, String c)
         {
-            phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = Console.ReadLine(), discription = Console.ReadLine()});
+            Console.WriteLine("Write num");
+            Console.ReadLine();
+            Console.WriteLine("Write Name");
+            Console.ReadLine();
+            Console.WriteLine("Write Discription");
+            Console.ReadLine();
+            phones.Add(new PhoneNumb() { numb = a, name = b, discription = c});
         }
         public void Search()
         {
             if (phones.Count() > 0 ) {
+                Console.WriteLine("Write Name");
                 String n = Console.ReadLine();
 
                 PhoneNumb Found = phones.Find(item => item.name == n);
@@ -37,6 +44,7 @@ namespace ConsoleApp1
         {
             if (phones.Count() > 0)
             {
+                Console.WriteLine("Write Name");
                 String numname = Console.ReadLine();
                 PhoneNumb Found = phones.Find(item => item.name == numname);
                 phones.Remove(Found);
@@ -50,6 +58,7 @@ namespace ConsoleApp1
         {
             if (phones.Count() > 0)
             {
+                Console.WriteLine("Write Name");
                 String n = Console.ReadLine();
                 PhoneNumb Found = phones.Find(item => item.name == n);
                 Console.WriteLine("Discription:{0}", Found.discription);
@@ -63,8 +72,15 @@ namespace ConsoleApp1
         {
             if (phones.Count() > 0)
             {
+                Console.WriteLine("Write name");
                 String n = Console.ReadLine();
                 PhoneNumb Found = phones.Find(item => item.name == n);
+                Console.WriteLine("Write new name");
+                n = Console.ReadLine();
+                Console.WriteLine("Write new phone number");
+                String a = Console.ReadLine();
+                Console.WriteLine("Write new discription");
+                String b = Console.ReadLine();
                 phones.Remove(Found);
                 phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = n, discription = Console.ReadLine() });
             }
