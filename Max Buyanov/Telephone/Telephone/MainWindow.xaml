@@ -1,0 +1,24 @@
+﻿<Window x:Class="Telephone.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Telephone"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="540" Width="840" ResizeMode="NoResize">
+    <Grid Margin="0,0,0,0">
+        <TextBox HorizontalAlignment="Left" Height="22" Margin="512,70,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160"/>
+        <Button Content="SEARCH" HorizontalAlignment="Left" Margin="679,70,0,0" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.75,0.591"/>
+        <Button Content="ADD NEW" HorizontalAlignment="Left" Margin="512,115,0,0" VerticalAlignment="Top" Width="220" Click="Add_New"/>
+        <Button Click="Edit_Button" Content="EDIT" HorizontalAlignment="Left" Margin="512,356,0,0" VerticalAlignment="Top" Width="220"/>
+        <TextBox x:Name="namebox" HorizontalAlignment="Left" Height="23" Margin="512,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" IsEnabled="False"/>
+        <TextBox x:Name="numberbox" HorizontalAlignment="Left" Height="23" Margin="512,220,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" IsEnabled="False"/>
+        <Button x:Name="addButton" Content="ADD" HorizontalAlignment="Left" Margin="512,250,0,0" VerticalAlignment="Top" Width="220" IsEnabled="False" Click="Add_Button"/>
+        <Label x:Name="FIOLabel" Content="ФИО \ Номер телефона" HorizontalAlignment="Left" Margin="557,160,0,0" VerticalAlignment="Top" Width="141" IsEnabled="False"/>
+        <Button Click="Delete_Button" Content="DELETE" HorizontalAlignment="Left" Margin="512,391,0,0" VerticalAlignment="Top" Width="220"/>
+        <StackPanel x:Name="spanel" HorizontalAlignment="Left" Height="270" Margin="50,143,0,0" VerticalAlignment="Top" Width="390"/>
+        <Button Content="UPDATE" HorizontalAlignment="Left" Margin="512,305,0,0" VerticalAlignment="Top" Width="220" Click="Update_Button"/>
+        <TextBlock HorizontalAlignment="Left" Margin="110,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" FontFamily="Roboto" Height="28"><Run Text="Телефонный справочник"/><LineBreak/><Run/></TextBlock>
+
+    </Grid>
+</Window>
