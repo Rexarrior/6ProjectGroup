@@ -84,11 +84,11 @@ namespace Telephone
 
                 if (edit.ShowDialog() == true)
                 {
-                    People p = db.Peoples.Find(answer);
+                    People p = db.Peoples.Find(answer);  // Null is possible. R.
                     p.Name = newName;
                     p.Number = newNumber;
                     p.Description = newDescription;
-                    if (p == null) { return; }
+                    if (p == null) { return; }          // Exception will be thrown earlier. R.
                     db.Entry(p).State = EntityState.Modified;
                     db.SaveChanges();
 

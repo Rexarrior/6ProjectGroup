@@ -14,7 +14,7 @@ namespace Proj1
         string firstName;
         string lastName;
         string info;
-        public void isOk()
+        public void isOk() 
         {
             if(number!=""&&firstName!=""&&lastName!=""&&!Properties.Settings.Default.fail)
             {
@@ -79,7 +79,7 @@ namespace Proj1
                     Properties.Settings.Default.fail = true;
                 }
                 else
-                {
+                {                           // I suggest to set the fail flag to false there.  R.
                     number = value;
                     isOk();
                 }

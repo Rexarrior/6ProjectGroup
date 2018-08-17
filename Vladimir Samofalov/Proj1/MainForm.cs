@@ -31,8 +31,8 @@ namespace Proj1
             Member mb = new Member();
             MembersForm mForm = new MembersForm();
             Properties.Settings.Default._member = mb;
-            mForm.ShowDialog();
-            if (Properties.Settings.Default.IsOk)
+            mForm.ShowDialog();                         // You get DialogResult there.  R.
+            if (Properties.Settings.Default.IsOk)       // And you can use it there)   R.
             {
                 members.Add(mb);
             }

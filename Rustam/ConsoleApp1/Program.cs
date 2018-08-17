@@ -8,7 +8,7 @@ namespace ConsoleApp1
 {
     class PhoneNumb
     {
-        public String numb { get; set; }
+        public String numb { get; set; }   // I suggest to add some checks. For example, it can be a "only digit" check for the phone number. R.  
         public String name { get; set; }
         public String discription { get; set; }
     }
@@ -99,13 +99,14 @@ namespace ConsoleApp1
             Console.WriteLine("To add phone to phone book write add");
             Console.WriteLine("To delete numb write del");
             Console.WriteLine("To search numb write srch");
-            Console.WriteLine("To view discription write discr");
+            Console.WriteLine("To view discription write discr"); //Correct - Description. R.
             Console.WriteLine("To redact phone write redct");
             while (true)
             {
                 String a = Console.ReadLine();
                 if (a == "add")
                 {
+                    //There is error. R. 
                     book.AddPhone();
                 }else if (a == "del")
                 {

@@ -11,6 +11,8 @@
         {
             Console.ForegroundColor = ConsoleColor.Green;
             return String.Format("Абонент по имени:{0},зарегистрирован за номером:{1},проживает по адресу:{2}", name, nomer, adress);
+            // $"Абонент по имени:{name},зарегистрирован за номером:{nomer},проживает по адресу:{adress}" may be more usable. But it's just a matter of taste. R.
+
         }
         public Phonebook(Int64 n, string a, string na)
         {
@@ -35,7 +37,8 @@
     {
         static void Main()
         {
-            try
+            //Good the Console usage. I like it) 
+            try 
             {
 
                 string command;
@@ -52,7 +55,7 @@
                     Console.WriteLine("Введите имя абонента:");
                     name = Console.ReadLine();
                     Console.WriteLine("Введите номер абонента:");
-                    number = Int64.Parse(Console.ReadLine());
+                    number = Int64.Parse(Console.ReadLine());           // Just one casual letter and user become a ninny. May be your users  deserve a second chanсe?)) R.
                     Console.WriteLine("Введите адрес абонента:");
                     adress = Console.ReadLine();
                     mylist.Add(new Phonebook(number, adress, name));
@@ -76,7 +79,7 @@
                             Console.WriteLine("Введите номер абонента для поиска:");
                             Int64 nomer = Int64.Parse(Console.ReadLine());
                             Phonebook spp = new Phonebook(nomer, "", "");
-                            Phonebook sp = mylist.Find(new Predicate<Phonebook>(spp.Findnumber));
+                            Phonebook sp = mylist.Find(new Predicate<Phonebook>(spp.Findnumber));  // You can use just Find(spp.Findnumber). My Resharper say me that) I didn't know, chessslovo) 
                             if (sp != null)
                             {
                                 Console.WriteLine(sp);
