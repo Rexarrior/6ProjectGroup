@@ -1,0 +1,35 @@
+syntax="proto3";
+
+package PhoneBook;
+
+message ProtoRecordType
+{
+    string typeName = 1;
+    string regexFilter = 2;
+
+}
+
+
+message ProtoRecord
+{
+    ProtoRecordType type = 1;
+    string caption = 2;
+    string value = 3;
+
+}
+
+
+message ProtoPerson
+{
+    string name = 1;
+    string comment = 2;
+    repeated ProtoRecord records = 3;
+}
+
+
+
+message ProtoPhoneBook
+{
+    repeated ProtoPerson persons = 1;
+    repeated ProtoRecordType types = 2;
+}
