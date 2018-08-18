@@ -18,11 +18,13 @@ namespace Proj1
         }
         public void ShowMembers()
         {
+            Members_list.Update();
             Members_list.Items.Clear();
             foreach(Member mb in members)
             {
                 Members_list.Items.Add(mb);
             }
+            Members_list.EndUpdate();
         }
         List<Member> members = new List<Member>() { };
         private void newMember_btn_Click(object sender, EventArgs e)
@@ -31,8 +33,8 @@ namespace Proj1
             Member mb = new Member();
             MembersForm mForm = new MembersForm();
             Properties.Settings.Default._member = mb;
-            mForm.ShowDialog();                         // You get DialogResult there.  R.
-            if (Properties.Settings.Default.IsOk)       // And you can use it there)   R.
+            DialogResult dialogResult = mForm.ShowDialog();
+            if ( Properties.Settings.Default.IsOk)
             {
                 members.Add(mb);
             }

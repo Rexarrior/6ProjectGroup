@@ -39,14 +39,16 @@ namespace Proj1
 
         private void save_btn_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.fail = false;
             mb.FirstName = firstName_tb.Text;
             mb.LastName = LastName_tb.Text;
             mb.Number = number_tb.Text;
             mb.Info = info_tb.Text;
-            if(Properties.Settings.Default.IsOk && !Properties.Settings.Default.fail)
+            if (!Properties.Settings.Default.fail&&Properties.Settings.Default.IsOk)
             {
                 this.Close();
             }
+
         }
     }
 }
