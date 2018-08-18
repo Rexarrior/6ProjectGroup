@@ -8,7 +8,7 @@ namespace ConsoleApp1
 {
     class PhoneNumb
     {
-        public String numb { get; set; }   // I suggest to add some checks. For example, it can be a "only digit" check for the phone number. R.  
+        public String numb { get; set; }
         public String name { get; set; }
         public String discription { get; set; }
     }
@@ -16,14 +16,14 @@ namespace ConsoleApp1
     {
         private List<PhoneNumb> phones = new List<PhoneNumb>();
 
-        public void AddPhone(String a, String b, String c)
+        public void AddPhone()
         {
             Console.WriteLine("Write num");
-            Console.ReadLine();
+            string a = Console.ReadLine();
             Console.WriteLine("Write Name");
-            Console.ReadLine();
+            string b = Console.ReadLine();
             Console.WriteLine("Write Discription");
-            Console.ReadLine();
+            string c = Console.ReadLine();
             phones.Add(new PhoneNumb() { numb = a, name = b, discription = c});
         }
         public void Search()
@@ -99,14 +99,13 @@ namespace ConsoleApp1
             Console.WriteLine("To add phone to phone book write add");
             Console.WriteLine("To delete numb write del");
             Console.WriteLine("To search numb write srch");
-            Console.WriteLine("To view discription write discr"); //Correct - Description. R.
+            Console.WriteLine("To view discription write discr");
             Console.WriteLine("To redact phone write redct");
             while (true)
             {
                 String a = Console.ReadLine();
                 if (a == "add")
                 {
-                    //There is error. R. 
                     book.AddPhone();
                 }else if (a == "del")
                 {
