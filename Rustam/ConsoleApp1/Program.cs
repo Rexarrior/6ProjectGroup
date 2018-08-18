@@ -20,6 +20,11 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Write num");
             string a = Console.ReadLine();
+            if(a.length > 11) {
+                Console.WriteLine("Phone number length <= 11");
+                Console.WriteLine("Write Num");
+                a = Console.ReadLine();
+            }
             Console.WriteLine("Write Name");
             string b = Console.ReadLine();
             Console.WriteLine("Write Discription");
