@@ -20,7 +20,8 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Write num");
             string a = Console.ReadLine();
-            if(a.Length > 11) {             // Any public method or public properties starts with capital letter. You didn't try to run your application. Again. R. 
+            if (a.Length > 11)
+            {             
                 Console.WriteLine("Phone number length <= 11");
                 Console.WriteLine("Write Num");
                 a = Console.ReadLine();
@@ -33,13 +34,17 @@ namespace ConsoleApp1
         }
         public void Search()
         {
-            if (phones.Count() > 0 ) {  // My Resharper suggest me to use method phones.Any(). But it is the matter of taste. R.
+            if (phones.Count() > 0 ) {
                 Console.WriteLine("Write Name");
                 String n = Console.ReadLine();
 
-                PhoneNumb Found = phones.Find(item => item.name == n);  //Method possible returns null. R.
-                Console.WriteLine("Name:{0},Phone:{1},Discription:{2}", Found.name, Found.numb, Found.discription);  //  Because this null, this line sometimes thrown an exception.  R.
-                //You can use try cath block or check the variable for null before access to it's ptoperties. R.
+                PhoneNumb Found = phones.Find(item => item.name == n);
+                if(Found == null)
+                {
+                    Console.WriteLine("Name not found");
+                    Search();
+                }
+                Console.WriteLine("Name:{0},Phone:{1},Discription:{2}", Found.name, Found.numb, Found.discription);
             }
             else
             {
@@ -53,6 +58,11 @@ namespace ConsoleApp1
                 Console.WriteLine("Write Name");
                 String numname = Console.ReadLine();
                 PhoneNumb Found = phones.Find(item => item.name == numname);
+                if(Found == null)
+                {
+                    Console.WriteLine("Name not found");
+                    DeleteNumb();
+                }
                 phones.Remove(Found);
             }
             else
@@ -66,7 +76,13 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Write Name");
                 String n = Console.ReadLine();
+
                 PhoneNumb Found = phones.Find(item => item.name == n);
+                if(Found == null)
+                {
+                    Console.WriteLine("Name not found");
+                    ViewDiscr();
+                }
                 Console.WriteLine("Discription:{0}", Found.discription);
             }
             else
@@ -76,20 +92,39 @@ namespace ConsoleApp1
         }
         public void Redact()
         {
-            if (phones.Count() > 0) 
+            if (phones.Count() > 0)
             {
                 Console.WriteLine("Write name");
                 String n = Console.ReadLine();
-                PhoneNumb Found = phones.Find(item => item.name == n);      // The phones.Find methdo possible returns null. R.
+                
+                PhoneNumb Found = phones.Find(item => item.name == n);
+                if(Found == null)
+                {
+                    Console.WriteLine("Name not found");
+                    Redact();
+                }
                 Console.WriteLine("Write new name");
                 n = Console.ReadLine();
                 Console.WriteLine("Write new phone number");
                 String a = Console.ReadLine();
                 Console.WriteLine("Write new discription");
                 String b = Console.ReadLine();
-                phones.Remove(Found);                                       // If Foudn == nul there is nothing to remove, but... 
-                phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = n, discription = Console.ReadLine() }); // ..despite this, there is something to add. R.
-                //In case if phones isn't contains PhoneNumb with name n, you will add absolutly new PhoneNumb. Your the Redact method will run as the Add method. R.  
+                phones.Remove(Found);
+                phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = n, discription = Console.ReadLine() });
+            }
+            else
+            {
+                Console.WriteLine("No phones");
+            }
+        }
+        public void ViewAll()
+        {
+            if (phones.Count() > 0)
+            {
+                for (int i = 0; i < phones.Count(); i++)
+                {
+                    Console.WriteLine((i+1) + ")Name:{0},Phone:{1},Discription:{2}", phones[i].name, phones[i].numb, phones[i].discription);
+                }
             }
             else
             {
@@ -108,27 +143,34 @@ namespace ConsoleApp1
             Console.WriteLine("To search numb write srch");
             Console.WriteLine("To view discription write discr");
             Console.WriteLine("To redact phone write redct");
+            Console.WriteLine("To view all write all");
+            Console.WriteLine("To exit write exit");
             while (true)
             {
                 String a = Console.ReadLine();
-                if (a == "add")     // I suggest you to google "c# switch use case". 
+                switch (a)
                 {
-                    book.AddPhone();
-                }else if (a == "del")
-                {
-                    book.DeleteNumb();
-                }else if (a == "srch")
-                {
-                    book.Search();
-                }else if (a == "discr")
-                {
-                    book.ViewDiscr();
-                }else if (a == "redct")
-                {
-                    book.Redact();
-                }else if (a == "exit")
-                {
-                    break;
+                    case "add":
+                        book.AddPhone();
+                        break;
+                    case "del":
+                        book.DeleteNumb();
+                        break;
+                    case "srch":
+                        book.Search();
+                        break;
+                    case "discr":
+                        book.ViewDiscr();
+                        break;
+                    case "redct":
+                        book.Redact();
+                        break;
+                    case "all":
+                        book.ViewAll();
+                        break;
+                    case "exit":
+                        Environment.Exit(0);
+                        break;
                 }
             }
         }
