@@ -20,7 +20,7 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Write num");
             string a = Console.ReadLine();
-            if(a.length > 11) {
+            if(a.Length > 11) {             // Any public method or public properties starts with capital letter. You didn't try to run your application. Again. R. 
                 Console.WriteLine("Phone number length <= 11");
                 Console.WriteLine("Write Num");
                 a = Console.ReadLine();
@@ -33,12 +33,13 @@ namespace ConsoleApp1
         }
         public void Search()
         {
-            if (phones.Count() > 0 ) {
+            if (phones.Count() > 0 ) {  // My Resharper suggest me to use method phones.Any(). But it is the matter of taste. R.
                 Console.WriteLine("Write Name");
                 String n = Console.ReadLine();
 
-                PhoneNumb Found = phones.Find(item => item.name == n);
-                Console.WriteLine("Name:{0},Phone:{1},Discription:{2}", Found.name, Found.numb, Found.discription);
+                PhoneNumb Found = phones.Find(item => item.name == n);  //Method possible returns null. R.
+                Console.WriteLine("Name:{0},Phone:{1},Discription:{2}", Found.name, Found.numb, Found.discription);  //  Because this null, this line sometimes thrown an exception.  R.
+                //You can use try cath block or check the variable for null before access to it's ptoperties. R.
             }
             else
             {
@@ -75,19 +76,20 @@ namespace ConsoleApp1
         }
         public void Redact()
         {
-            if (phones.Count() > 0)
+            if (phones.Count() > 0) 
             {
                 Console.WriteLine("Write name");
                 String n = Console.ReadLine();
-                PhoneNumb Found = phones.Find(item => item.name == n);
+                PhoneNumb Found = phones.Find(item => item.name == n);      // The phones.Find methdo possible returns null. R.
                 Console.WriteLine("Write new name");
                 n = Console.ReadLine();
                 Console.WriteLine("Write new phone number");
                 String a = Console.ReadLine();
                 Console.WriteLine("Write new discription");
                 String b = Console.ReadLine();
-                phones.Remove(Found);
-                phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = n, discription = Console.ReadLine() });
+                phones.Remove(Found);                                       // If Foudn == nul there is nothing to remove, but... 
+                phones.Add(new PhoneNumb() { numb = Console.ReadLine(), name = n, discription = Console.ReadLine() }); // ..despite this, there is something to add. R.
+                //In case if phones isn't contains PhoneNumb with name n, you will add absolutly new PhoneNumb. Your the Redact method will run as the Add method. R.  
             }
             else
             {
@@ -109,7 +111,7 @@ namespace ConsoleApp1
             while (true)
             {
                 String a = Console.ReadLine();
-                if (a == "add")
+                if (a == "add")     // I suggest you to google "c# switch use case". 
                 {
                     book.AddPhone();
                 }else if (a == "del")

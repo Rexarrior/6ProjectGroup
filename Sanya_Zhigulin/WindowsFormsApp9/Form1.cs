@@ -33,11 +33,37 @@ namespace WindowsFormsApp9
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (c1.Visible == false) 
-                {
+            //May be you will use an array??? List<button> fore example. And then use foreach for enumeration of array members. 
+            /*Somewhere, where there are your global wariables:
+             * List<Button> buttons;
+             * List<TextBox> textBoxes;
+             * Somewhere, where you are initializing your variables:
+             * buttons = new List<Button>();
+             * textBoxes = new List<TextBox>();
+             * buttons.Add(c1); buttons.Add(c2);buttons.Add(c3)......;buttons.Add(c31);buttons.Add(c32);
+             * textBoxes.Add(o1);textBoxes.Add(o2);textBoxes.Add(o3);........textBoxes.Add(o31);textBoxes.Add(o32);
+             * There:
+             * foreach (var button in buttons)
+             * {
+             *      if (!button.Visible)
+             *       {
+             *          button.Visible = true;
+             *          break;
+             * }
+             * foreach (var textBox in textBoxes)
+             * {
+             *       if (!textBox.Visible)
+             *       {
+             *           textBox.Visible = true;
+             *          break;                                                                                        
+             *       } 
+             * **************Rexarrior*********************************************************************************
+             */
+            if (c1.Visible == false)   // I suggest you use !c1.Visible instead of c1.Visible == false. R.
+            {
                 c1.Visible = true;
                 o1.Visible = true;
-                goto a;
+                goto a;          
             }
 
             if (c2.Visible == false)
@@ -322,7 +348,7 @@ namespace WindowsFormsApp9
 
         private void button2_Click(object sender, EventArgs e) // Удаление контактов
         {
-            if (c32.Visible == true)
+            if (c32.Visible == true)  // I suggest you use c1.Visible instead of c1.Visible == true. R.
             {
                 c32.Visible = false;
                 o32.Visible = false;
