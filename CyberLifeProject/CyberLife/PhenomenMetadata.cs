@@ -20,8 +20,10 @@ namespace CyberLife
 
 
 
-        //TODO Add the field for phenomen Type
+        //TODO Add a field for phenomen Type
 
+
+        //TODO Add a collection for storing additional parameters of the phenomen.
 
         /// <summary>
         /// Получает прототип метаданных.
