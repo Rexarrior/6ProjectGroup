@@ -6,6 +6,7 @@ namespace CyberLife
     {
         public string Name { get; set; }
 
+        //TODO Add a collection for storing additional parameters.
 
         public double Value { get; set; }
 
