@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using  System.IO;
@@ -96,8 +96,10 @@ namespace CyberLife
         /// <returns>Загруженный мир</returns>
         public static World LoadFromFile(string fileName, PhenomenaFabrica fabrica)
         {
-            return new World(new WorldMetadata(
-                Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(File.ReadAllBytes(fileName))), fabrica);
+            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            World world = new World(new WorldMetadata(Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(fs)), fabrica);
+            fs.Close();
+            return world;
         }
 
 
