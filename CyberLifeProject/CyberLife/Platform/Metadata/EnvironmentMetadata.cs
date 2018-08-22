@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace CyberLife
 {
     public class EnvironmentMetadata: Dictionary<string, PhenomenMetadata>
@@ -53,7 +55,7 @@ namespace CyberLife
         public EnvironmentMetadata(Protobuff.Metadata.EnvironmentMetadata protoMetadata)
         {
             Size = new MapSize(protoMetadata.MapSize);
-
+            
             foreach (var phenomenMetadata in protoMetadata.PhenomenaMetadata)
             {
                 this.Add(phenomenMetadata.Name, new PhenomenMetadata(phenomenMetadata));

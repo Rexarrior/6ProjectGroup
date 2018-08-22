@@ -45,31 +45,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Demiurg.cs" />
-    <Compile Include="Environment.cs" />
-    <Compile Include="EnvironmentMetadata.cs" />
-    <Compile Include="IPhenomen.cs" />
-    <Compile Include="IVisualizer.cs" />
-    <Compile Include="LifeForm.cs" />
-    <Compile Include="LifeFormMetadata.cs" />
-    <Compile Include="LifeFormState.cs" />
-    <Compile Include="MapSize.cs" />
-    <Compile Include="PhenomenaFabrica.cs" />
-    <Compile Include="PhenomenMetadata.cs" />
-    <Compile Include="Place.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Platform\Demiurg.cs" />
+    <Compile Include="Platform\World content\Environment.cs" />
+    <Compile Include="Platform\Metadata\EnvironmentMetadata.cs" />
+    <Compile Include="Platform\Interfaces\IPhenomen.cs" />
+    <Compile Include="Platform\Interfaces\IVisualizer.cs" />
+    <Compile Include="Platform\World content\LifeForm.cs" />
+    <Compile Include="Platform\Metadata\LifeFormMetadata.cs" />
+    <Compile Include="Platform\World content\LifeFormState.cs" />
+    <Compile Include="Platform\World content\MapSize.cs" />
+    <Compile Include="Platform\Metadata\PhenomenaFabrica.cs" />
+    <Compile Include="Platform\Metadata\PhenomenMetadata.cs" />
+    <Compile Include="Platform\World content\Place.cs" />
+    <Compile Include="Platform\World content\Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
     <Compile Include="Simple2DWorld\SunPhenomen.cs" />
-    <Compile Include="StateMetadata.cs" />
-    <Compile Include="World.cs" />
-    <Compile Include="WorldMetadata.cs" />
+    <Compile Include="Platform\Metadata\StateMetadata.cs" />
+    <Compile Include="Platform\World.cs" />
+    <Compile Include="Platform\Metadata\WorldMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\googleProtoBuff\googleProtoBuff.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
