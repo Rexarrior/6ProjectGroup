@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using Google.Protobuf.Collections;
+
 namespace CyberLife
 {
     public class PhenomenMetadata
     {
+        private Dictionary<string, string> _parameters;
 
 
         /// <summary>
         /// Название природного явления
         /// </summary>
         public string Name { get; set; }
-       
+
 
 
         /// <summary>
@@ -20,10 +24,16 @@ namespace CyberLife
 
 
 
-        //TODO Add a field for phenomen Type
+        public string PhenomenTypeName { get; set; }
 
 
-        //TODO Add a collection for storing additional parameters of the phenomen.
+        public  string this[string index]
+        {
+            get { return _parameters[index]; }
+
+        }
+
+
 
         /// <summary>
         /// Получает прототип метаданных.
@@ -34,6 +44,11 @@ namespace CyberLife
             Protobuff.Metadata.PhenomenMetadata ret = new Protobuff.Metadata.PhenomenMetadata();
             ret.Place = Place.GetProtoPlace();
             ret.Name = Name;
+            ret.TypeName = PhenomenTypeName;
+            foreach (var pair in _parameters)
+            {
+                ret.Parameters.Add(pair.Key, pair.Value);
+            }
             
             return ret;
         }
@@ -53,17 +68,33 @@ namespace CyberLife
         /// <param name="phenomenName">Название природного явления</param>
         /// <param name="place">Пространство, занимаемое природным явлением</param>
         /// <param name="parameters">Дополнительные параметры природного явления</param>
-        public PhenomenMetadata(string phenomenName, Place place, Dictionary<string, object> parameters = null)
+        /// <param name="phenomenTypeName">phenomen.GetType().Name для природного явления</param>
+        /// 
+        public PhenomenMetadata(string phenomenName, Place place, string phenomenTypeName, Dictionary<string, string> parameters = null)
         {
             if (phenomenName == "")
                 throw new ArgumentException("phenomenName shouldn\'t be empty", nameof(phenomenName));
 
+            if (phenomenTypeName == "")
+                throw  new ArgumentException("Phenomen type name should be a valid type name.", nameof(phenomenTypeName));
 
+            if (parameters != null)
+            {
+                _parameters = parameters;
+            }
+                
+
+            PhenomenTypeName = phenomenTypeName;
             Name = phenomenName;
             Place = place ?? throw new ArgumentNullException(nameof(place));
         }
 
-        
+
+
+      
+
+
+
 
 
 
@@ -78,6 +109,8 @@ namespace CyberLife
 
             Name = protoMetadata.Name;
             Place = new Place(protoMetadata.Place);
+            PhenomenTypeName = protoMetadata.TypeName;
+            _parameters = new Dictionary<string, string>(protoMetadata.Parameters);
         }
 
     }
