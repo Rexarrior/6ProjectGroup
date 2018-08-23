@@ -23,10 +23,18 @@ namespace CyberLife
         public Place Place { get; set; }
 
 
-
+        /// <summary>
+        /// Строковое представление имени класса. Может быть получено, как phenomen.GetType().Name
+        /// </summary>
         public string PhenomenTypeName { get; set; }
 
 
+
+        /// <summary>
+        /// Параметр природного явлени
+        /// </summary>
+        /// <param name="index">Строка-ключ параметра</param>
+        /// <returns></returns>
         public  string this[string index]
         {
             get { return _parameters[index]; }
