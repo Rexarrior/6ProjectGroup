@@ -19,6 +19,8 @@ message PhenomenMetadata
 {
     string name = 1;
     Place place = 2;
+    string typeName = 3; 
+    map<string, string> parameters = 4;
 
 }
 
