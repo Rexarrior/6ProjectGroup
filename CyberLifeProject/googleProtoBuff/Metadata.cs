@@ -125,11 +125,10 @@ namespace CyberLife.Protobuff.Metadata {
     public const int ParamsFieldNumber = 3;
     private static readonly pbc::MapField<string, string>.Codec _map_params_codec
         = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 26);
-    private pbc::MapField<string, string> params_ = new pbc::MapField<string, string>();
+    private readonly pbc::MapField<string, string> params_ = new pbc::MapField<string, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> Params {
       get { return params_; }
-      set { params_ = Params; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

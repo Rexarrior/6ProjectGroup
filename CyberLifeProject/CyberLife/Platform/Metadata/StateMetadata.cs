@@ -48,7 +48,7 @@ namespace CyberLife
                 throw new ArgumentException("stateNmae shouldn't be empty", nameof(stateName));
             if (double.IsNaN(value))
                 throw new ArgumentException("value shouldn't be NaN", nameof(value));
-            this.Params = Params ?? throw new ArgumentNullException("empty dictionary parameters");
+            this.Params = Params ?? throw new ArgumentNullException(nameof(Params));
             Name = stateName;
             Value = value;            
         }
