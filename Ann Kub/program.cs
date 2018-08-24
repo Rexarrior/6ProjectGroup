@@ -1,7 +1,7 @@
-//Как не использовать возможности языка
+//РљР°Рє РЅРµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё СЏР·С‹РєР°
 
-//я не знаю на сколько коряво это работает и работает ли вообще....
-//и за опечатки тапками не швыряйтесь
+//СЏ РЅРµ Р·РЅР°СЋ РЅР° СЃРєРѕР»СЊРєРѕ РєРѕСЂСЏРІРѕ СЌС‚Рѕ СЂР°Р±РѕС‚Р°РµС‚ Рё СЂР°Р±РѕС‚Р°РµС‚ Р»Рё РІРѕРѕР±С‰Рµ....
+//Рё Р·Р° РѕРїРµС‡Р°С‚РєРё С‚Р°РїРєР°РјРё РЅРµ С€РІС‹СЂСЏР№С‚РµСЃСЊ
 
 using System;
 using System.Linq;
@@ -15,21 +15,21 @@ namespace phone
 		
 		
 		
-		/*=======================вспомогательная ерундень=======================*/
+		/*=======================РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅР°СЏ РµСЂСѓРЅРґРµРЅСЊ=======================*/
 		
 		
-	//страница ошибки
-		static void erpage(string str="Что-то пошло не так!"){
-			Console.WriteLine(" Упс!" + str +  "\n" +
-						      "Для продолжения нажмите любую клавишу . . . ");
+	//СЃС‚СЂР°РЅРёС†Р° РѕС€РёР±РєРё
+		static void erpage(string str="Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє!"){
+			Console.WriteLine(" РЈРїСЃ!" + str +  "\n" +
+						      "Р”Р»СЏ РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ РЅР°Р¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ . . . ");
 			Console.ReadKey();
 			Console.Clear();
 		}
-	//страница подтверждения
-		static void surepage(string str="Вы уверены?"){
+	//СЃС‚СЂР°РЅРёС†Р° РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ
+		static void surepage(string str="Р’С‹ СѓРІРµСЂРµРЅС‹?"){
 			Console.WriteLine(str + "\n" + "    1 - YES \t 2 - NO");
 		}
-	//"проверка на портач"
+	//"РїСЂРѕРІРµСЂРєР° РЅР° РїРѕСЂС‚Р°С‡"
 		static int proof_on_portach(string str){
 			int chetchik=0;
 			foreach(char simbol in str){
@@ -38,12 +38,12 @@ namespace phone
 				}
 			}
 			if(chetchik>1){
-				erpage("Вы напортачили, месье! Знак вертикальной черты запрещен. Контакт будет удален, сорян. :)");
+				erpage("Р’С‹ РЅР°РїРѕСЂС‚Р°С‡РёР»Рё, РјРµСЃСЊРµ! Р—РЅР°Рє РІРµСЂС‚РёРєР°Р»СЊРЅРѕР№ С‡РµСЂС‚С‹ Р·Р°РїСЂРµС‰РµРЅ. РљРѕРЅС‚Р°РєС‚ Р±СѓРґРµС‚ СѓРґР°Р»РµРЅ, СЃРѕСЂСЏРЅ. :)");
 				del(str);
 				chetchik=1;
 			}
 			else if (chetchik<1){
-				erpage("На землю напали инопланетяне...");
+				erpage("РќР° Р·РµРјР»СЋ РЅР°РїР°Р»Рё РёРЅРѕРїР»Р°РЅРµС‚СЏРЅРµ...");
 				del(str);
 				chetchik=1;
 			}
@@ -55,12 +55,12 @@ namespace phone
 
 	
 	
-		/*=======================основная ерундень=======================*/
+		/*=======================РѕСЃРЅРѕРІРЅР°СЏ РµСЂСѓРЅРґРµРЅСЊ=======================*/
 		
 		
 	//main
 		public static void Main(string[] args)
-		{ //Console.OutputEncoding=Encoding.UTF8; //раскомментить на случай неверной кодировки 
+		{ //Console.OutputEncoding=Encoding.UTF8; //СЂР°СЃРєРѕРјРјРµРЅС‚РёС‚СЊ РЅР° СЃР»СѓС‡Р°Р№ РЅРµРІРµСЂРЅРѕР№ РєРѕРґРёСЂРѕРІРєРё 
 			fpage();
 			menu();
 			Console.Write("Press any key to continue . . . ");
@@ -70,38 +70,38 @@ namespace phone
 		}
 		
 		
-	//начальная страница с приветствием - first page
+	//РЅР°С‡Р°Р»СЊРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃ РїСЂРёРІРµС‚СЃС‚РІРёРµРј - first page
 		static void fpage(){
-			Console.WriteLine("\t\t Добро пожаловать! \n\n\n" + 
-		                  	  " Вы запустили приложение 'Телефонный справочник'. \n" +
-		                      " Приятного пользования! \n\n" + 
-		                      " Для продолжения нажмите любую клавишу . . . ");
+			Console.WriteLine("\t\t Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ! \n\n\n" + 
+		                  	  " Р’С‹ Р·Р°РїСѓСЃС‚РёР»Рё РїСЂРёР»РѕР¶РµРЅРёРµ 'РўРµР»РµС„РѕРЅРЅС‹Р№ СЃРїСЂР°РІРѕС‡РЅРёРє'. \n" +
+		                      " РџСЂРёСЏС‚РЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°РЅРёСЏ! \n\n" + 
+		                      " Р”Р»СЏ РїСЂРѕРґРѕР»Р¶РµРЅРёСЏ РЅР°Р¶РјРёС‚Рµ Р»СЋР±СѓСЋ РєР»Р°РІРёС€Сѓ . . . ");
 			Console.ReadKey(true);
 		}
-	//основное меню
+	//РѕСЃРЅРѕРІРЅРѕРµ РјРµРЅСЋ
 		static void menu(){
 			Console.Clear();
-			Console.WriteLine(" Выберите пункт меню и \n нажмите соответствующую клавишу: \n\n" +
-			                 " 1 - Открыть список контактов \n" +
-			                 " 2 - Добавить новый контакт \n" +
-			                 " 3 - Открыть существующий контакт \n\n" +
-			                 "         Esc  Выход \n\n\n"
+			Console.WriteLine(" Р’С‹Р±РµСЂРёС‚Рµ РїСѓРЅРєС‚ РјРµРЅСЋ Рё \n РЅР°Р¶РјРёС‚Рµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ РєР»Р°РІРёС€Сѓ: \n\n" +
+			                 " 1 - РћС‚РєСЂС‹С‚СЊ СЃРїРёСЃРѕРє РєРѕРЅС‚Р°РєС‚РѕРІ \n" +
+			                 " 2 - Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ РєРѕРЅС‚Р°РєС‚ \n" +
+			                 " 3 - РћС‚РєСЂС‹С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РєРѕРЅС‚Р°РєС‚ \n\n" +
+			                 "         Esc  Р’С‹С…РѕРґ \n\n\n"
 			                 );
-			ConsoleKeyInfo k = Console.ReadKey(); 	//обработка нажатия клавиши 
+			ConsoleKeyInfo k = Console.ReadKey(); 	//РѕР±СЂР°Р±РѕС‚РєР° РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€Рё 
 			Console.Clear();
 			switch (k.Key){
-					case ConsoleKey.D1 : 	//Открыть список контактов
+					case ConsoleKey.D1 : 	//РћС‚РєСЂС‹С‚СЊ СЃРїРёСЃРѕРє РєРѕРЅС‚Р°РєС‚РѕРІ
 						playlist();
 						break;
-					case ConsoleKey.D2 : 	//Добавить новый контакт
+					case ConsoleKey.D2 : 	//Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІС‹Р№ РєРѕРЅС‚Р°РєС‚
 						add_in_book();
 						break;
-					case ConsoleKey.D3 : 	//Открыть существующий контакт
+					case ConsoleKey.D3 : 	//РћС‚РєСЂС‹С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РєРѕРЅС‚Р°РєС‚
 						chose();
 						break;
-					case ConsoleKey.Escape : 	//Выход
+					case ConsoleKey.Escape : 	//Р’С‹С…РѕРґ
 						Console.Clear();
-						surepage("Вы уверены, что хотите выйти?");
+						surepage("Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?");
 						ConsoleKeyInfo exit = Console.ReadKey();
 						Console.Clear();
 						switch (exit.Key){
@@ -123,27 +123,27 @@ namespace phone
 						break;
 			}
 	}
-	//для вывода списка контактов
+	//РґР»СЏ РІС‹РІРѕРґР° СЃРїРёСЃРєР° РєРѕРЅС‚Р°РєС‚РѕРІ
 		static void playlist(){
 			StreamReader reader = new StreamReader("1.txt"); 
-   			Console.Clear();
-   			if(reader.EndOfStream){ 	//если файл пуст
-   				erpage("Ваш список контактов пуст!");
-   			}
-   			else {
-   				Console.WriteLine(" 1Вернуться в меню 2Найти контакт 3Удалить все контакты \n\n");
-   				Console.WriteLine(reader.ReadToEnd());	//выводим всё и вся
-				ConsoleKeyInfo k = Console.ReadKey(); 	//обработка нажатия клавиши 
+В В  			Console.Clear();
+В В  			if(reader.EndOfStream){ 	//РµСЃР»Рё С„Р°Р№Р» РїСѓСЃС‚
+В В  				erpage("Р’Р°С€ СЃРїРёСЃРѕРє РєРѕРЅС‚Р°РєС‚РѕРІ РїСѓСЃС‚!");
+В В  			}
+В В  			else {
+В В  				Console.WriteLine(" 1Р’РµСЂРЅСѓС‚СЊСЃСЏ РІ РјРµРЅСЋ 2РќР°Р№С‚Рё РєРѕРЅС‚Р°РєС‚ 3РЈРґР°Р»РёС‚СЊ РІСЃРµ РєРѕРЅС‚Р°РєС‚С‹ \n\n");
+В В  				Console.WriteLine(reader.ReadToEnd());	//РІС‹РІРѕРґРёРј РІСЃС‘ Рё РІСЃСЏ
+				ConsoleKeyInfo k = Console.ReadKey(); 	//РѕР±СЂР°Р±РѕС‚РєР° РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€Рё 
 				Console.Clear();
 				switch (k.Key){
-					case ConsoleKey.D1 : 	//Вернуться в меню
+					case ConsoleKey.D1 : 	//Р’РµСЂРЅСѓС‚СЊСЃСЏ РІ РјРµРЅСЋ
 						menu();
 						break;
-					case ConsoleKey.D2 : 	//Найти контакт
+					case ConsoleKey.D2 : 	//РќР°Р№С‚Рё РєРѕРЅС‚Р°РєС‚
 						chose();
 						break;
-					case ConsoleKey.D3 : 	//Удалить все контакты
-						surepage("Вы уверены, что хотите удалить все контакты?");
+					case ConsoleKey.D3 : 	//РЈРґР°Р»РёС‚СЊ РІСЃРµ РєРѕРЅС‚Р°РєС‚С‹
+						surepage("Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ РІСЃРµ РєРѕРЅС‚Р°РєС‚С‹?");
 						ConsoleKeyInfo del = Console.ReadKey();
 						Console.Clear();
 						switch (del.Key){
@@ -163,31 +163,31 @@ namespace phone
 						erpage();
 						menu();
 						break;
-   				}
-   			}
-   			reader.Close();
+В В  				}
+В В  			}
+В В  			reader.Close();
 	}
-	//найти - открыть существующий контакт
+	//РЅР°Р№С‚Рё - РѕС‚РєСЂС‹С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ РєРѕРЅС‚Р°РєС‚
 		static void chose(){
 			bool consist=false;
-			Console.WriteLine("Введите имя или номер телефона контакта");
+			Console.WriteLine("Р’РІРµРґРёС‚Рµ РёРјСЏ РёР»Рё РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР° РєРѕРЅС‚Р°РєС‚Р°");
 			foreach(string contact in File.ReadLines(@"1.txt")){
 				if(contact.Contains(Console.ReadLine())){
 					consist=true;				
-				Console.WriteLine("1Вернуться в меню 2Редактировать контакт 3Удалить контакт\n");
+				Console.WriteLine("1Р’РµСЂРЅСѓС‚СЊСЃСЏ РІ РјРµРЅСЋ 2Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєРѕРЅС‚Р°РєС‚ 3РЈРґР°Р»РёС‚СЊ РєРѕРЅС‚Р°РєС‚\n");
 				Console.WriteLine(contact);
-				ConsoleKeyInfo k = Console.ReadKey(); 	//обработка нажатия клавиши 
+				ConsoleKeyInfo k = Console.ReadKey(); 	//РѕР±СЂР°Р±РѕС‚РєР° РЅР°Р¶Р°С‚РёСЏ РєР»Р°РІРёС€Рё 
 				Console.Clear();
 				switch (k.Key){
-					case ConsoleKey.D1 : 	//Вернуться в меню
+					case ConsoleKey.D1 : 	//Р’РµСЂРЅСѓС‚СЊСЃСЏ РІ РјРµРЅСЋ
 						menu();
 						break;
-					case ConsoleKey.D2 : 	//Редактировать контакт 
+					case ConsoleKey.D2 : 	//Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєРѕРЅС‚Р°РєС‚ 
 						if(proof_on_portach(contact)==0){
 							redact(contact);
 						}
 						break;
-					case ConsoleKey.D3 :	//Удалить контакт
+					case ConsoleKey.D3 :	//РЈРґР°Р»РёС‚СЊ РєРѕРЅС‚Р°РєС‚
 						del(contact);
 						break;	
 					default :
@@ -205,37 +205,37 @@ namespace phone
 				menu();
 			} 
 	}
-	//добавить контакт
+	//РґРѕР±Р°РІРёС‚СЊ РєРѕРЅС‚Р°РєС‚
 		static void add_in_book(){
-			Console.WriteLine("Введите имя контакта: \n");
+			Console.WriteLine("Р’РІРµРґРёС‚Рµ РёРјСЏ РєРѕРЅС‚Р°РєС‚Р°: \n");
 			File.AppendAllText("1.txt", Console.ReadLine());
-			Console.WriteLine("Введите номер телефона контакта: \n");
+			Console.WriteLine("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР° РєРѕРЅС‚Р°РєС‚Р°: \n");
 			File.AppendAllText("1.txt", "  " + Console.ReadLine());
-			Console.WriteLine("Добавте описание контакта: \n");
+			Console.WriteLine("Р”РѕР±Р°РІС‚Рµ РѕРїРёСЃР°РЅРёРµ РєРѕРЅС‚Р°РєС‚Р°: \n");
 			File.AppendAllText("1.txt", " | " + Console.ReadLine() + Environment.NewLine);
 			menu();
 		}
-	//редактировнть контакт
+	//СЂРµРґР°РєС‚РёСЂРѕРІРЅС‚СЊ РєРѕРЅС‚Р°РєС‚
 		static void redact(string str){
-			Console.WriteLine("1Переименовать 2Изменить телефон 3Редактироваь описание 4Меню\n" + str);
+			Console.WriteLine("1РџРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ 2РР·РјРµРЅРёС‚СЊ С‚РµР»РµС„РѕРЅ 3Р РµРґР°РєС‚РёСЂРѕРІР°СЊ РѕРїРёСЃР°РЅРёРµ 4РњРµРЅСЋ\n" + str);
 			ConsoleKeyInfo chg = Console.ReadKey();
 			try{
 				switch (chg.Key){
 					case ConsoleKey.D1 :
-						Console.WriteLine("Введите старое имя контакта: \n"); //ибо мне лень искать где там имя, а где телефон :р
+						Console.WriteLine("Р’РІРµРґРёС‚Рµ СЃС‚Р°СЂРѕРµ РёРјСЏ РєРѕРЅС‚Р°РєС‚Р°: \n"); //РёР±Рѕ РјРЅРµ Р»РµРЅСЊ РёСЃРєР°С‚СЊ РіРґРµ С‚Р°Рј РёРјСЏ, Р° РіРґРµ С‚РµР»РµС„РѕРЅ :СЂ
 						str=Console.ReadLine();
-						Console.WriteLine("Введите новое имя контакта: \n");
+						Console.WriteLine("Р’РІРµРґРёС‚Рµ РЅРѕРІРѕРµ РёРјСЏ РєРѕРЅС‚Р°РєС‚Р°: \n");
 						File.WriteAllText("1.txt", File.ReadAllText("1.txt").Replace(str,Console.ReadLine()));
 						break;
 					case ConsoleKey.D2 :
-						Console.WriteLine("Введите старый телефон контакта: \n"); //ибо мне лень искать где там имя, а где телефон :р
+						Console.WriteLine("Р’РІРµРґРёС‚Рµ СЃС‚Р°СЂС‹Р№ С‚РµР»РµС„РѕРЅ РєРѕРЅС‚Р°РєС‚Р°: \n"); //РёР±Рѕ РјРЅРµ Р»РµРЅСЊ РёСЃРєР°С‚СЊ РіРґРµ С‚Р°Рј РёРјСЏ, Р° РіРґРµ С‚РµР»РµС„РѕРЅ :СЂ
 						str=Console.ReadLine();
-						Console.WriteLine("Введите новый телефон контакта: \n");
+						Console.WriteLine("Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ С‚РµР»РµС„РѕРЅ РєРѕРЅС‚Р°РєС‚Р°: \n");
 						File.WriteAllText("1.txt", File.ReadAllText("1.txt").Replace(str,Console.ReadLine()));
 						break;
 					case ConsoleKey.D3 :
 						str=str.Substring(str.IndexOf('|'));
-						Console.WriteLine("Введите новое описание контакта: \n"); 
+						Console.WriteLine("Р’РІРµРґРёС‚Рµ РЅРѕРІРѕРµ РѕРїРёСЃР°РЅРёРµ РєРѕРЅС‚Р°РєС‚Р°: \n"); 
 						File.WriteAllText("1.txt", File.ReadAllText("1.txt").Replace(str,Console.ReadLine()));
 						break;
 					case ConsoleKey.D4 :
@@ -253,7 +253,7 @@ namespace phone
 				menu();
 			}
 		} 
-	//удаление контакта
+	//СѓРґР°Р»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°
 		static void del(string str){
 			File.WriteAllText("1.txt", File.ReadAllText("1.txt").Replace(str, ""));
 			menu();
