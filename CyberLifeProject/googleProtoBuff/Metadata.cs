@@ -25,31 +25,34 @@ namespace CyberLife.Protobuff.Metadata {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg5tZXRhZGF0YS5wcm90bxIcQ3liZXJMaWZlLlByb3RvYnVmZi5NZXRhZGF0",
-            "YRoLcGxhY2UucHJvdG8aDW1hcFNpemUucHJvdG8iLAoNU3RhdGVNZXRhZGF0",
-            "YRIMCgRuYW1lGAEgASgJEg0KBXZhbHVlGAIgASgBIuQBChBQaGVub21lbk1l",
-            "dGFkYXRhEgwKBG5hbWUYASABKAkSKQoFcGxhY2UYAiABKAsyGi5DeWJlckxp",
-            "ZmUuUHJvdG9idWZmLlBsYWNlEhAKCHR5cGVOYW1lGAMgASgJElIKCnBhcmFt",
-            "ZXRlcnMYBCADKAsyPi5DeWJlckxpZmUuUHJvdG9idWZmLk1ldGFkYXRhLlBo",
-            "ZW5vbWVuTWV0YWRhdGEuUGFyYW1ldGVyc0VudHJ5GjEKD1BhcmFtZXRlcnNF",
-            "bnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIo4BChBMaWZl",
-            "Rm9ybU1ldGFkYXRhEikKBXBsYWNlGAEgASgLMhouQ3liZXJMaWZlLlByb3Rv",
-            "YnVmZi5QbGFjZRIKCgJpZBgCIAEoAxJDCg5zdGF0ZXNNZXRhZGF0YRgDIAMo",
-            "CzIrLkN5YmVyTGlmZS5Qcm90b2J1ZmYuTWV0YWRhdGEuU3RhdGVNZXRhZGF0",
-            "YSKPAQoTRW52aXJvbm1lbnRNZXRhZGF0YRItCgdtYXBTaXplGAEgASgLMhwu",
-            "Q3liZXJMaWZlLlByb3RvYnVmZi5NYXBTaXplEkkKEXBoZW5vbWVuYU1ldGFk",
-            "YXRhGAIgAygLMi4uQ3liZXJMaWZlLlByb3RvYnVmZi5NZXRhZGF0YS5QaGVu",
-            "b21lbk1ldGFkYXRhIsACCg1Xb3JsZE1ldGFkYXRhEk4KE2Vudmlyb25tZW50",
-            "TWV0YWRhdGEYASABKAsyMS5DeWJlckxpZmUuUHJvdG9idWZmLk1ldGFkYXRh",
-            "LkVudmlyb25tZW50TWV0YWRhdGESWwoQTGlmZUZvcm1NZXRhZGF0YRgCIAMo",
-            "CzJBLkN5YmVyTGlmZS5Qcm90b2J1ZmYuTWV0YWRhdGEuV29ybGRNZXRhZGF0",
-            "YS5MaWZlRm9ybU1ldGFkYXRhRW50cnkSDAoEbmFtZRgDIAEoCRILCgNhZ2UY",
-            "BCABKAUaZwoVTGlmZUZvcm1NZXRhZGF0YUVudHJ5EgsKA2tleRgBIAEoAxI9",
-            "CgV2YWx1ZRgCIAEoCzIuLkN5YmVyTGlmZS5Qcm90b2J1ZmYuTWV0YWRhdGEu",
-            "TGlmZUZvcm1NZXRhZGF0YToCOAFiBnByb3RvMw=="));
+            "YRoLcGxhY2UucHJvdG8aDW1hcFNpemUucHJvdG8ipAEKDVN0YXRlTWV0YWRh",
+            "dGESDAoEbmFtZRgBIAEoCRINCgV2YWx1ZRgCIAEoARJHCgZwYXJhbXMYAyAD",
+            "KAsyNy5DeWJlckxpZmUuUHJvdG9idWZmLk1ldGFkYXRhLlN0YXRlTWV0YWRh",
+            "dGEuUGFyYW1zRW50cnkaLQoLUGFyYW1zRW50cnkSCwoDa2V5GAEgASgJEg0K",
+            "BXZhbHVlGAIgASgJOgI4ASLkAQoQUGhlbm9tZW5NZXRhZGF0YRIMCgRuYW1l",
+            "GAEgASgJEikKBXBsYWNlGAIgASgLMhouQ3liZXJMaWZlLlByb3RvYnVmZi5Q",
+            "bGFjZRIQCgh0eXBlTmFtZRgDIAEoCRJSCgpwYXJhbWV0ZXJzGAQgAygLMj4u",
+            "Q3liZXJMaWZlLlByb3RvYnVmZi5NZXRhZGF0YS5QaGVub21lbk1ldGFkYXRh",
+            "LlBhcmFtZXRlcnNFbnRyeRoxCg9QYXJhbWV0ZXJzRW50cnkSCwoDa2V5GAEg",
+            "ASgJEg0KBXZhbHVlGAIgASgJOgI4ASKOAQoQTGlmZUZvcm1NZXRhZGF0YRIp",
+            "CgVwbGFjZRgBIAEoCzIaLkN5YmVyTGlmZS5Qcm90b2J1ZmYuUGxhY2USCgoC",
+            "aWQYAiABKAMSQwoOc3RhdGVzTWV0YWRhdGEYAyADKAsyKy5DeWJlckxpZmUu",
+            "UHJvdG9idWZmLk1ldGFkYXRhLlN0YXRlTWV0YWRhdGEijwEKE0Vudmlyb25t",
+            "ZW50TWV0YWRhdGESLQoHbWFwU2l6ZRgBIAEoCzIcLkN5YmVyTGlmZS5Qcm90",
+            "b2J1ZmYuTWFwU2l6ZRJJChFwaGVub21lbmFNZXRhZGF0YRgCIAMoCzIuLkN5",
+            "YmVyTGlmZS5Qcm90b2J1ZmYuTWV0YWRhdGEuUGhlbm9tZW5NZXRhZGF0YSLA",
+            "AgoNV29ybGRNZXRhZGF0YRJOChNlbnZpcm9ubWVudE1ldGFkYXRhGAEgASgL",
+            "MjEuQ3liZXJMaWZlLlByb3RvYnVmZi5NZXRhZGF0YS5FbnZpcm9ubWVudE1l",
+            "dGFkYXRhElsKEExpZmVGb3JtTWV0YWRhdGEYAiADKAsyQS5DeWJlckxpZmUu",
+            "UHJvdG9idWZmLk1ldGFkYXRhLldvcmxkTWV0YWRhdGEuTGlmZUZvcm1NZXRh",
+            "ZGF0YUVudHJ5EgwKBG5hbWUYAyABKAkSCwoDYWdlGAQgASgFGmcKFUxpZmVG",
+            "b3JtTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAMSPQoFdmFsdWUYAiABKAsy",
+            "Li5DeWJlckxpZmUuUHJvdG9idWZmLk1ldGFkYXRhLkxpZmVGb3JtTWV0YWRh",
+            "dGE6AjgBYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::CyberLife.Protobuff.PlaceReflection.Descriptor, global::CyberLife.Protobuff.MapSizeReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.StateMetadata), global::CyberLife.Protobuff.Metadata.StateMetadata.Parser, new[]{ "Name", "Value" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.StateMetadata), global::CyberLife.Protobuff.Metadata.StateMetadata.Parser, new[]{ "Name", "Value", "Params" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.PhenomenMetadata), global::CyberLife.Protobuff.Metadata.PhenomenMetadata.Parser, new[]{ "Name", "Place", "TypeName", "Parameters" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.LifeFormMetadata), global::CyberLife.Protobuff.Metadata.LifeFormMetadata.Parser, new[]{ "Place", "Id", "StatesMetadata" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.EnvironmentMetadata), global::CyberLife.Protobuff.Metadata.EnvironmentMetadata.Parser, new[]{ "MapSize", "PhenomenaMetadata" }, null, null, null),
@@ -87,6 +90,7 @@ namespace CyberLife.Protobuff.Metadata {
     public StateMetadata(StateMetadata other) : this() {
       name_ = other.name_;
       value_ = other.value_;
+      params_ = other.params_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -117,6 +121,17 @@ namespace CyberLife.Protobuff.Metadata {
       }
     }
 
+    /// <summary>Field number for the "params" field.</summary>
+    public const int ParamsFieldNumber = 3;
+    private static readonly pbc::MapField<string, string>.Codec _map_params_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10), pb::FieldCodec.ForString(18), 26);
+    private pbc::MapField<string, string> params_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> Params {
+      get { return params_; }
+      set { params_ = Params; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as StateMetadata);
@@ -132,6 +147,7 @@ namespace CyberLife.Protobuff.Metadata {
       }
       if (Name != other.Name) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Value, other.Value)) return false;
+      if (!Params.Equals(other.Params)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -140,6 +156,7 @@ namespace CyberLife.Protobuff.Metadata {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Value != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Value);
+      hash ^= Params.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -161,6 +178,7 @@ namespace CyberLife.Protobuff.Metadata {
         output.WriteRawTag(17);
         output.WriteDouble(Value);
       }
+      params_.WriteTo(output, _map_params_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -175,6 +193,7 @@ namespace CyberLife.Protobuff.Metadata {
       if (Value != 0D) {
         size += 1 + 8;
       }
+      size += params_.CalculateSize(_map_params_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -192,6 +211,7 @@ namespace CyberLife.Protobuff.Metadata {
       if (other.Value != 0D) {
         Value = other.Value;
       }
+      params_.Add(other.params_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -209,6 +229,10 @@ namespace CyberLife.Protobuff.Metadata {
           }
           case 17: {
             Value = input.ReadDouble();
+            break;
+          }
+          case 26: {
+            params_.AddEntriesFrom(input, _map_params_codec);
             break;
           }
         }

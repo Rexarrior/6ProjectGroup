@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CyberLife
 {
     public class StateMetadata
     {
         public string Name { get; set; }
-
-        //TODO Add a collection for storing additional parameters.
-
         public double Value { get; set; }
+        public Dictionary<string, string> Params { get; set; }      
+
 
 
         /// <summary>
@@ -21,13 +21,16 @@ namespace CyberLife
             Protobuff.Metadata.StateMetadata ret = new Protobuff.Metadata.StateMetadata();
             ret.Value = Value;
             ret.Name = Name;
-
+            foreach (var pair in Params)
+            {
+                ret.Params.Add(pair.Key, pair.Value);
+            }
             return ret;
         }
 
 
 
-        
+
 
 
 
@@ -38,17 +41,16 @@ namespace CyberLife
         /// </summary>
         /// <param name="stateName">Имя состояния</param>
         /// <param name="value">Значение состояния</param>
-        public StateMetadata(string stateName, double value)
+        /// <param name="Params">Коллекция дополнительных параметров</param>
+        public StateMetadata(string stateName, double value,Dictionary<string,string> Params)
         {
             if (stateName == "")
                 throw new ArgumentException("stateNmae shouldn't be empty", nameof(stateName));
             if (double.IsNaN(value))
                 throw new ArgumentException("value shouldn't be NaN", nameof(value));
-
+            this.Params = Params ?? throw new ArgumentNullException("empty dictionary parameters");
             Name = stateName;
-            Value = value;
-            
-
+            Value = value;            
         }
 
         
@@ -63,6 +65,11 @@ namespace CyberLife
                 throw  new ArgumentNullException(nameof(protoMetadata));
             Name = protoMetadata.Name;
             Value = protoMetadata.Value;
+            foreach(var pair in protoMetadata.Params)
+            {
+                Params.Add(pair.Key, pair.Value);
+            }
+            
         }
 
     }
