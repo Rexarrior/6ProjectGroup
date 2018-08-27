@@ -12,7 +12,6 @@ namespace CyberLife
         public MapSize Size;
 
 
-
         /// <summary>
         /// Получает прототип метаданных этой окружающей среды
         /// </summary>

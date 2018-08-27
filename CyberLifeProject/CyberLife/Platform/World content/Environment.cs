@@ -10,7 +10,6 @@ namespace CyberLife
     {
         #region field
         private List<IPhenomen> _naturalPhenomena;
-
         private MapSize _size;
 
         #endregion
