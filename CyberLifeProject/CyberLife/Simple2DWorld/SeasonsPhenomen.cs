@@ -26,6 +26,7 @@ namespace CyberLife.Platform.World_content
         {
             get { return _step; }
         }
+
         public Season CurSeason
         {
             get { return _season; }
@@ -81,12 +82,7 @@ namespace CyberLife.Platform.World_content
         /// <returns>Попадает?</returns>
         public bool isIn(Point point)
         {
-
-            if (_place.PlaceType == PlaceType.Array && _place.Points.Contains(point))
-                return true;
-            if (_place.PlaceType == PlaceType.Rectangle && _place.Points[1].X >= point.X && _place.Points[1].Y >= point.Y)
-                return true;
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -107,7 +103,8 @@ namespace CyberLife.Platform.World_content
         /// <param name="environmentMetadata">Метаданные окружающей среды.</param>
         public void Update(EnvironmentMetadata environmentMetadata)
         {
-            //Реализация метода Update(EnvironmentMetadata environmentMetadata)
+            _step = environmentMetadata.Age;
+            ChangeSeason();
         }
 
         /// <summary>
