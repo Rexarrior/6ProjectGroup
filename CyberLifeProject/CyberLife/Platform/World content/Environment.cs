@@ -10,9 +10,8 @@ namespace CyberLife
     {
         #region field
         private List<IPhenomen> _naturalPhenomena;
-
         private MapSize _size;
-
+        private int _age; 
         #endregion
 
 
@@ -59,34 +58,40 @@ namespace CyberLife
         /// <returns>Метаданные окружающей среды</returns>
         public EnvironmentMetadata GetMetadata()
         {
-            return new EnvironmentMetadata(_size, _naturalPhenomena.Select(x => x.GetMetadata()).ToList());
+            return new EnvironmentMetadata(_size, _age,  _naturalPhenomena.Select(x => x.GetMetadata()).ToList());
         }
 
         
         /// <summary>
-        /// Вызывает операцию для всех природных явлений, 
+        /// Вызывает операцию обновления для всех природных явлений, 
         /// принадлежащих этой окружающей среде. 
         /// </summary>
-        public void Update()
+        public void Update(int age)
         {
+            _age = age;
             EnvironmentMetadata metadata = GetMetadata();
             foreach (IPhenomen phenomen in _naturalPhenomena)
                 phenomen.Update(metadata);
         }
         #endregion
-        
+
 
         #region constructor
+
         /// <summary>
         /// Инициализирует окружающую среду из ее размера и списка природных явлений
         /// </summary>
         /// <param name="naturalPhenomena">Природные явления</param>
-        /// <param name="size"></param>
-        public Environment(List<IPhenomen> naturalPhenomena, MapSize size)
+        /// <param name="size">Размер окружающей среды</param>
+        /// <param name="age">Возраст мира, которому принадлежит окружающая среда</param>
+        public Environment(List<IPhenomen> naturalPhenomena, MapSize size, int age = 0)
         {
             _naturalPhenomena = naturalPhenomena;
             _size = size;
+            _age = age;
         }
+
+
 
 
         /// <summary>
@@ -96,9 +101,12 @@ namespace CyberLife
         /// </summary>
         /// <param name="environmentMetadata">Метаданные окружающей среды</param>
         /// <param name="phenomenaFabrica">Фабрика природных явлений</param>
-        public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica)
+        /// <param name="age">Возраст мира, которому принадлежит окружающая среда</param>
+        public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica, int age = 0)
         {
             _size = environmentMetadata.Size;
+            _age = age;
+
             _naturalPhenomena = new List<IPhenomen>();
             foreach (var phenomenMetadata in environmentMetadata.Values)
             {

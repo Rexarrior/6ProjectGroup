@@ -43,8 +43,14 @@ namespace CyberLife
         /// </summary>
         public void Update()
         {
-            _environment.Update();
-          //Todo life forms update??  
+            _age++;
+            _environment.Update(_age);
+            foreach (var lifeForm in LifeForms.Values)
+            {
+                
+                lifeForm.Update(_environment.GetEffects(lifeForm.GetMetadata()));
+            }
+            
         }
 
 

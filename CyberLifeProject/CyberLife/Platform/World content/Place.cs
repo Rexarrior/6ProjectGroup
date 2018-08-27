@@ -25,6 +25,16 @@ namespace CyberLife
         Rectangle = 1
     }
 
+
+
+
+
+
+
+
+
+
+
     
     /// <summary>
     /// Представляет описание пространства 
