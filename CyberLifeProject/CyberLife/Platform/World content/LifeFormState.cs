@@ -41,17 +41,18 @@ namespace CyberLife
         }
 
 
-
-
-
-
+        
         public virtual void Update(WorldMetadata lifeFormMetadata, StateMetadata stateMetadata)
         {
+            if (stateMetadata.Name != _name)
+                throw new ArgumentException("metadata of another state given.", nameof(stateMetadata));
 
+            _value += stateMetadata.Value; 
+            
         }
 
-
-
+        
+        
         /// <summary>
         /// Инициализирует состояние формы жизни
         /// по его названию и значению

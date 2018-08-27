@@ -10,7 +10,7 @@ namespace CyberLife.Platform.World_content
         Summer = 2,
         Autumn = 3
     }
-    public class SeasonsPhenomen :IPhenomen
+    public class SeasonsPhenomen : IPhenomen
     {
         #region field
 
@@ -67,7 +67,7 @@ namespace CyberLife.Platform.World_content
         /// <returns></returns>
         public PhenomenMetadata GetMetadata()
         {
-            Dictionary<string, string> data =new Dictionary<string, string> { };
+            Dictionary<string, string> data = new Dictionary<string, string> { };
             data.Add("step", Convert.ToString(_step));
             data.Add("season", _season.ToString());
             PhenomenMetadata phenomenMetadata = new PhenomenMetadata("SeasonsPhenomen", _place, this.GetType().Name, data);
@@ -92,6 +92,8 @@ namespace CyberLife.Platform.World_content
         /// <summary>
         /// Увеличивает переменную количества ходов на 1
         /// </summary>
+
+        /*
         public void NextStep()
         {
             if (_step == 360)
@@ -99,15 +101,19 @@ namespace CyberLife.Platform.World_content
             ChangeSeason();
             _step += 1;
         }
+        */
 
         /// <summary>
         /// Вызывает обновление этого природного явления на основании
         /// метаданных окружающей среды.
         /// </summary>
-        /// <param name="environmentMetadata">Метаданные окружающей среды.</param>
-        public void Update(EnvironmentMetadata environmentMetadata)
+        /// <param name="worldMetadata">Метаданные окружающей среды.</param>
+        public void Update( WorldMetadata worldMetadata)
         {
-            //Реализация метода Update(EnvironmentMetadata environmentMetadata)
+            if (worldMetadata.Age >= 360)
+                worldMetadata.Age = 0;
+            _step = worldMetadata.Age;
+            ChangeSeason();
         }
 
         /// <summary>
@@ -115,7 +121,7 @@ namespace CyberLife.Platform.World_content
         /// </summary>
         private void ChangeSeason()
         {
-            byte season =(byte)(_step / 90);
+            byte season = (byte)(_step / 90);
             _season = (Season)Enum.GetValues(typeof(Season)).GetValue(season);
         }
 
@@ -123,9 +129,9 @@ namespace CyberLife.Platform.World_content
 
         #region constructor
 
-        public SeasonsPhenomen(Place place)
+        public SeasonsPhenomen()
         {
-            _place = place;
+            _place = Place.Everything();
         }
 
         #endregion
