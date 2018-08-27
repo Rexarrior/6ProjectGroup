@@ -8,8 +8,8 @@ namespace CyberLife
         /// Вызывает обновление этого природного явления на основании
         /// метаданных окружающей среды.
         /// </summary>
-        /// <param name="environmentMetadata">Метаданные окружающей среды.</param>
-        void Update(WorldMetadata environmentMetadata);
+        /// <param name="worldMetadata">Метаданные окружающей среды.</param>
+        void Update(WorldMetadata worldMetadata);
 
         /// <summary>
         /// Получает эффекты воздействия этого феномена на точку пространства.

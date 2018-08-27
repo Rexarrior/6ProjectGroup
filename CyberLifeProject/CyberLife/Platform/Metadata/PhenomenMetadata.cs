@@ -44,6 +44,18 @@ namespace CyberLife
 
 
         /// <summary>
+        /// Проверяет, содержится ли параметр с указанным именем в метаданных
+        /// </summary>
+        /// <param name="parameterName"> Имя параметра для проверки</param>
+        /// <returns>Содержит?</returns>
+        public bool ContainsParameter(string parameterName)
+        {
+            return _parameters.ContainsKey(parameterName);
+        }
+
+
+
+        /// <summary>
         /// Получает прототип метаданных.
         /// </summary>
         /// <returns>Прототип GoogleProtobuf</returns>
