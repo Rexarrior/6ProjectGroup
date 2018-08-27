@@ -23,7 +23,7 @@ namespace CyberLife.Simple2DWorld
         #region Methods
 
 
-        public void Update(EnvironmentMetadata environmentMetadata)
+        public void Update(WorldMetadata environmentMetadata)
         {
             throw new NotImplementedException();
         }
