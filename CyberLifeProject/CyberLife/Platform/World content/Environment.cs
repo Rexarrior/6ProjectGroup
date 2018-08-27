@@ -11,7 +11,6 @@ namespace CyberLife
         #region field
         private List<IPhenomen> _naturalPhenomena;
         private MapSize _size;
-        private int _age; 
         #endregion
 
 
@@ -58,7 +57,7 @@ namespace CyberLife
         /// <returns>Метаданные окружающей среды</returns>
         public EnvironmentMetadata GetMetadata()
         {
-            return new EnvironmentMetadata(_size, _age,  _naturalPhenomena.Select(x => x.GetMetadata()).ToList());
+            return new EnvironmentMetadata(_size,  _naturalPhenomena.Select(x => x.GetMetadata()).ToList());
         }
 
         
@@ -66,10 +65,8 @@ namespace CyberLife
         /// Вызывает операцию обновления для всех природных явлений, 
         /// принадлежащих этой окружающей среде. 
         /// </summary>
-        public void Update(int age)
+        public void Update(WorldMetadata metadata)
         {
-            _age = age;
-            EnvironmentMetadata metadata = GetMetadata();
             foreach (IPhenomen phenomen in _naturalPhenomena)
                 phenomen.Update(metadata);
         }
@@ -88,7 +85,6 @@ namespace CyberLife
         {
             _naturalPhenomena = naturalPhenomena;
             _size = size;
-            _age = age;
         }
 
 
@@ -105,7 +101,6 @@ namespace CyberLife
         public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica, int age = 0)
         {
             _size = environmentMetadata.Size;
-            _age = age;
 
             _naturalPhenomena = new List<IPhenomen>();
             foreach (var phenomenMetadata in environmentMetadata.Values)

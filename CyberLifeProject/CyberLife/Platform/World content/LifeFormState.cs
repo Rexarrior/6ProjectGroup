@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+
 namespace CyberLife
 {
     public class LifeFormState
@@ -7,6 +9,9 @@ namespace CyberLife
         private string _name;
         private double _value;
         private Dictionary<string, string> _params;
+
+
+
         /// <summary>
         /// Название состояния формы жизни
         /// </summary>
@@ -22,6 +27,10 @@ namespace CyberLife
         /// </summary>
         public Dictionary<string, string> Params { get; set; }
 
+
+
+
+
         /// <summary>
         /// Формирует метаданные этого состояния формы жизни
         /// </summary>
@@ -29,6 +38,16 @@ namespace CyberLife
         public virtual StateMetadata GetMetadata()
         {
             return new StateMetadata(_name, _value,_params);
+        }
+
+
+
+
+
+
+        public virtual void Update(WorldMetadata lifeFormMetadata, StateMetadata stateMetadata)
+        {
+
         }
 
 
@@ -49,6 +68,9 @@ namespace CyberLife
             _name = name;
             _value = value;
         }
+
+
+
 
 
 
