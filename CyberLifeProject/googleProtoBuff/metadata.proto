@@ -38,6 +38,7 @@ message EnvironmentMetadata
 {
     MapSize mapSize = 1; 
     repeated PhenomenMetadata phenomenaMetadata = 2; 
+    int32 age = 3;
 
 }
 
