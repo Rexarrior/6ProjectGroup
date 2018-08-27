@@ -26,7 +26,6 @@ namespace CyberLife.Platform.World_content
         {
             get { return _step; }
         }
-
         public Season CurSeason
         {
             get { return _season; }
@@ -82,12 +81,19 @@ namespace CyberLife.Platform.World_content
         /// <returns>Попадает?</returns>
         public bool isIn(Point point)
         {
-            return true;
+
+            if (_place.PlaceType == PlaceType.Array && _place.Points.Contains(point))
+                return true;
+            if (_place.PlaceType == PlaceType.Rectangle && _place.Points[1].X >= point.X && _place.Points[1].Y >= point.Y)
+                return true;
+            return false;
         }
 
         /// <summary>
         /// Увеличивает переменную количества ходов на 1
         /// </summary>
+        
+        /*
         public void NextStep()
         {
             if (_step == 360)
@@ -95,15 +101,18 @@ namespace CyberLife.Platform.World_content
             ChangeSeason();
             _step += 1;
         }
+        */
 
         /// <summary>
         /// Вызывает обновление этого природного явления на основании
         /// метаданных окружающей среды.
         /// </summary>
         /// <param name="environmentMetadata">Метаданные окружающей среды.</param>
-        public void Update(EnvironmentMetadata environmentMetadata)
-        {
-            _step = environmentMetadata.Age;
+        public void Update(ref WorldMetadata worldMetadata)
+        {           
+            if (worldMetadata.Age >= 360)
+                worldMetadata.Age = 0;
+            _step = worldMetadata.Age;
             ChangeSeason();
         }
 
@@ -120,9 +129,9 @@ namespace CyberLife.Platform.World_content
 
         #region constructor
 
-        public SeasonsPhenomen(Place place)
+        public SeasonsPhenomen()
         {
-            _place = place;
+            _place = Place.Everything();           
         }
 
         #endregion

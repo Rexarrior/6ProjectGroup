@@ -45,19 +45,19 @@ namespace CyberLife
         /// увеличены на соответствующие им значения состояний из метаданных. 
         /// </summary>
         /// <param name="phenomenEffects"></param>
-        public virtual void Update(List<StateMetadata> phenomenEffects)
+        public virtual void Update(WorldMetadata metadata, List<StateMetadata> phenomenEffects)
         {
             foreach (var effect in phenomenEffects)
             {
                 if (_states.ContainsKey(effect.Name))
                 {
-                    _states[effect.Name].Value += effect.Value;
+                    _states[effect.Name].Update(metadata, effect);
                 }
                 else
                 {
-                    _states.Add(effect.Name, new LifeFormState(effect));
+
+                    throw new NotImplementedException();
                 }
-                
             }
         }
 

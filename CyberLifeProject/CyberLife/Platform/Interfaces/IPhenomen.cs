@@ -9,7 +9,7 @@ namespace CyberLife
         /// метаданных окружающей среды.
         /// </summary>
         /// <param name="environmentMetadata">Метаданные окружающей среды.</param>
-        void Update(EnvironmentMetadata environmentMetadata);
+        void Update(ref WorldMetadata worldMetadata);
 
         /// <summary>
         /// Получает эффекты воздействия этого феномена на точку пространства.
