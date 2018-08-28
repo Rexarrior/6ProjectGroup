@@ -41,7 +41,11 @@ namespace CyberLife.Simple2DWorld
 
         #region Methods
 
-        ///<inheritdoc cref="IPhenomen.Update"/>>
+
+        /// <summary>
+        /// Вызывает обновление интенсивности в зависимости от текущего сезона
+        /// </summary>
+        /// <param name="worldMetadata">Метаданные мира. В окружающей среде должен быть феномен времен года.</param>
         public void Update(WorldMetadata worldMetadata)
         {
             if (!worldMetadata.EnvironmentMetadata.ContainsKey("SeasonsPhenomen"))
@@ -84,8 +88,13 @@ namespace CyberLife.Simple2DWorld
 
 
 
-
-        ///<inheritdoc cref="IPhenomen.GetEffects"/>>
+        /// <summary>
+        /// Определяет, оказывает ли феномен воздействие на форму жизни и возвращает 
+        /// результат этого воздействия
+        /// </summary>
+        /// <param name="point">Точка</param>
+        /// <param name="lifeFormMetadataMetadata">метаданные форммы жизни, находящейся в этой точке</param>
+        /// <returns>Эффект воздействия феномена</returns>
         public List<StateMetadata> GetEffects(Point point, LifeFormMetadata lifeFormMetadataMetadata)
         {
             if (point == null)
@@ -93,6 +102,11 @@ namespace CyberLife.Simple2DWorld
 
             if (lifeFormMetadataMetadata == null)
                 throw  new ArgumentNullException(nameof(lifeFormMetadataMetadata));
+
+
+            if (!isIn(point))
+                throw new ArgumentException("Point isn't in phenomen area.", nameof(point));
+
 
             if (!lifeFormMetadataMetadata.ContainsKey("GenotypeState"))
                 throw  new ArgumentException("life form metadata isn't contains Genotype state metadata", nameof(lifeFormMetadataMetadata));
@@ -105,9 +119,11 @@ namespace CyberLife.Simple2DWorld
             }
 
 
-            double depthFactor = (point.Y - _place[0].Y) *
-                                 (_place[1].Y / _mapSize.Height);
-            StateMetadata stateMetadata = new StateMetadata("EnergyState", BaseIntensity * _powerFactor * depthFactor, null);
+            double depthFactor =  1 / (1 + (point.Y - _place[0].Y)/_place[1].Y); 
+
+
+
+            StateMetadata stateMetadata = new StateMetadata("EnergyState", BaseIntensity * _powerFactor  * depthFactor, null);
 
             List<StateMetadata> ret = new List<StateMetadata>(1);
             ret.Add(stateMetadata);
@@ -117,8 +133,11 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-
-        ///<inheritdoc cref="IPhenomen.isIn"/>>
+        /// <summary>
+        /// Проверяет, попадает ли точка под действие природного явления
+        /// </summary>
+        /// <param name="point">Точка для проверки</param>
+        /// <returns>Попадает?</returns>
         public bool isIn(Point point)
         {
             if (point == null)
@@ -134,14 +153,22 @@ namespace CyberLife.Simple2DWorld
 
 
 
-        ///<inheritdoc cref="IPhenomen.GetItPlace"/>>
+        /// <inheritdoc />
+        /// <summary>
+        /// Возвращает экземпляр  класса Place, представляющий пространство,
+        /// на  которое воздействует этот феномен
+        /// </summary>
         public Place GetItPlace()
         {
             return _place;
         }
 
-
-        ///<inheritdoc cref="IPhenomen.GetMetadata"/>>
+        
+        /// <inheritdoc />
+        /// <summary>
+        /// Получает метаданные этого природного явления
+        /// </summary>
+        /// <returns>Метаданные</returns>
         public PhenomenMetadata GetMetadata()
         {
             Dictionary<string, string> param = new Dictionary<string, string>(1);
