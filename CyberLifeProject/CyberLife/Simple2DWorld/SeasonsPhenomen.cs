@@ -92,11 +92,6 @@ namespace CyberLife.Platform.World_content
         /// <summary>
         /// Увеличивает переменную количества ходов на 1
         /// </summary>        
-        public void NextStep()
-        {
-            ChangeSeason();
-
-        }
         
 
         /// <summary>
