@@ -80,8 +80,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="naturalPhenomena">Природные явления</param>
         /// <param name="size">Размер окружающей среды</param>
-        /// <param name="age">Возраст мира, которому принадлежит окружающая среда</param>
-        public Environment(List<IPhenomen> naturalPhenomena, MapSize size, int age = 0)
+        public Environment(List<IPhenomen> naturalPhenomena, MapSize size)
         {
             _naturalPhenomena = naturalPhenomena;
             _size = size;
@@ -97,8 +96,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="environmentMetadata">Метаданные окружающей среды</param>
         /// <param name="phenomenaFabrica">Фабрика природных явлений</param>
-        /// <param name="age">Возраст мира, которому принадлежит окружающая среда</param>
-        public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica, int age = 0)
+        public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica)
         {
             _size = environmentMetadata.Size;
 
