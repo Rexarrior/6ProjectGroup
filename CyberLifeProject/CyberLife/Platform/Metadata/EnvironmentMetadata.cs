@@ -37,7 +37,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="size">Размер поля</param>
         /// <param name="phenomenaMetadata">Метаданные природных явлений</param>
-        public EnvironmentMetadata(MapSize size, List<PhenomenMetadata> phenomenaMetadata)
+        public EnvironmentMetadata(MapSize size,  List<PhenomenMetadata> phenomenaMetadata)
         {
             Size = size ?? throw new ArgumentNullException(nameof(size));
             foreach (var phenomen in phenomenaMetadata ?? throw  new ArgumentNullException(nameof(phenomenaMetadata)))
@@ -55,7 +55,6 @@ namespace CyberLife
         public EnvironmentMetadata(Protobuff.Metadata.EnvironmentMetadata protoMetadata)
         {
             Size = new MapSize(protoMetadata.MapSize);
-            
             foreach (var phenomenMetadata in protoMetadata.PhenomenaMetadata)
             {
                 this.Add(phenomenMetadata.Name, new PhenomenMetadata(phenomenMetadata));
