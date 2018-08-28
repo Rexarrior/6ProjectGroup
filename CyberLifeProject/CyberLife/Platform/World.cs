@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using  System.IO;
 using Google.Protobuf;
-using CyberLife.Platform.World_content;
 
 namespace CyberLife
 {
-    
     /// <summary>
     /// Реаилзует цельный мир.
     /// </summary>
@@ -19,8 +17,8 @@ namespace CyberLife
         private IVisualizer _visualizer;
         private Dictionary<Int64, LifeForm> _lifeForms;
         private int _age;
-        private WorldMetadata metadata;
-        private SeasonsPhenomen seasonsPhenomen;
+
+
 
 
         #endregion
@@ -45,16 +43,15 @@ namespace CyberLife
         /// </summary>
         public void Update()
         {
-            _age = metadata.Age;  // Считываем данные из метадаты   
+            WorldMetadata metadata = GetMetadata();
             _environment.Update(metadata);
             foreach (var lifeForm in LifeForms.Values)
             {
                 
                 lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));
             }
-            _age++; // Увеличиваем поле 
-            metadata = GetMetadata(); // Сохраняем изменения в метадате
-            seasonsPhenomen.Update(ref metadata); // Выплняем Update(),в случае если age станет больше 360 соответствующее поле метадаты изменится на 0
+            _age++;
+
         }
 
 
@@ -146,7 +143,6 @@ namespace CyberLife
             {
                 _lifeForms.Add(lifeForm.Id, lifeForm);
             }
-
         }
 
 
