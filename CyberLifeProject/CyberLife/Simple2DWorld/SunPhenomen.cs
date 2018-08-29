@@ -18,6 +18,8 @@ namespace CyberLife.Simple2DWorld
         private const double NormalPowerFactor = 1;
         private const double LowPowerFactor = 0.5;
         private const double HightPowerFactor = 1.5;
+        private const double SunDepthFactor = 0.5; 
+
 
         private const string ActionPhotosynthesisName = "Photosynthesis";
 
@@ -198,8 +200,8 @@ namespace CyberLife.Simple2DWorld
 
             List<Point> points = new List<Point>(2);
             points.Add(new Point(0, 0));
-            points.Add(new Point(mapSize.Width, mapSize.Height / 2));
-
+            
+            points.Add(new Point(mapSize.Width, (int)Math.Round(mapSize.Height * SunDepthFactor)));
             _place = new Place(points, PlaceType.Rectangle);
         }
 
