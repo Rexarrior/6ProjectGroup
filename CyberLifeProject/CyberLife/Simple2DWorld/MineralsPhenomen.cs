@@ -64,7 +64,7 @@ namespace CyberLife.Simple2DWorld
         {
             Dictionary<string, string> param = new Dictionary<string, string>(1);
             param.Add("Percent", PercentOfMap.ToString());
-            PhenomenMetadata ret = new PhenomenMetadata("EnergyState", _place, this.GetType().Name, param);
+            PhenomenMetadata ret = new PhenomenMetadata("MineralsPhenomen", _place, this.GetType().Name, param);
             return ret;
         }
 
