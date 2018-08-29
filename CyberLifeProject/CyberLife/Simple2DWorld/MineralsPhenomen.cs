@@ -44,11 +44,11 @@ namespace CyberLife.Simple2DWorld
             }
 
 
-            double depthFactor = 1 / (1 + ((_place[1].Y) / (_place[0].Y-point.Y)));
+            double depthFactor = 1 / (1 + ((_place[1].Y) / (point.Y -_place[0].Y)));
 
 
 
-            StateMetadata stateMetadata = new StateMetadata("MineralsState", MineralsSpread * depthFactor, null);
+            StateMetadata stateMetadata = new StateMetadata("EnergyState", MineralsSpread * depthFactor, null);
             List<StateMetadata> ret = new List<StateMetadata>(1);
             ret.Add(stateMetadata);
 
@@ -64,7 +64,7 @@ namespace CyberLife.Simple2DWorld
         {
             Dictionary<string, string> param = new Dictionary<string, string>(1);
             param.Add("Percent", PercentOfMap.ToString());
-            PhenomenMetadata ret = new PhenomenMetadata("MineralsPhenomen", _place, this.GetType().Name, param);
+            PhenomenMetadata ret = new PhenomenMetadata("EnergyState", _place, this.GetType().Name, param);
             return ret;
         }
 
@@ -91,7 +91,7 @@ namespace CyberLife.Simple2DWorld
             _mapSize = mapSize ?? throw new ArgumentNullException(nameof(mapSize));
             List<Point> points = new List<Point>(2);
             points.Add(new Point(0, mapSize.Height *(PercentOfMap/100)));
-            points.Add(new Point(mapSize.Width, mapSize.Height*(PercentOfMap / 100)));
+            points.Add(new Point(mapSize.Width, mapSize.Height));
             _place = new Place(points, PlaceType.Rectangle);
         }
     }
