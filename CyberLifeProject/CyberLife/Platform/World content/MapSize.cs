@@ -7,14 +7,29 @@ namespace CyberLife
     public class MapSize
     {
 
-        int Width;
-        int Height;
+        private int _width;
+        private int _height;
 
       
+        
+
+        /// <summary>
+        /// Ширина карты
+        /// </summary>
+        public int Width { get => _width; set => _width = value; }
+
+        /// <summary>
+        /// Высота карты
+        /// </summary>
+        public int Height { get => _height; set => _height = value; }
+
+
         /// <summary>
         /// Число точек на поле
         /// </summary>
-        int CountOfPoint => Width * Height;
+        public int CountOfPoint => _width * _height;
+
+
 
 
         /// <summary>
@@ -24,8 +39,8 @@ namespace CyberLife
         public Protobuff.MapSize GetProtoMapSize()
         {
             Protobuff.MapSize ret = new Protobuff.MapSize();
-            ret.Height = Height;
-            ret.Width = Width;
+            ret.Height = _height;
+            ret.Width = _width;
             return ret;
         }
 
@@ -41,9 +56,9 @@ namespace CyberLife
         public MapSize(int width, int height)
         {
             if (width < 0 || height < 0)
-                throw new ArgumentException("Width and height parameters should be positive.");
-            Width = width;
-            Height = height;
+                throw new ArgumentException("_width and height parameters should be positive.");
+            _width = width;
+            _height = height;
 
         }
 
@@ -54,8 +69,8 @@ namespace CyberLife
         /// <param name="protoMapSize">GoogleProtobuf прототип</param>
         public MapSize(Protobuff.MapSize protoMapSize)
         {
-            Width = protoMapSize.Width;
-            Height = protoMapSize.Height;
+            _width = protoMapSize.Width;
+            _height = protoMapSize.Height;
         }
     }
 }

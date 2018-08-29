@@ -62,7 +62,13 @@ namespace CyberLife
         }
 
 
-
+        /// <summary>
+        /// Возвращает опорную точку по индексу
+        /// </summary>
+        /// <param name="index">Индекс опорной точки</param>
+        /// <returns>Опорная точка</returns>
+        public Point this[int index] => _points[index];
+        
 
         /// <summary>
         /// Преобразует Place в инициализирующую строку,
