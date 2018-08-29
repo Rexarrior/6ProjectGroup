@@ -44,7 +44,7 @@ namespace CyberLife.Simple2DWorld
             }
 
 
-            double depthFactor = 1 / (1 + ((_place[0].Y-point.Y)*-1)/ _place[0].Y);
+            double depthFactor = 1 / (1 + ((_place[1].Y-point.Y)/ _place[0].Y));
 
 
 
