@@ -89,19 +89,7 @@ namespace CyberLife.Platform.World_content
             return false;
         }
 
-        /// <summary>
-        /// Увеличивает переменную количества ходов на 1
-        /// </summary>
 
-        /*
-        public void NextStep()
-        {
-            if (_step == 360)
-                _step = 0;
-            ChangeSeason();
-            _step += 1;
-        }
-        */
 
         /// <summary>
         /// Вызывает обновление этого природного явления на основании
@@ -110,8 +98,7 @@ namespace CyberLife.Platform.World_content
         /// <param name="worldMetadata">Метаданные окружающей среды.</param>
         public void Update( WorldMetadata worldMetadata)
         {
-            if (worldMetadata.Age >= 360)
-                worldMetadata.Age = 0;
+
             _step = worldMetadata.Age;
             ChangeSeason();
         }
@@ -121,7 +108,9 @@ namespace CyberLife.Platform.World_content
         /// </summary>
         private void ChangeSeason()
         {
-            byte season = (byte)(_step / 90);
+
+            byte season = (byte)((_step % 360) / 90);
+
             _season = (Season)Enum.GetValues(typeof(Season)).GetValue(season);
         }
 
