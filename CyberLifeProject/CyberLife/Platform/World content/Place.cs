@@ -96,8 +96,29 @@ namespace CyberLife
             return new Place(str);
         }
 
-
-
+        /// <summary>
+        /// Проверяет, принадлежит ли точка данному экземпляру Place
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>Принадлежит?</returns>
+        public bool IsIn(Point point)
+        {
+            switch(PlaceType)
+            {
+                case PlaceType.Array:
+                    if (Points.Contains(point))
+                        return true;
+                    break;
+                case PlaceType.Rectangle:
+                    if (Points[0].X <= point.X && 
+                        Points[0].Y <= point.Y && 
+                        Points[1].Y >= point.Y && 
+                        Points[1].X >= point.Y)
+                        return true;
+                    break;
+            }
+            return false;
+        }
         /// <summary>
         /// Определяет, задан ли данный экземпляр 
         /// класса Place как "все поле". 
