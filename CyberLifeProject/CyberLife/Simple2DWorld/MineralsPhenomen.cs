@@ -110,10 +110,7 @@ namespace CyberLife.Simple2DWorld
                 throw new ArgumentNullException(nameof(point));
             }
 
-            List<Point> points = new List<Point>(1);
-            points.Add(point);
-
-            return _place.Intersect(new Place(points)).Points.Count == 1;
+            return _place.IsIn(point);
         }
 
 

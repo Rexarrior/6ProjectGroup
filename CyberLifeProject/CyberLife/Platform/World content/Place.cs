@@ -96,6 +96,8 @@ namespace CyberLife
             return new Place(str);
         }
 
+
+
         /// <summary>
         /// Проверяет, принадлежит ли точка данному экземпляру Place
         /// </summary>
@@ -119,6 +121,9 @@ namespace CyberLife
             }
             return false;
         }
+
+
+
         /// <summary>
         /// Определяет, задан ли данный экземпляр 
         /// класса Place как "все поле". 
