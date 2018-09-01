@@ -96,7 +96,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="environmentMetadata">Метаданные окружающей среды</param>
         /// <param name="phenomenaFabrica">Фабрика природных явлений</param>
-        public Environment(EnvironmentMetadata environmentMetadata, PhenomenaFabrica phenomenaFabrica)
+        public Environment(EnvironmentMetadata environmentMetadata, IPhenomenaFabrica phenomenaFabrica)
         {
             _size = environmentMetadata.Size;
 

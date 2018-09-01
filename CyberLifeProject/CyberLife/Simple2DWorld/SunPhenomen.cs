@@ -30,10 +30,10 @@ namespace CyberLife.Simple2DWorld
 
         private Place _place;
 
-        private MapSize _mapSize;
-
-
         #endregion
+
+
+
 
         #region  properties
 
@@ -172,7 +172,6 @@ namespace CyberLife.Simple2DWorld
         {
             Dictionary<string, string> param = new Dictionary<string, string>(1);
             param.Add("Intensity",(BaseIntensity * _powerFactor).ToString(CultureInfo.InvariantCulture));
-
             PhenomenMetadata ret = new PhenomenMetadata("SunPhenomen", _place, this.GetType().Name, param);
             return ret;
         }
@@ -193,7 +192,8 @@ namespace CyberLife.Simple2DWorld
 
             _powerFactor = NormalPowerFactor;
 
-            _mapSize = mapSize ?? throw new ArgumentNullException(nameof(mapSize));
+            if (mapSize == null)
+                throw new ArgumentNullException(nameof(mapSize));
 
             List<Point> points = new List<Point>(2);
             points.Add(new Point(0, 0));
@@ -202,6 +202,24 @@ namespace CyberLife.Simple2DWorld
             _place = new Place(points, PlaceType.Rectangle);
         }
 
+
+
+        /// <summary>
+        /// Инициализирует экземпляр SunPhenomen, 
+        /// занимающий указанное place пространство
+        /// </summary>
+        /// <param name="place">Пространство, которое будет занимать феномен</param>
+        public SunPhenomen(Place place)
+        {
+            if (place == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            _place = place;
+            _powerFactor = NormalPowerFactor;
+
+        }
 
         #endregion
     }

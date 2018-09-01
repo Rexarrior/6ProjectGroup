@@ -54,10 +54,11 @@
     <Compile Include="Platform\Metadata\LifeFormMetadata.cs" />
     <Compile Include="Platform\World content\LifeFormState.cs" />
     <Compile Include="Platform\World content\MapSize.cs" />
-    <Compile Include="Platform\Metadata\PhenomenaFabrica.cs" />
+    <Compile Include="Platform\Metadata\IPhenomenaFabrica.cs" />
     <Compile Include="Platform\Metadata\PhenomenMetadata.cs" />
     <Compile Include="Platform\World content\Place.cs" />
     <Compile Include="Platform\World content\Point.cs" />
+    <Compile Include="Simple2DWorld\PhenomenaFabrica.cs" />
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
     <Compile Include="Program.cs" />
