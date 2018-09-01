@@ -22,14 +22,14 @@ namespace CyberLife {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class LogMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal LogMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace CyberLife {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CyberLife.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CyberLife.LogMessages", typeof(LogMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,38 @@ namespace CyberLife {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Экземпляр метадаты содержит недопустимый ключ {0}.
+        /// </summary>
+        internal static string BadInputMetadata {
+            get {
+                return ResourceManager.GetString("BadInputMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Текущий сезон изменён на .
+        /// </summary>
+        internal static string ChangeSeason {
+            get {
+                return ResourceManager.GetString("ChangeSeason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Создаётся экзмепляр {0}.
         /// </summary>
         internal static string Constructor {
             get {
                 return ResourceManager.GetString("Constructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Текущий сезон: {0}.
+        /// </summary>
+        internal static string CurrentSeason {
+            get {
+                return ResourceManager.GetString("CurrentSeason", resourceCulture);
             }
         }
         
@@ -156,6 +183,15 @@ namespace CyberLife {
         internal static string PhenomenIsIn {
             get {
                 return ResourceManager.GetString("PhenomenIsIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выполняем {0}.Update .
+        /// </summary>
+        internal static string PhenomenUpdate {
+            get {
+                return ResourceManager.GetString("PhenomenUpdate", resourceCulture);
             }
         }
         

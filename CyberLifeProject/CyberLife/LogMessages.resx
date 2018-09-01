@@ -117,40 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BadInputMetadata" xml:space="preserve">
+    <value>Экземпляр метадаты содержит недопустимый ключ {0}</value>
+    <comment>Экземпляр метадаты содержит недопустимый ключ {0}</comment>
+  </data>
+  <data name="ChangeSeason" xml:space="preserve">
+    <value>Текущий сезон изменён на </value>
+  </data>
   <data name="Constructor" xml:space="preserve">
     <value>Создаётся экзмепляр {0}</value>
+    <comment>Создаётся экзмепляр {0}</comment>
+  </data>
+  <data name="CurrentSeason" xml:space="preserve">
+    <value>Текущий сезон: {0}</value>
+    <comment>Текущий сезон: {0}</comment>
   </data>
   <data name="DepthFactorCalc" xml:space="preserve">
     <value>Фактор глубины равен {0}</value>
+    <comment>Фактор глубины равен {0}</comment>
   </data>
   <data name="EndMethod" xml:space="preserve">
     <value>Метод {0} успешно завершён</value>
+    <comment>Метод {0} успешно завершён</comment>
   </data>
   <data name="GenotypeStateAction" xml:space="preserve">
     <value>GenotypeState не содержит ключа Action,либо ключ предназначался для иного класса </value>
+    <comment>GenotypeState не содержит ключа Action,либо ключ предназначался для иного класса</comment>
   </data>
   <data name="GenotypeStateNotFound" xml:space="preserve">
     <value>Ключ GenotypeState не был найден в метадате LifeFormMetadata  </value>
+    <comment>Ключ GenotypeState не был найден в метадате LifeFormMetadata</comment>
   </data>
   <data name="GetMetadata" xml:space="preserve">
     <value>Запрошена метадата класса {0}</value>
+    <comment>Запрошена метадата класса {0}</comment>
   </data>
   <data name="GetPlace" xml:space="preserve">
     <value>Запрошен экземпляр Place класса {0}</value>
+    <comment>Запрошен экземпляр Place класса {0}</comment>
   </data>
   <data name="NullArgument" xml:space="preserve">
     <value>Экзмепляр {0} был равен null {1}</value>
+    <comment>Экзмепляр {0} был равен null {1}</comment>
   </data>
   <data name="OkConstructor" xml:space="preserve">
     <value>Экземпляр {0} был успешно создан</value>
+    <comment>Экземпляр {0} был успешно создан</comment>
   </data>
   <data name="PhenomenGetEffects" xml:space="preserve">
     <value>Выполняем {0}.GetEffects | Point X = {1},Y = {2} </value>
+    <comment>Выполняем {0}.GetEffects | Point X = {1},Y = {2}</comment>
   </data>
   <data name="PhenomenIsIn" xml:space="preserve">
     <value>Выполняем {0}.IsIn</value>
+    <comment>Выполняем {0}.IsIn</comment>
+  </data>
+  <data name="PhenomenUpdate" xml:space="preserve">
+    <value>Выполняем {0}.Update </value>
+    <comment>Выполняем {0}.Update</comment>
   </data>
   <data name="PointNotFound" xml:space="preserve">
     <value>Экземпляр Point не найден в текущем Place  </value>
+    <comment>Экземпляр Point не найден в текущем Place</comment>
   </data>
 </root>

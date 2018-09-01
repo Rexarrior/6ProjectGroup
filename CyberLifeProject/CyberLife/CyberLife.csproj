@@ -66,10 +66,10 @@
     <Compile Include="Platform\Metadata\PhenomenMetadata.cs" />
     <Compile Include="Platform\World content\Place.cs" />
     <Compile Include="Platform\World content\Point.cs" />
-    <Compile Include="Resources.Designer.cs">
+    <Compile Include="LogMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>LogMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
@@ -91,9 +91,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources.resx">
+    <EmbeddedResource Include="LogMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>LogMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\googleProtoBuff\googleProtoBuff.projitems" Label="Shared" />

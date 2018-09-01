@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NLog;
 
 namespace CyberLife.Platform.World_content
 {
@@ -12,6 +13,8 @@ namespace CyberLife.Platform.World_content
     }
     public class SeasonsPhenomen : IPhenomen
     {
+        Logger log = LogManager.GetCurrentClassLogger();
+
         #region field
 
         private Season _season = 0;
@@ -58,6 +61,7 @@ namespace CyberLife.Platform.World_content
         /// <returns></returns>
         public Place GetItPlace()
         {
+            log.Debug(LogMessages.GetPlace, "SeasonsPhenomen");
             return _place;
         }
 
@@ -67,10 +71,12 @@ namespace CyberLife.Platform.World_content
         /// <returns></returns>
         public PhenomenMetadata GetMetadata()
         {
+            log.Debug(LogMessages.GetMetadata, "SeasonsPhenomen");
             Dictionary<string, string> data = new Dictionary<string, string> { };
             data.Add("step", Convert.ToString(_step));
             data.Add("season", _season.ToString());
             PhenomenMetadata phenomenMetadata = new PhenomenMetadata("SeasonsPhenomen", _place, this.GetType().Name, data);
+            log.Debug(LogMessages.EndMethod, "SeasonsPhenomen.GetMetadata");
             return phenomenMetadata;
         }
 
@@ -80,13 +86,8 @@ namespace CyberLife.Platform.World_content
         /// <param name="point">Точка пространства</param>
         /// <returns>Попадает?</returns>
         public bool isIn(Point point)
-        {
-
-            if (_place.PlaceType == PlaceType.Array && _place.Points.Contains(point))
-                return true;
-            if (_place.PlaceType == PlaceType.Rectangle && _place.Points[1].X >= point.X && _place.Points[1].Y >= point.Y)
-                return true;
-            return false;
+        {           
+            return true;
         }
 
 
@@ -98,7 +99,7 @@ namespace CyberLife.Platform.World_content
         /// <param name="worldMetadata">Метаданные окружающей среды.</param>
         public void Update( WorldMetadata worldMetadata)
         {
-
+            log.Debug(LogMessages.PhenomenUpdate, "SeasonsPhenomen");
             _step = worldMetadata.Age;
             ChangeSeason();
         }
@@ -108,10 +109,10 @@ namespace CyberLife.Platform.World_content
         /// </summary>
         private void ChangeSeason()
         {
-
             byte season = (byte)((_step % 360) / 90);
 
             _season = (Season)Enum.GetValues(typeof(Season)).GetValue(season);
+            log.Info(LogMessages.ChangeSeason, _season.ToString());
         }
 
         #endregion
@@ -120,6 +121,7 @@ namespace CyberLife.Platform.World_content
 
         public SeasonsPhenomen()
         {
+            log.Debug(LogMessages.Constructor, "SeasonsPhenomen");
             _place = Place.Everything();
         }
 
