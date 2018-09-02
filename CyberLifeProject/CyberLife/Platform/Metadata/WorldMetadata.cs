@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using  System.IO;
+using System.IO;
+using NLog;
+using CyberLife.Platform.Logging.LogMessages;
+
 namespace CyberLife
 {
     public class WorldMetadata
     {
+        Logger log = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Метаданные окружающей среды этого мира
         /// </summary>
@@ -35,6 +39,7 @@ namespace CyberLife
         /// <returns>Прототип googleProtobuf</returns>
         public Protobuff.Metadata.WorldMetadata GetProtoMetadata()
         {
+            log.Trace(LogMetadataMessages.ProtobuffFromMetadata, "WorldMetadata");
             Protobuff.Metadata.WorldMetadata ret = new Protobuff.Metadata.WorldMetadata();
 
             ret.Age = Age;
@@ -44,7 +49,8 @@ namespace CyberLife
             {
                 ret.LifeFormMetadata.Add(pair.Key, pair.Value.GetProtoMetadata());
             }
-
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Trace(LogMetadataMessages.OkProtobuffFromMetadata);
             return ret;
         }
 
@@ -64,19 +70,37 @@ namespace CyberLife
         /// <param name="age">Возраст мира в ходах</param>
         public WorldMetadata(EnvironmentMetadata environmentMetadata, Dictionary<long, LifeFormMetadata> lifeFormsMetadata, string name, int age)
         {
-            if (name == "")
-                throw new ArgumentException("name shouldn't be empty.", nameof(name));
+            log.Trace(LogMetadataMessages.Constructor, "WorldMetadata");
+            if (name == ""||name ==null)
+            {
+                ArgumentException ex = new ArgumentException("name shouldn't be empty.", nameof(name));
+                log.Error(LogMetadataMessages.NullArgument, "string name", ex);
+                throw ex;
+            }
+
             if (age < 0)
-                throw new ArgumentException("age should be positive.", nameof(age));
-
-
-
-
-
-            EnvironmentMetadata = environmentMetadata ?? throw new ArgumentNullException(nameof(environmentMetadata));
-            LifeFormsMetadata = lifeFormsMetadata ?? throw new ArgumentNullException(nameof(lifeFormsMetadata));
+            {
+                ArgumentException ex = new ArgumentException("age should be positive.", nameof(age));
+                log.Error("Переданная переменная age меньше нуля");
+                throw ex;
+            }
+            if (environmentMetadata == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(environmentMetadata));
+                log.Error(LogMetadataMessages.NullArgument, "EnvironmentMetadata environmentMetadata", ex);
+            }
+            EnvironmentMetadata = environmentMetadata;
+            if(lifeFormsMetadata ==null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(lifeFormsMetadata));
+                log.Error(LogMetadataMessages.NullArgument, "Dictionary<long, LifeFormMetadata> lifeFormsMetadata", ex);
+                throw ex;
+            }
+            LifeFormsMetadata = lifeFormsMetadata;
             Name = name;
             Age = age;
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Trace(LogMetadataMessages.OkConstructor, "WorldMetadata");
         }
 
 
@@ -87,8 +111,12 @@ namespace CyberLife
         /// <param name="protoMetadata">прототип googleProtobuff</param>
         public WorldMetadata(Protobuff.Metadata.WorldMetadata protoMetadata)
         {
-            if (protoMetadata == null) 
-                throw  new ArgumentNullException(nameof(protoMetadata));
+            log.Trace(LogMetadataMessages.MetadataFromProtobuff, "WorldMetadata");
+            if (protoMetadata == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(protoMetadata));
+                log.Error(LogMetadataMessages.NullArgument, "Protobuff.Metadata.WorldMetadata protoMetadata");
+            }
             Name = protoMetadata.Name;
             Age = protoMetadata.Age;
             LifeFormsMetadata = new Dictionary<long, LifeFormMetadata>();
@@ -97,6 +125,8 @@ namespace CyberLife
             {
                 LifeFormsMetadata.Add(pair.Key, new LifeFormMetadata(pair.Value));
             }
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
     }
 }

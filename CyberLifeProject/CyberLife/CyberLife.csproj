@@ -54,6 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Platform\Demiurg.cs" />
+    <Compile Include="Platform\Logging\LogMessages\LogMetadataMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LogMetadataMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="Platform\World content\Environment.cs" />
     <Compile Include="Platform\Metadata\EnvironmentMetadata.cs" />
     <Compile Include="Platform\Interfaces\IPhenomen.cs" />
@@ -66,10 +71,10 @@
     <Compile Include="Platform\Metadata\PhenomenMetadata.cs" />
     <Compile Include="Platform\World content\Place.cs" />
     <Compile Include="Platform\World content\Point.cs" />
-    <Compile Include="LogMessages.Designer.cs">
+    <Compile Include="Platform\Logging\LogMessages\LogPhenomenMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LogMessages.resx</DependentUpon>
+      <DependentUpon>LogPhenomenMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
@@ -82,20 +87,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="NLog.config">
+    <Content Include="Platform\Logging\NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="NLog.xsd">
+    <None Include="Platform\Logging\NLog.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LogMessages.resx">
+    <EmbeddedResource Include="Platform\Logging\LogMessages\LogPhenomenMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LogMessages.Designer.cs</LastGenOutput>
+      <LastGenOutput>LogPhenomenMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Platform\Logging\LogMessages\LogMetadataMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LogMetadataMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\googleProtoBuff\googleProtoBuff.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
