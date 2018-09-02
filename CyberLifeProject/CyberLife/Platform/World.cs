@@ -101,7 +101,7 @@ namespace CyberLife
         /// <param name="fileName">Имя файла для загрузки</param>
         /// <param name="fabrica">Фабрика природных явлений</param>
         /// <returns>Загруженный мир</returns>
-        public static World LoadFromFile(string fileName, PhenomenaFabrica fabrica)
+        public static World LoadFromFile(string fileName, IPhenomenaFabrica fabrica)
         {
             return new World(new WorldMetadata(
                 Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(File.ReadAllBytes(fileName))), fabrica);
@@ -153,7 +153,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="metadata">метаданные мира</param>
         /// <param name="phenomenaFabrica">Фабрика для разбора прородных явлений, содержащихся в метаданных</param>
-        public World(WorldMetadata metadata, PhenomenaFabrica phenomenaFabrica)
+        public World(WorldMetadata metadata, IPhenomenaFabrica phenomenaFabrica)
         {
             _environment = new Environment(metadata.EnvironmentMetadata, phenomenaFabrica);
             _name = metadata.Name;

@@ -17,8 +17,6 @@ namespace CyberLife.Simple2DWorld
 
         private Place _place;
 
-        private MapSize _mapSize;
-
         #endregion
 
         #region  properties
@@ -131,13 +129,32 @@ namespace CyberLife.Simple2DWorld
         /// <param name="mapSize">Размер карты</param>
         public MineralsPhenomen(MapSize mapSize)
         {
-            _mapSize = mapSize ?? throw new ArgumentNullException(nameof(mapSize));
+            if (mapSize == null)
+                throw new ArgumentNullException(nameof(mapSize));
             List<Point> points = new List<Point>(2);
             points.Add(new Point(0, mapSize.Height *(PercentOfMap/100)));
             points.Add(new Point(mapSize.Width, mapSize.Height));
             _place = new Place(points, PlaceType.Rectangle);
         }
 
+
+
+
+        /// <summary>
+        /// Инициализирует экземпляр MineralsPhenomen, 
+        /// занимающий указанное place пространство
+        /// </summary>
+        /// <param name="place">Пространство, которое будет занимать феномен</param>
+        public MineralsPhenomen(Place place)
+        {
+            if (place == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            _place = place;
+
+        }
         #endregion
     }
 }
