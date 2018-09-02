@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using Google.Protobuf.Collections;
+using NLog;
+using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
     public class PhenomenMetadata
     {
+        Logger log = LogManager.GetCurrentClassLogger();
         private Dictionary<string, string> _parameters;
 
 
@@ -50,6 +53,7 @@ namespace CyberLife
         /// <returns>Содержит?</returns>
         public bool ContainsParameter(string parameterName)
         {
+            log.Trace("Вызван PhenomenMetadata.ContainsParameter, входной параметр " + parameterName);
             return _parameters.ContainsKey(parameterName);
         }
 
@@ -61,15 +65,17 @@ namespace CyberLife
         /// <returns>Прототип GoogleProtobuf</returns>
         public Protobuff.Metadata.PhenomenMetadata GetProtoMetadata()
         {
+            log.Trace(LogMetadataMessages.ProtobuffFromMetadata, "PhenomenMetadata");
             Protobuff.Metadata.PhenomenMetadata ret = new Protobuff.Metadata.PhenomenMetadata();
             ret.Place = Place.GetProtoPlace();
             ret.Name = Name;
             ret.TypeName = PhenomenTypeName;
+            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, _parameters.Count);
             foreach (var pair in _parameters)
             {
                 ret.Parameters.Add(pair.Key, pair.Value);
             }
-            
+            log.Trace(LogMetadataMessages.OkProtobuffFromMetadata);
             return ret;
         }
 
@@ -92,21 +98,36 @@ namespace CyberLife
         /// 
         public PhenomenMetadata(string phenomenName, Place place, string phenomenTypeName, Dictionary<string, string> parameters = null)
         {
+            log.Trace(LogMetadataMessages.Constructor, "PhenomenMetadata");
             if (phenomenName == "")
-                throw new ArgumentException("phenomenName shouldn\'t be empty", nameof(phenomenName));
-
+            {
+                ArgumentException ex = new ArgumentException("phenomenName shouldn\'t be empty", nameof(phenomenName));
+                log.Error(LogMetadataMessages.NullArgument, "string phenomenName", ex);
+                throw ex;
+            }
             if (phenomenTypeName == "")
-                throw  new ArgumentException("Phenomen type name should be a valid type name.", nameof(phenomenTypeName));
-
+            {
+               ArgumentException ex = new ArgumentException("Phenomen type name should be a valid type name.", nameof(phenomenTypeName));
+                log.Error(LogMetadataMessages.AddingNewListElement, "string phenomenTypeName", ex);
+                throw ex;
+            }
             if (parameters != null)
             {
                 _parameters = parameters;
+                log.Info(parameters.Count + " дополнительных параметров");
             }
                 
 
             PhenomenTypeName = phenomenTypeName;
             Name = phenomenName;
-            Place = place ?? throw new ArgumentNullException(nameof(place));
+            if (place == null)
+            {
+                ArgumentNullException ex =new ArgumentNullException(nameof(place));
+                log.Error(LogMetadataMessages.NullArgument, "Place", ex);
+                throw ex;
+            }
+            Place = place;
+            log.Trace(LogMetadataMessages.OkConstructor, "PhenomenMetadata");
         }
 
 
@@ -124,13 +145,19 @@ namespace CyberLife
         /// <param name="protoMetadata">Прототип GoogleProtobuf</param>
         public PhenomenMetadata(Protobuff.Metadata.PhenomenMetadata protoMetadata)
         {
+            log.Trace(LogMetadataMessages.MetadataFromProtobuff, "PhenomenMetadata");
             if (protoMetadata == null)
-                throw new ArgumentNullException(nameof(protoMetadata));
-
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(protoMetadata));
+                log.Error(LogMetadataMessages.NullArgument, "Protobuff.Metadata.PhenomenMetadata", ex);
+                throw ex;
+            }
             Name = protoMetadata.Name;
             Place = new Place(protoMetadata.Place);
             PhenomenTypeName = protoMetadata.TypeName;
             _parameters = new Dictionary<string, string>(protoMetadata.Parameters);
+            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, _parameters.Count);
+            log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
 
     }

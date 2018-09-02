@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using NLog;
+using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
     public class StateMetadata
     {
+        Logger log = LogManager.GetCurrentClassLogger();
+
         public string Name { get; set; }
         public double Value { get; set; }
         public Dictionary<string, string> Params { get; set; }      
@@ -17,14 +21,16 @@ namespace CyberLife
         /// <returns>прототип googleProtobuff</returns>
         public Protobuff.Metadata.StateMetadata GetProtoMetadata()
         {
-
+            log.Trace(LogMetadataMessages.ProtobuffFromMetadata, "StateMetadata");
             Protobuff.Metadata.StateMetadata ret = new Protobuff.Metadata.StateMetadata();
             ret.Value = Value;
             ret.Name = Name;
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), Params.Count);
             foreach (var pair in Params)
             {
                 ret.Params.Add(pair.Key, pair.Value);
             }
+            log.Trace(LogMetadataMessages.OkProtobuffFromMetadata);
             return ret;
         }
 
@@ -44,13 +50,30 @@ namespace CyberLife
         /// <param name="Params">Коллекция дополнительных параметров</param>
         public StateMetadata(string stateName, double value,Dictionary<string,string> Params)
         {
-            if (stateName == "")
-                throw new ArgumentException("stateNmae shouldn't be empty", nameof(stateName));
+            log.Trace(LogMetadataMessages.Constructor, "StateMetadata");
+            if (stateName == "" || stateName == null)
+            {
+                ArgumentException ex = new ArgumentException("stateNmae shouldn't be empty", nameof(stateName));
+                log.Error(LogMetadataMessages.NullArgument, "string stateName", ex);
+                throw ex;
+            }
             if (double.IsNaN(value))
-                throw new ArgumentException("value shouldn't be NaN", nameof(value));
-            this.Params = Params ?? throw new ArgumentNullException(nameof(Params));
+            {
+                ArgumentException ex = new ArgumentException("value shouldn't be NaN", nameof(value));
+                log.Error("Входной параметр double value не может быть NaN",ex);
+                throw ex;
+            }
+            if (Params == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(Params));
+                log.Error(LogMetadataMessages.NullArgument, "Dictionary<string,string> Params", ex);
+                throw ex;
+            }
+            this.Params = Params;
             Name = stateName;
-            Value = value;            
+            Value = value;
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(),this.Params.Count);
+            log.Trace(LogMetadataMessages.OkConstructor, "StateMetadata");
         }
 
         
@@ -61,15 +84,21 @@ namespace CyberLife
         /// <param name="protoMetadata">Прототип GoogleProtobuff</param>
         public StateMetadata(Protobuff.Metadata.StateMetadata protoMetadata)
         {
+            log.Trace(LogMetadataMessages.MetadataFromProtobuff, "StateMetadata");
             if (protoMetadata == null)
-                throw  new ArgumentNullException(nameof(protoMetadata));
+            {
+              ArgumentNullException ex =  new ArgumentNullException(nameof(protoMetadata));
+                log.Error(LogMetadataMessages.NullArgument, "Protobuff.Metadata.StateMetadata protoMetadata", ex);
+                throw ex;
+            }
             Name = protoMetadata.Name;
             Value = protoMetadata.Value;
             foreach(var pair in protoMetadata.Params)
             {
                 Params.Add(pair.Key, pair.Value);
             }
-            
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), this.Params.Count);
+            log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
 
     }
