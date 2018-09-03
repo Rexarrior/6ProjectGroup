@@ -21,8 +21,6 @@ namespace CyberLife.Simple2DWorld
 
         private Place _place;
 
-        private MapSize _mapSize;
-
         #endregion
 
         #region  properties
@@ -172,6 +170,24 @@ namespace CyberLife.Simple2DWorld
             log.Trace(LogPhenomenMessages.OkConstructor, "MineralsPhenomen");
         }
 
+
+
+
+        /// <summary>
+        /// Инициализирует экземпляр MineralsPhenomen, 
+        /// занимающий указанное place пространство
+        /// </summary>
+        /// <param name="place">Пространство, которое будет занимать феномен</param>
+        public MineralsPhenomen(Place place)
+        {
+            if (place == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            _place = place;
+
+        }
         #endregion
     }
 }
