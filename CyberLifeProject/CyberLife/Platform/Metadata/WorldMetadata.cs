@@ -6,20 +6,13 @@ using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
-    public class WorldMetadata
+    public class WorldMetadata : Dictionary<Int64, LifeFormMetadata>
     {
         Logger log = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Метаданные окружающей среды этого мира
         /// </summary>
         public EnvironmentMetadata EnvironmentMetadata;
-
-
-        /// <summary>
-        /// Метаданные форм жизни, населяющих этот мир. 
-        /// </summary>
-        public Dictionary<Int64, LifeFormMetadata> LifeFormsMetadata;
-
 
         /// <summary>
         /// Название мира
@@ -45,11 +38,11 @@ namespace CyberLife
             ret.Age = Age;
             ret.EnvironmentMetadata = EnvironmentMetadata.GetProtoMetadata();
             ret.Name = Name;
-            foreach (var pair in LifeFormsMetadata)
+            foreach (var pair in this)
             {
                 ret.LifeFormMetadata.Add(pair.Key, pair.Value.GetProtoMetadata());
             }
-            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, this.Count);
             log.Trace(LogMetadataMessages.OkProtobuffFromMetadata);
             return ret;
         }
@@ -96,10 +89,13 @@ namespace CyberLife
                 log.Error(LogMetadataMessages.NullArgument, "Dictionary<long, LifeFormMetadata> lifeFormsMetadata", ex);
                 throw ex;
             }
-            LifeFormsMetadata = lifeFormsMetadata;
+            foreach (var pair in lifeFormsMetadata)
+            {
+                this.Add(pair.Key, pair.Value);
+            }
             Name = name;
             Age = age;
-            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, this.Count);
             log.Trace(LogMetadataMessages.OkConstructor, "WorldMetadata");
         }
 
@@ -119,13 +115,12 @@ namespace CyberLife
             }
             Name = protoMetadata.Name;
             Age = protoMetadata.Age;
-            LifeFormsMetadata = new Dictionary<long, LifeFormMetadata>();
             EnvironmentMetadata = new EnvironmentMetadata(protoMetadata.EnvironmentMetadata);
             foreach (var pair in protoMetadata.LifeFormMetadata)
             {
-                LifeFormsMetadata.Add(pair.Key, new LifeFormMetadata(pair.Value));
+                this.Add(pair.Key, new LifeFormMetadata(pair.Value));
             }
-            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, LifeFormsMetadata.Count);
+            log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, this.Count);
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
     }

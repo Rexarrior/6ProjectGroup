@@ -70,8 +70,8 @@ namespace CyberLife.Simple2DWorld
             }
 
 
-            if (!lifeFormMetadata["GenotypeState"].Params.ContainsKey("Action") ||
-            lifeFormMetadata["GenotypeState"].Params["Action"] != ActionExtractionName)
+            if (!lifeFormMetadata["GenotypeState"].ContainsKey("Action") ||
+            lifeFormMetadata["GenotypeState"]["Action"] != ActionExtractionName)
             {
                 log.Info(LogPhenomenMessages.GenotypeStateAction);
                 return new List<StateMetadata>(0);
@@ -162,7 +162,6 @@ namespace CyberLife.Simple2DWorld
                 log.Error(LogPhenomenMessages.NullArgument, "MapSize", ex);
                 throw ex;
             }
-            _mapSize = mapSize;
             List<Point> points = new List<Point>(2);
             points.Add(new Point(0, mapSize.Height *(PercentOfMap/100)));
             points.Add(new Point(mapSize.Width, mapSize.Height));
