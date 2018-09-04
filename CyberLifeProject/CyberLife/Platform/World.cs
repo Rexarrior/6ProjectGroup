@@ -213,7 +213,7 @@ namespace CyberLife
             _name = metadata.Name;
             _age = metadata.Age;
             _lifeForms = new Dictionary<long, LifeForm>();
-            foreach (var lifeFormMetadata in metadata.LifeFormsMetadata.Values)
+            foreach (var lifeFormMetadata in metadata.Values)
             {
                 _lifeForms.Add(lifeFormMetadata.Id, new LifeForm(lifeFormMetadata));
             }

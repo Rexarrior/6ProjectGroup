@@ -7,10 +7,10 @@ using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
-    public class PhenomenMetadata
+    public class PhenomenMetadata : Dictionary<string, string>
     {
         Logger log = LogManager.GetCurrentClassLogger();
-        private Dictionary<string, string> _parameters;
+       
 
 
         /// <summary>
@@ -34,19 +34,6 @@ namespace CyberLife
 
 
         /// <summary>
-        /// Параметр природного явлени
-        /// </summary>
-        /// <param name="index">Строка-ключ параметра</param>
-        /// <returns></returns>
-        public  string this[string index]
-        {
-            get { return _parameters[index]; }
-
-        }
-
-
-
-        /// <summary>
         /// Проверяет, содержится ли параметр с указанным именем в метаданных
         /// </summary>
         /// <param name="parameterName"> Имя параметра для проверки</param>
@@ -54,7 +41,7 @@ namespace CyberLife
         public bool ContainsParameter(string parameterName)
         {
             log.Trace("Вызван PhenomenMetadata.ContainsParameter, входной параметр " + parameterName);
-            return _parameters.ContainsKey(parameterName);
+            return this.ContainsKey(parameterName);
         }
 
 
@@ -70,8 +57,8 @@ namespace CyberLife
             ret.Place = Place.GetProtoPlace();
             ret.Name = Name;
             ret.TypeName = PhenomenTypeName;
-            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, _parameters.Count);
-            foreach (var pair in _parameters)
+            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, this.Count);
+            foreach (var pair in this)
             {
                 ret.Parameters.Add(pair.Key, pair.Value);
             }
@@ -113,8 +100,11 @@ namespace CyberLife
             }
             if (parameters != null)
             {
-                _parameters = parameters;
-                log.Info(parameters.Count + " дополнительных параметров");
+                foreach(var pair in parameters)
+                {
+                    this.Add(pair.Key, pair.Value);
+                }
+                log.Info(this.Count + " дополнительных параметров");
             }
                 
 
@@ -155,8 +145,12 @@ namespace CyberLife
             Name = protoMetadata.Name;
             Place = new Place(protoMetadata.Place);
             PhenomenTypeName = protoMetadata.TypeName;
-            _parameters = new Dictionary<string, string>(protoMetadata.Parameters);
-            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, _parameters.Count);
+            Dictionary<string, string> parameters = new Dictionary<string, string>(protoMetadata.Parameters);
+            foreach (var pair in parameters)
+            {
+                this.Add(pair.Key, pair.Value);
+            }
+            log.Info("Имя экземпляра {0}, тип {1}, кол-во дополнительных параметров {2}", Name, PhenomenTypeName, this.Count);
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
 

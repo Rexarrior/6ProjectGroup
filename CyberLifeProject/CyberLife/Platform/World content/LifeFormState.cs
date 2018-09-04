@@ -88,7 +88,7 @@ namespace CyberLife
 
             _name = metadata.Name;
             _value = metadata.Value;
-            _params = metadata.Params;
+            _params = metadata;
         }
     }
 }

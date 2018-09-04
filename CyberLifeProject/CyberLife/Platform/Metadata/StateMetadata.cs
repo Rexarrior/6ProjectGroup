@@ -5,13 +5,12 @@ using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
-    public class StateMetadata
+    public class StateMetadata : Dictionary<string, string>
     {
         Logger log = LogManager.GetCurrentClassLogger();
 
         public string Name { get; set; }
-        public double Value { get; set; }
-        public Dictionary<string, string> Params { get; set; }      
+        public double Value { get; set; }    
 
 
 
@@ -25,8 +24,8 @@ namespace CyberLife
             Protobuff.Metadata.StateMetadata ret = new Protobuff.Metadata.StateMetadata();
             ret.Value = Value;
             ret.Name = Name;
-            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), Params.Count);
-            foreach (var pair in Params)
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), this.Count);
+            foreach (var pair in this)
             {
                 ret.Params.Add(pair.Key, pair.Value);
             }
@@ -69,10 +68,13 @@ namespace CyberLife
                 log.Error(LogMetadataMessages.NullArgument, "Dictionary<string,string> Params", ex);
                 throw ex;
             }
-            this.Params = Params;
+            foreach (var pair in Params)
+            {
+                this.Add(pair.Key, pair.Value);
+            }
             Name = stateName;
             Value = value;
-            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(),this.Params.Count);
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(),this.Count);
             log.Trace(LogMetadataMessages.OkConstructor, "StateMetadata");
         }
 
@@ -95,9 +97,9 @@ namespace CyberLife
             Value = protoMetadata.Value;
             foreach(var pair in protoMetadata.Params)
             {
-                Params.Add(pair.Key, pair.Value);
+                this.Add(pair.Key, pair.Value);
             }
-            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), this.Params.Count);
+            log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), this.Count);
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
 
