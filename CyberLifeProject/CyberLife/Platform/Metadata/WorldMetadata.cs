@@ -17,6 +17,7 @@ namespace CyberLife
         public Dictionary<Int64, LifeFormMetadata> LifeFormsMetadata;
 
 
+
         /// <summary>
         /// Название мира
         /// </summary>

@@ -18,12 +18,11 @@ namespace CyberLife
         private Dictionary<Int64, LifeForm> _lifeForms;
         private int _age;
 
-
-
+        private Dictionary<string, ReactionDelegate> _reactions; 
 
         #endregion
 
-
+        public delegate void ReactionDelegate( World world);
 
 
         #region properties
@@ -107,10 +106,54 @@ namespace CyberLife
                 Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(File.ReadAllBytes(fileName))), fabrica);
         }
 
+        
+        /// <summary>
+        /// Добавляет данную реакцию под данным именем. 
+        /// Имя является уникальным идентификатором.
+        /// </summary>
+        /// <param name="reactionName">Уникальное имя реакции</param>
+        /// <param name="reaction">Добавляемая реакция</param>
+        /// <returns>Успешно?</returns>
+        public bool AddReaction(string reactionName, ReactionDelegate reaction)
+        {
+            if (_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions.Add(reactionName, reaction);
+            return true;
+        }
 
 
 
 
+        /// <summary>
+        /// Удаляет реакцию с указанным именем
+        /// </summary>
+        /// <param name="reactionName">Имя реакции для удаления</param>
+        /// <returns>Успешно?</returns>
+        public bool DeleteReaction(string reactionName)
+        {
+
+            if (!_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions.Remove(reactionName);
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Заменяет реакцию с указанным именем на данную
+        /// </summary>
+        /// <param name="reactionName">Имя реакции, которую необходимо заменить</param>
+        /// <param name="reaction">Новая реакция</param>
+        /// <returns>Успешно?</returns>
+        public bool ReplaceReaction(string reactionName, ReactionDelegate reaction)
+        {
+            if (!_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions[reactionName] = reaction;
+            return true;
+        }
         #endregion
 
 
@@ -143,6 +186,7 @@ namespace CyberLife
             {
                 _lifeForms.Add(lifeForm.Id, lifeForm);
             }
+            _reactions = new Dictionary<string, ReactionDelegate>();
         }
 
 
@@ -163,6 +207,8 @@ namespace CyberLife
             {
                 _lifeForms.Add(lifeFormMetadata.Id, new LifeForm(lifeFormMetadata));
             }
+
+            _reactions = new Dictionary<string, ReactionDelegate>();
         }
         
         #endregion
