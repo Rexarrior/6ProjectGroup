@@ -1,8 +1,10 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using  System.IO;
 using Google.Protobuf;
+using NLog;
+using CyberLife.Platform.Logging.LogMessages;
 
 namespace CyberLife
 {
@@ -11,14 +13,16 @@ namespace CyberLife
     /// </summary>
     public class World
     {
-        #region fields
-        private string _name;
-        private Environment _environment;
-        private IVisualizer _visualizer;
-        private Dictionary<Int64, LifeForm> _lifeForms;
-        private int _age;
+        protected Logger log = LogManager.GetCurrentClassLogger();
 
-        private Dictionary<string, ReactionDelegate> _reactions; 
+        #region fields
+        protected string _name;
+        protected Environment _environment;
+        protected IVisualizer _visualizer;
+        protected Dictionary<Int64, LifeForm> _lifeForms;
+        protected int _age;
+
+        protected Dictionary<string, ReactionDelegate> _reactions; 
 
         #endregion
 
@@ -42,15 +46,18 @@ namespace CyberLife
         /// </summary>
         public void Update()
         {
+            log.Trace(CommonLogMessages.Update, "World");
             WorldMetadata metadata = GetMetadata();
+            log.Trace(CommonLogMessages.SetMetadata, "WorldMetadata", "World");
             _environment.Update(metadata);
             foreach (var lifeForm in LifeForms.Values)
             {
                 
                 lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));
             }
+            log.Trace("Текущий Age = " + _age.ToString());
             _age++;
-
+            log.Trace(CommonLogMessages.EndMethod, "World.Update");
         }
 
 
@@ -61,6 +68,7 @@ namespace CyberLife
         /// <returns></returns>
         public WorldMetadata GetMetadata()
         {
+            log.Trace(CommonLogMessages.GetMetadata, "World");
             Dictionary<long, LifeFormMetadata> lifeFormsMetadata = new Dictionary<long, LifeFormMetadata>();
             foreach(var lifeFormRec in _lifeForms)
             {
@@ -76,6 +84,7 @@ namespace CyberLife
         /// <param name="fileName">Имя файла для сохранения</param>
         public void SaveToFile(string fileName)
         {
+            log.Trace(CommonLogMessages.ProtobuffFromSome, "World");
             Protobuff.Metadata.WorldMetadata metadata = this.GetMetadata().GetProtoMetadata();
 
             try
@@ -87,10 +96,10 @@ namespace CyberLife
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                log.Error("Что-то отвалилось в World.SaveToFile,текст Exception   " + e);
                 throw;
             }
-
+            log.Trace(CommonLogMessages.OkProtobuffFromSome);
         }
 
 
@@ -100,10 +109,30 @@ namespace CyberLife
         /// <param name="fileName">Имя файла для загрузки</param>
         /// <param name="fabrica">Фабрика природных явлений</param>
         /// <returns>Загруженный мир</returns>
-        public static World LoadFromFile(string fileName, PhenomenaFabrica fabrica)
+        public static World LoadFromFile(string fileName, IPhenomenaFabrica fabrica)
         {
-            return new World(new WorldMetadata(
-                Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(File.ReadAllBytes(fileName))), fabrica);
+            ///TODO Fix for other worlds prototype
+            Logger log = LogManager.GetCurrentClassLogger();
+            log.Trace("Загружаем экземпляр World из файла");
+            World world;
+            try
+            {
+                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+                world = new World(new WorldMetadata(Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(fs)), fabrica);
+                fs.Close();
+            }
+            catch (FileNotFoundException ex)
+            {
+                log.Error("Файл не найден", ex);
+                throw;
+            }
+            catch(Exception ex)
+            {
+                log.Error("Что - то отвалилось в World.LoadFromFile, текст Exception   " + ex);
+                throw;
+            }
+            log.Trace("Экземпляр успешно загружен");
+            return world;
         }
 
         
@@ -170,23 +199,52 @@ namespace CyberLife
         public World(string name, Environment environment, IVisualizer visualizer, List<LifeForm> lifeForms)
         {
             if (lifeForms == null)
-                throw new ArgumentNullException(nameof(lifeForms));
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(lifeForms));
+                log.Error(CommonLogMessages.NullArgument, "List<LifeForm> lifeForms");
+                throw ex;
+            }
 
             if (lifeForms.Count == 0)
-                throw new ArgumentException("List of life forms shouldn\t be empty.", nameof(lifeForms));
+            {
+                ArgumentException ex = new ArgumentException("List of life forms shouldn\t be empty.", nameof(lifeForms));
+                log.Error("В коллекции List<LifeForm> lifeForms нет форм жизни");
+                throw ex;
+            }
 
-            if (name == "")
-                throw new ArgumentException("Name shouldn't be empty", nameof(name));
+            if (name == "" || name == null)
+            {
+                ArgumentException ex = new ArgumentException("Name shouldn't be empty", nameof(name));
+                log.Error(CommonLogMessages.NullArgument, "string name");
+                throw ex;
+            }
+            if(environment ==null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(environment));
+                log.Error(CommonLogMessages.NullArgument, "Environment environment");
+                throw ex;
+            }
+            if(visualizer ==null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(visualizer));
+                log.Error(CommonLogMessages.NullArgument, "IVisualizer visualizer");
+                throw ex;
+            }
 
-            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
-            _visualizer = visualizer ?? throw new ArgumentNullException(nameof(visualizer));
+            _environment = environment;
+            _visualizer = visualizer;
             _name = name;
             _lifeForms = new Dictionary<long, LifeForm>();
             foreach (var lifeForm in lifeForms)
             {
                 _lifeForms.Add(lifeForm.Id, lifeForm);
             }
+
             _reactions = new Dictionary<string, ReactionDelegate>();
+
+            log.Info("Кол-во форм жизни " + _lifeForms.Count.ToString());
+            log.Trace(CommonLogMessages.OkConstructor);
+
         }
 
 
@@ -197,18 +255,24 @@ namespace CyberLife
         /// </summary>
         /// <param name="metadata">метаданные мира</param>
         /// <param name="phenomenaFabrica">Фабрика для разбора прородных явлений, содержащихся в метаданных</param>
-        public World(WorldMetadata metadata, PhenomenaFabrica phenomenaFabrica)
+        public World(WorldMetadata metadata, IPhenomenaFabrica phenomenaFabrica)
         {
+            log.Trace(CommonLogMessages.Constructor, "World"); 
             _environment = new Environment(metadata.EnvironmentMetadata, phenomenaFabrica);
             _name = metadata.Name;
             _age = metadata.Age;
             _lifeForms = new Dictionary<long, LifeForm>();
-            foreach (var lifeFormMetadata in metadata.LifeFormsMetadata.Values)
+            foreach (var lifeFormMetadata in metadata.Values)
             {
                 _lifeForms.Add(lifeFormMetadata.Id, new LifeForm(lifeFormMetadata));
             }
 
+
             _reactions = new Dictionary<string, ReactionDelegate>();
+
+            log.Info("Кол-во форм жизни " + _lifeForms.Count.ToString());
+            log.Trace(CommonLogMessages.OkConstructor);
+
         }
         
         #endregion

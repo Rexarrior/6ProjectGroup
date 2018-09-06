@@ -7,7 +7,7 @@ namespace CyberLife
     {
         #region fields
         private Int64 _id; 
-        private Place _place;
+        private Place _lifeFormPlace;
 
         private Dictionary<string, LifeFormState> _states;
         #endregion
@@ -24,7 +24,7 @@ namespace CyberLife
         /// <summary>
         /// Пространство, которое занимает эта форма жизни
         /// </summary>
-        public Place Place { get => _place; set => _place = value; }
+        public Place LifeFormPlace { get => _lifeFormPlace; set => _lifeFormPlace = value; }
 
         /// <summary>
         /// Уникальный идентификатор этой формы жизни
@@ -69,7 +69,7 @@ namespace CyberLife
         /// <returns>Метаданные этой формы жизни</returns>
         public LifeFormMetadata GetMetadata()
         {
-            return new LifeFormMetadata(_place,_id, _states.Select(x => x.Value.GetMetadata()).ToList());
+            return new LifeFormMetadata(_lifeFormPlace,_id, _states.Select(x => x.Value.GetMetadata()).ToList());
         }
         #endregion
 
@@ -85,7 +85,7 @@ namespace CyberLife
         /// <param name="states">Состояния этой формы жизни</param>
         public LifeForm(Place place, Dictionary<string, LifeFormState> states)
         {
-            _place = place ?? throw new ArgumentNullException(nameof(place));
+            _lifeFormPlace = place ?? throw new ArgumentNullException(nameof(place));
             _states = states ?? throw new ArgumentNullException(nameof(states));
             _id = DateTime.UtcNow.Second;
         }
@@ -100,7 +100,7 @@ namespace CyberLife
             if (metadata == null)
                 throw new ArgumentNullException(nameof(metadata));
             _id = metadata.Id;
-            _place = metadata.Place;
+            _lifeFormPlace = metadata.Place;
             States = new Dictionary<string, LifeFormState>();
             foreach (var stateMetadata in metadata.Values)
             {

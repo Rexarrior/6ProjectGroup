@@ -12,5 +12,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)MapSize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Metadata.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Place.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Simple2DWorld\Simple2DWorld.cs" />
   </ItemGroup>
 </Project>
