@@ -145,9 +145,11 @@ namespace CyberLife
         /// <returns>Успешно?</returns>
         public bool AddReaction(string reactionName, ReactionDelegate reaction)
         {
+            log.Trace("Добавляется реакция {0}", reactionName);
             if (_reactions.ContainsKey(reactionName))
                 return false;
             _reactions.Add(reactionName, reaction);
+            log.Trace(CommonLogMessages.EndMethod, "AddReaction");
             return true;
         }
 
@@ -161,10 +163,12 @@ namespace CyberLife
         /// <returns>Успешно?</returns>
         public bool DeleteReaction(string reactionName)
         {
+            log.Trace("Удаляется реакция {0}", reactionName);
 
             if (!_reactions.ContainsKey(reactionName))
                 return false;
             _reactions.Remove(reactionName);
+            log.Trace(CommonLogMessages.EndMethod, "DeleteReaction");
             return true;
         }
 
@@ -178,9 +182,11 @@ namespace CyberLife
         /// <returns>Успешно?</returns>
         public bool ReplaceReaction(string reactionName, ReactionDelegate reaction)
         {
+            log.Trace("Заменяется реакция {0}", reactionName);
             if (!_reactions.ContainsKey(reactionName))
                 return false;
             _reactions[reactionName] = reaction;
+            log.Trace(CommonLogMessages.EndMethod, "ReplaceReaction");
             return true;
         }
         #endregion

@@ -133,6 +133,15 @@ namespace CyberLife.Platform.Logging.LogMessages {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Сгенерирован случайный экземпляр Place: {0}.
+        /// </summary>
+        internal static string RandomPlaceGenerated {
+            get {
+                return ResourceManager.GetString("RandomPlaceGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Заполняем метадату {0} на основе экземпляра класса {1}.
         /// </summary>
         internal static string SetMetadata {
