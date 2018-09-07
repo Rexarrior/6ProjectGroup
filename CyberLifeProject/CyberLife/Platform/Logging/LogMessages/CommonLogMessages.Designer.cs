@@ -19,7 +19,7 @@ namespace CyberLife.Platform.Logging.LogMessages {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class CommonLogMessages {
@@ -133,6 +133,15 @@ namespace CyberLife.Platform.Logging.LogMessages {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Сгенерирован случайный экземпляр Place: {0}.
+        /// </summary>
+        internal static string RandomPlaceGenerated {
+            get {
+                return ResourceManager.GetString("RandomPlaceGenerated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Заполняем метадату {0} на основе экземпляра класса {1}.
         /// </summary>
         internal static string SetMetadata {
@@ -147,6 +156,24 @@ namespace CyberLife.Platform.Logging.LogMessages {
         internal static string SomeFromProtobuff {
             get {
                 return ResourceManager.GetString("SomeFromProtobuff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Вызван метод {0}..
+        /// </summary>
+        internal static string StartMethod {
+            get {
+                return ResourceManager.GetString("StartMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

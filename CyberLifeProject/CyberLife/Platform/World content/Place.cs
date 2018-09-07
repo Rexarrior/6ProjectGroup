@@ -3,12 +3,14 @@ using System;
 using System.CodeDom;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using CyberLife.Platform.Logging.LogMessages;
+using NLog;
 
 namespace CyberLife
 {
     /// <summary>
     /// Представляет собой способ, 
-    /// с помощью которого класс Place описывает пространство
+    /// с помощью которого класс LifeFormPlace описывает пространство
     /// </summary>
     public enum PlaceType
     {
@@ -35,21 +37,26 @@ namespace CyberLife
 
 
 
-    
+
     /// <summary>
     /// Представляет описание пространства 
     /// как множества его точек
     /// </summary>
     public class Place
-    {   private List<Point> _points;
+    {
+        private List<Point> _points;
 
         private PlaceType _placeType;
 
+        private static Logger log = LogManager.GetCurrentClassLogger(); 
 
         /// <summary>
         /// Опорные точки
         /// </summary>
-        internal List<Point> Points { get => _points;  }
+        internal List<Point> Points
+        {
+            get => _points;
+        }
 
 
 
@@ -68,10 +75,10 @@ namespace CyberLife
         /// <param name="index">Индекс опорной точки</param>
         /// <returns>Опорная точка</returns>
         public Point this[int index] => _points[index];
-        
+
 
         /// <summary>
-        /// Преобразует Place в инициализирующую строку,
+        /// Преобразует LifeFormPlace в инициализирующую строку,
         /// которая может быть в дальнейшем использована для 
         /// реконструкции экземпляра класса. 
         /// </summary>
@@ -92,33 +99,34 @@ namespace CyberLife
         /// <returns>Строка вида </returns>
         public static Place FromString(string str)
         {
-           
+
             return new Place(str);
         }
 
 
 
         /// <summary>
-        /// Проверяет, принадлежит ли точка данному экземпляру Place
+        /// Проверяет, принадлежит ли точка данному экземпляру LifeFormPlace
         /// </summary>
         /// <param name="point"></param>
         /// <returns>Принадлежит?</returns>
         public bool IsIn(Point point)
         {
-            switch(PlaceType)
+            switch (PlaceType)
             {
                 case PlaceType.Array:
                     if (Points.Contains(point))
                         return true;
                     break;
                 case PlaceType.Rectangle:
-                    if (Points[0].X <= point.X && 
-                        Points[0].Y <= point.Y && 
-                        Points[1].Y >= point.Y && 
+                    if (Points[0].X <= point.X &&
+                        Points[0].Y <= point.Y &&
+                        Points[1].Y >= point.Y &&
                         Points[1].X >= point.Y)
                         return true;
                     break;
             }
+
             return false;
         }
 
@@ -126,7 +134,7 @@ namespace CyberLife
 
         /// <summary>
         /// Определяет, задан ли данный экземпляр 
-        /// класса Place как "все поле". 
+        /// класса LifeFormPlace как "все поле". 
         /// </summary>
         /// <param name="place"></param>
         /// <returns>Все поле?</returns>
@@ -148,7 +156,7 @@ namespace CyberLife
 
 
         /// <summary>
-        /// Находит пересечение с иным Place
+        /// Находит пересечение с иным LifeFormPlace
         /// Фактически, выполняет операцию пересечения
         /// множеств точек.
         /// </summary>
@@ -164,7 +172,7 @@ namespace CyberLife
                 return anotherPlace;
             if (IsEverything(anotherPlace))
                 return this;
-                
+
 
 
             if (_placeType == PlaceType.Array || anotherPlace.PlaceType == PlaceType.Array)
@@ -177,17 +185,17 @@ namespace CyberLife
                 int maxX = (_points[1].X < anotherPlace.Points[1].X) ? _points[1].X : anotherPlace.Points[1].X;
                 int minY = (_points[0].Y > anotherPlace.Points[0].Y) ? _points[0].Y : anotherPlace.Points[0].Y;
                 int maxY = (_points[1].Y < anotherPlace.Points[1].Y) ? _points[1].Y : anotherPlace.Points[1].Y;
-                
+
                 Point min = new Point(minX, minY);
                 Point max = new Point(maxX, maxY);
-                return new Place(new Point[2]{min, max}.ToList());
+                return new Place(new Point[2] { min, max }.ToList());
 
             }
 
             if (_placeType == PlaceType.Array && anotherPlace.PlaceType == PlaceType.Rectangle ||
                 _placeType == PlaceType.Rectangle && anotherPlace.PlaceType == PlaceType.Array)
             {
-                Place arrPlace = (_placeType == PlaceType.Array)?this:anotherPlace; 
+                Place arrPlace = (_placeType == PlaceType.Array) ? this : anotherPlace;
                 Place rectPlace = (_placeType == PlaceType.Rectangle) ? this : anotherPlace;
 
                 List<Point> endPoints = new List<Point>();
@@ -197,21 +205,21 @@ namespace CyberLife
                         point.Y > rectPlace.Points[0].Y &&
                         point.X < rectPlace.Points[1].X &&
                         point.Y < rectPlace.Points[1].Y)
-                            endPoints.Add(point);
+                        endPoints.Add(point);
                 }
 
-                return  new Place(endPoints);
+                return new Place(endPoints);
 
             }
 
             //impossible
-            throw  new NotImplementedException();
+            throw new NotImplementedException();
         }
 
 
 
         /// <summary>
-        /// Формирует прототип Place
+        /// Формирует прототип LifeFormPlace
         /// </summary>
         /// <returns>прототип GoogleProtobuf</returns>
         public Protobuff.Place GetProtoPlace()
@@ -222,25 +230,25 @@ namespace CyberLife
                 ret.Points.Add(point.GetProtoPoint());
             }
 
-            ret.PlaceType = (int) PlaceType;
+            ret.PlaceType = (int)PlaceType;
             return ret;
         }
 
 
 
         /// <summary>
-        /// Формирует Place, описывающее все поле
+        /// Формирует LifeFormPlace, описывающее все поле
         /// </summary>
         /// <returns></returns>
         public static Place Everything()
         {
-           
-            return new Place((new Point[2]{new Point(-1, -1), new Point(1, 1)}).ToList());
+
+            return new Place((new Point[2] { new Point(-1, -1), new Point(1, 1) }).ToList());
         }
 
 
         /// <summary>
-        /// Инициализирует экземпляр Place
+        /// Инициализирует экземпляр LifeFormPlace
         /// из множества опорных точек
         /// </summary>
         /// <param name="points">Опорные точки</param>
@@ -254,10 +262,10 @@ namespace CyberLife
             if (PlaceType == PlaceType.Rectangle)
             {
                 _points = points ?? throw new ArgumentNullException(nameof(points));
-                if (points.Count != 2)  
-                    throw  new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
-                                                 "If more or less points has been defined, Exception will be thrown.",
-                                                    nameof(points));
+                if (points.Count != 2)
+                    throw new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
+                                                "If more or less points has been defined, Exception will be thrown.",
+                        nameof(points));
 
                 if (_points[0].X > _points[1].X)
                 {
@@ -278,8 +286,28 @@ namespace CyberLife
 
         }
 
+
+
         /// <summary>
-        /// Инициализирует экземпляр Place из 
+        /// Инициализирует экземпляр LifeFormPlace
+        /// из множества опорных точек
+        /// </summary>
+        /// <param name="points">Опорные точки</param>
+        /// <param name="placeType">Способ описания</param>
+        public Place(PlaceType placeType = PlaceType.Array, params Point[] points) : this(points.ToList(), placeType)
+        {
+
+        }
+            
+        
+    
+
+
+
+
+
+    /// <summary>
+        /// Инициализирует экземпляр LifeFormPlace из 
         /// специальной инициализирующей строки
         /// Строка может быть получена с помощью place.ToString()
         /// </summary>
@@ -305,13 +333,13 @@ namespace CyberLife
             {
 
                 throw new ArgumentException("Failed parsing strPlace." +
-                                            " Possible strPlace isn't an initializing string for Place type.",
+                                            " Possible strPlace isn't an initializing string for LifeFormPlace type.",
                     nameof(strPlace), e);
             }
             catch (ArgumentException e)
             {
                 throw new ArgumentException("Failed parsing strPlace." +
-                                            " Possible strPlace isn't an initializing string for Place type.",
+                                            " Possible strPlace isn't an initializing string for LifeFormPlace type.",
                     nameof(strPlace), e);
             }
            
@@ -331,6 +359,20 @@ namespace CyberLife
             _placeType = (PlaceType)protoPlace.PlaceType;
         }
 
-       
+
+
+
+        /// <summary>
+        /// Создает place, описывающий случайную точку на заданной карте
+        /// </summary>
+        /// <param name="mapsize">Карта</param>
+        /// <returns>Случайная точка на карте</returns>
+        public static Place RandomPlace(MapSize mapsize)
+        {
+            Random rnd = new Random();
+            Place ret = new Place(PlaceType.Array, new Point(rnd.Next(0, mapsize.Width), rnd.Next(0, mapsize.Height)));
+            log.Debug(CommonLogMessages.RandomPlaceGenerated, ret.ToString());
+            return ret;
+        }
     }
 }

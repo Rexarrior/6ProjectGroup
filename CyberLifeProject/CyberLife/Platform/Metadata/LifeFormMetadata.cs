@@ -63,7 +63,7 @@ namespace CyberLife
             if (place == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(place));
-                log.Error(LogMetadataMessages.NullArgument, "Place");
+                log.Error(LogMetadataMessages.NullArgument, "LifeFormPlace");
             }
             Place = place;
             foreach (var state in statesMetadata ?? throw new ArgumentNullException(nameof(statesMetadata)))

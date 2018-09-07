@@ -142,7 +142,7 @@ namespace CyberLife.Platform.Logging.LogMessages {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Запрошен экземпляр Place класса {0}.
+        ///   Ищет локализованную строку, похожую на Запрошен экземпляр LifeFormPlace класса {0}.
         /// </summary>
         internal static string GetPlace {
             get {
@@ -196,7 +196,7 @@ namespace CyberLife.Platform.Logging.LogMessages {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Экземпляр Point не найден в текущем Place  .
+        ///   Ищет локализованную строку, похожую на Экземпляр Point не найден в текущем LifeFormPlace  .
         /// </summary>
         internal static string PointNotFound {
             get {

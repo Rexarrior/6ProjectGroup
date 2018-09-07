@@ -113,7 +113,7 @@ namespace CyberLife
             if (place == null)
             {
                 ArgumentNullException ex =new ArgumentNullException(nameof(place));
-                log.Error(LogMetadataMessages.NullArgument, "Place", ex);
+                log.Error(LogMetadataMessages.NullArgument, "LifeFormPlace", ex);
                 throw ex;
             }
             Place = place;

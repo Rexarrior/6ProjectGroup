@@ -191,7 +191,7 @@ namespace CyberLife.Simple2DWorld
 
         /// <inheritdoc />
         /// <summary>
-        /// Возвращает экземпляр  класса Place, представляющий пространство,
+        /// Возвращает экземпляр  класса LifeFormPlace, представляющий пространство,
         /// на  которое воздействует этот феномен
         /// </summary>
         public Place GetItPlace()

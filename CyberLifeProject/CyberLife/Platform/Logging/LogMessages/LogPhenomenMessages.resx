@@ -153,8 +153,8 @@
     <comment>Запрошена метадата класса {0}</comment>
   </data>
   <data name="GetPlace" xml:space="preserve">
-    <value>Запрошен экземпляр Place класса {0}</value>
-    <comment>Запрошен экземпляр Place класса {0}</comment>
+    <value>Запрошен экземпляр LifeFormPlace класса {0}</value>
+    <comment>Запрошен экземпляр LifeFormPlace класса {0}</comment>
   </data>
   <data name="NullArgument" xml:space="preserve">
     <value>Экзмепляр {0} был равен null {1}</value>
@@ -177,7 +177,7 @@
     <comment>Выполняем {0}.Update</comment>
   </data>
   <data name="PointNotFound" xml:space="preserve">
-    <value>Экземпляр Point не найден в текущем Place  </value>
-    <comment>Экземпляр Point не найден в текущем Place</comment>
+    <value>Экземпляр Point не найден в текущем LifeFormPlace  </value>
+    <comment>Экземпляр Point не найден в текущем LifeFormPlace</comment>
   </data>
 </root>
