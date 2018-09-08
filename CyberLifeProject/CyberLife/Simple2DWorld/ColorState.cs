@@ -12,23 +12,29 @@ namespace CyberLife.Simple2DWorld
         private byte R;
         private byte G;
         private byte B;
+        long lifeFormId;
         private List<byte> RGB;
 
-        public ColorState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public ColorState(string name, double value,long id, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-            R = 0;
-            G = 0;
-            B = 0;
+            lifeFormId = id;
         }
 
         public ColorState(StateMetadata metadata) : base(metadata)
         {
-            R = 0;
-            G = 0;
-            B = 0;  
+           
+            string[] strbytes = metadata["Color"].Split(' ').ToArray();
+            byte[] bytes = new byte[3];
+            for (byte i = 0; i < 3; i++) 
+            {
+                bytes[i] = Convert.ToByte(strbytes[i]);
+            }
+            R = bytes[0];
+            G = bytes[1];
+            B = bytes[2];
         }
 
-        public List<byte> GetRGB(WorldMetadata worldMetadata, long lifeFormId)
+        public void Update(WorldMetadata worldMetadata)
         {
             if (_lastEnergyReactions.Count >= 10)
                 _lastEnergyReactions.Dequeue();
@@ -46,6 +52,19 @@ namespace CyberLife.Simple2DWorld
                 default:
                     break;
             }
+            SetRGB();
+        }
+
+        public override StateMetadata GetMetadata()
+        {
+            SetRGB();
+            StateMetadata stateMetadata = base.GetMetadata();
+            stateMetadata.Add("Color", $"{R} {G} {B}");
+            return stateMetadata;
+        }
+
+        public List<byte> SetRGB()
+        {
             R = 0;
             G = 0;
             B = 0;
