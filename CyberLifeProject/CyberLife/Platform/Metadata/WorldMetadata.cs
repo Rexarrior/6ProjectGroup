@@ -8,7 +8,7 @@ namespace CyberLife
 {
     public class WorldMetadata : Dictionary<Int64, LifeFormMetadata>
     {
-        Logger log = LogManager.GetCurrentClassLogger();
+        protected Logger log = LogManager.GetCurrentClassLogger();
         /// <summary>
         /// Метаданные окружающей среды этого мира
         /// </summary>

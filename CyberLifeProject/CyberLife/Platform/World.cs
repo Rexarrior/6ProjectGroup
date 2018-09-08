@@ -13,21 +13,20 @@ namespace CyberLife
     /// </summary>
     public class World
     {
-        Logger log = LogManager.GetCurrentClassLogger();
+        protected Logger log = LogManager.GetCurrentClassLogger();
 
         #region fields
-        private string _name;
-        private Environment _environment;
-        private IVisualizer _visualizer;
-        private Dictionary<Int64, LifeForm> _lifeForms;
-        private int _age;
+        protected string _name;
+        protected Environment _environment;
+        protected IVisualizer _visualizer;
+        protected Dictionary<Int64, LifeForm> _lifeForms;
+        protected int _age;
 
-
-
+        protected Dictionary<string, ReactionDelegate> _reactions; 
 
         #endregion
 
-
+        public delegate void ReactionDelegate( World world);
 
 
         #region properties
@@ -112,6 +111,7 @@ namespace CyberLife
         /// <returns>Загруженный мир</returns>
         public static World LoadFromFile(string fileName, IPhenomenaFabrica fabrica)
         {
+            ///TODO Fix for other worlds prototype
             Logger log = LogManager.GetCurrentClassLogger();
             log.Trace("Загружаем экземпляр World из файла");
             World world;
@@ -124,21 +124,65 @@ namespace CyberLife
             catch (FileNotFoundException ex)
             {
                 log.Error("Файл не найден", ex);
-                throw ex;
+                throw;
             }
             catch(Exception ex)
             {
                 log.Error("Что - то отвалилось в World.LoadFromFile, текст Exception   " + ex);
-                throw ex;
+                throw;
             }
             log.Trace("Экземпляр успешно загружен");
             return world;
         }
 
+        
+        /// <summary>
+        /// Добавляет данную реакцию под данным именем. 
+        /// Имя является уникальным идентификатором.
+        /// </summary>
+        /// <param name="reactionName">Уникальное имя реакции</param>
+        /// <param name="reaction">Добавляемая реакция</param>
+        /// <returns>Успешно?</returns>
+        public bool AddReaction(string reactionName, ReactionDelegate reaction)
+        {
+            if (_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions.Add(reactionName, reaction);
+            return true;
+        }
 
 
 
 
+        /// <summary>
+        /// Удаляет реакцию с указанным именем
+        /// </summary>
+        /// <param name="reactionName">Имя реакции для удаления</param>
+        /// <returns>Успешно?</returns>
+        public bool DeleteReaction(string reactionName)
+        {
+
+            if (!_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions.Remove(reactionName);
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Заменяет реакцию с указанным именем на данную
+        /// </summary>
+        /// <param name="reactionName">Имя реакции, которую необходимо заменить</param>
+        /// <param name="reaction">Новая реакция</param>
+        /// <returns>Успешно?</returns>
+        public bool ReplaceReaction(string reactionName, ReactionDelegate reaction)
+        {
+            if (!_reactions.ContainsKey(reactionName))
+                return false;
+            _reactions[reactionName] = reaction;
+            return true;
+        }
         #endregion
 
 
@@ -186,6 +230,7 @@ namespace CyberLife
                 log.Error(CommonLogMessages.NullArgument, "IVisualizer visualizer");
                 throw ex;
             }
+
             _environment = environment;
             _visualizer = visualizer;
             _name = name;
@@ -194,8 +239,12 @@ namespace CyberLife
             {
                 _lifeForms.Add(lifeForm.Id, lifeForm);
             }
+
+            _reactions = new Dictionary<string, ReactionDelegate>();
+
             log.Info("Кол-во форм жизни " + _lifeForms.Count.ToString());
             log.Trace(CommonLogMessages.OkConstructor);
+
         }
 
 
@@ -217,8 +266,13 @@ namespace CyberLife
             {
                 _lifeForms.Add(lifeFormMetadata.Id, new LifeForm(lifeFormMetadata));
             }
+
+
+            _reactions = new Dictionary<string, ReactionDelegate>();
+
             log.Info("Кол-во форм жизни " + _lifeForms.Count.ToString());
             log.Trace(CommonLogMessages.OkConstructor);
+
         }
         
         #endregion

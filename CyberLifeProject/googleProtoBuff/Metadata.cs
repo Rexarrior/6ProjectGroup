@@ -53,8 +53,8 @@ namespace CyberLife.Protobuff.Metadata {
           new pbr::FileDescriptor[] { global::CyberLife.Protobuff.PlaceReflection.Descriptor, global::CyberLife.Protobuff.MapSizeReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.StateMetadata), global::CyberLife.Protobuff.Metadata.StateMetadata.Parser, new[]{ "Name", "Value", "Params" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.PhenomenMetadata), global::CyberLife.Protobuff.Metadata.PhenomenMetadata.Parser, new[]{ "Name", "Place", "TypeName", "Parameters" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.LifeFormMetadata), global::CyberLife.Protobuff.Metadata.LifeFormMetadata.Parser, new[]{ "Place", "Id", "StatesMetadata" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.PhenomenMetadata), global::CyberLife.Protobuff.Metadata.PhenomenMetadata.Parser, new[]{ "Name", "LifeFormPlace", "TypeName", "Parameters" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.LifeFormMetadata), global::CyberLife.Protobuff.Metadata.LifeFormMetadata.Parser, new[]{ "LifeFormPlace", "Id", "StatesMetadata" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.EnvironmentMetadata), global::CyberLife.Protobuff.Metadata.EnvironmentMetadata.Parser, new[]{ "MapSize", "PhenomenaMetadata" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::CyberLife.Protobuff.Metadata.WorldMetadata), global::CyberLife.Protobuff.Metadata.WorldMetadata.Parser, new[]{ "EnvironmentMetadata", "LifeFormMetadata", "Name", "Age" }, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));

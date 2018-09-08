@@ -81,10 +81,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LogPhenomenMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Simple2DWorld\BotLifeForm.cs" />
+    <Compile Include="Simple2DWorld\ColorState.cs" />
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
+    <Compile Include="Simple2DWorld\RemoteVIsualizer.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simple2DWorld\Simple2DWorld.cs" />
+    <Compile Include="Simple2DWorld\Simple2DWorldLogMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Simple2DWorldLogMessages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Simple2DWorld\Simple2DWorldMetadata.cs" />
     <Compile Include="Simple2DWorld\SunPhenomen.cs" />
     <Compile Include="Platform\Metadata\StateMetadata.cs" />
     <Compile Include="Platform\World.cs" />
@@ -118,6 +128,11 @@
     <EmbeddedResource Include="Platform\Logging\LogMessages\LogMetadataMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogMetadataMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simple2DWorld\Simple2DWorldLogMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Simple2DWorldLogMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

@@ -157,6 +157,13 @@
     <value>Инициализируем экземпляр {0} на основе Protobuff</value>
     <comment>Инициализируем экземпляр {0} на основе Protobuff</comment>
   </data>
+  <data name="StartMethod" xml:space="preserve">
+    <value>Вызван метод {0}.</value>
+    <comment>Вызван метод {0}.</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
   <data name="Update" xml:space="preserve">
     <value>Вызван метод {0}.Update</value>
     <comment>Вызван метод {0}.Update</comment>
