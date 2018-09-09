@@ -8,31 +8,23 @@ namespace CyberLife.Simple2DWorld
 {
     class ColorState : LifeFormState
     {
+      
+        #region fields
+
         private Queue<string> _lastEnergyReactions;
         private byte R;
         private byte G;
         private byte B;
         long lifeFormId;
-        private List<byte> RGB;
 
-        public ColorState(string name, double value,long id, Dictionary<string, string> Params = null) : base(name, value, Params)
-        {
-            lifeFormId = id;
-        }
+        #endregion
 
-        public ColorState(StateMetadata metadata) : base(metadata)
-        {
-           
-            string[] strbytes = metadata["Color"].Split(' ').ToArray();
-            byte[] bytes = new byte[3];
-            for (byte i = 0; i < 3; i++) 
-            {
-                bytes[i] = Convert.ToByte(strbytes[i]);
-            }
-            R = bytes[0];
-            G = bytes[1];
-            B = bytes[2];
-        }
+        #region fields
+
+
+        #endregion
+
+        #region methods
 
         public void Update(WorldMetadata worldMetadata)
         {
@@ -55,15 +47,18 @@ namespace CyberLife.Simple2DWorld
             SetRGB();
         }
 
+
+
         public override StateMetadata GetMetadata()
         {
-            SetRGB();
             StateMetadata stateMetadata = base.GetMetadata();
             stateMetadata.Add("Color", $"{R} {G} {B}");
             return stateMetadata;
         }
 
-        public List<byte> SetRGB()
+
+
+        public void SetRGB()
         {
             R = 0;
             G = 0;
@@ -89,9 +84,23 @@ namespace CyberLife.Simple2DWorld
             byte part = Convert.ToByte(255 / (R + G + B));
             R = Convert.ToByte(part * R);
             G = Convert.ToByte(part * G);
-            B = Convert.ToByte(part * B);
-            RGB = new List<byte>(3) { R, G, B };
-            return RGB;
+            B = Convert.ToByte(part * B);        
         }
+
+        #endregion
+
+        #region constructors
+
+        public ColorState(string name, double value, long id, Dictionary<string, string> Params = null) : base(name, value, Params)
+        {
+            lifeFormId = id;
+        }
+
+        public ColorState(StateMetadata metadata) : base(metadata)
+        {
+            byte[] bytes = metadata["Color"].Split(' ').Select(x => byte.Parse(x)).ToArray();
+        }
+
+        #endregion
     }
 }
