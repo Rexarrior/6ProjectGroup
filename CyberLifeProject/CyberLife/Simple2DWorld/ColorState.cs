@@ -19,7 +19,7 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
-        #region fields
+        #region properties
 
 
         #endregion
