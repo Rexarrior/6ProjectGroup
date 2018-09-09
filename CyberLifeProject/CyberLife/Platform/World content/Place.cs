@@ -3,6 +3,8 @@ using System;
 using System.CodeDom;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using CyberLife.Platform.Logging.LogMessages;
+using NLog;
 
 namespace CyberLife
 {
@@ -46,6 +48,7 @@ namespace CyberLife
 
         private PlaceType _placeType;
 
+        private static Logger log = LogManager.GetCurrentClassLogger(); 
 
         /// <summary>
         /// Опорные точки
@@ -285,7 +288,12 @@ namespace CyberLife
 
 
 
-
+        /// <summary>
+        /// Инициализирует экземпляр LifeFormPlace
+        /// из множества опорных точек
+        /// </summary>
+        /// <param name="points">Опорные точки</param>
+        /// <param name="placeType">Способ описания</param>
 
         public Place(PlaceType placeType = PlaceType.Array, params Point[] points) : this(points.ToList(), placeType)
         {
@@ -363,7 +371,10 @@ namespace CyberLife
         public static Place RandomPlace(MapSize mapsize)
         {
             Random rnd = new Random();
-            return  new Place(PlaceType.Array, new Point(rnd.Next(0, mapsize.Width), rnd.Next(0, mapsize.Height)));
+
+            Place ret = new Place(PlaceType.Array, new Point(rnd.Next(0, mapsize.Width), rnd.Next(0, mapsize.Height)));
+            log.Debug(CommonLogMessages.RandomPlaceGenerated, ret.ToString());
+            return ret;
         }
     }
 }

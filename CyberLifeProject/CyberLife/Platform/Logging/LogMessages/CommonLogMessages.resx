@@ -149,6 +149,10 @@
     <value>Сохраняем поля класса {0} в Protobuff</value>
     <comment>Сохраняем поля класса {0} в Protobuff</comment>
   </data>
+  <data name="RandomPlaceGenerated" xml:space="preserve">
+    <value>Сгенерирован случайный экземпляр Place: {0}</value>
+    <comment>Сгенерирован случайный экземпляр Place: {0}</comment>
+  </data>
   <data name="SetMetadata" xml:space="preserve">
     <value>Заполняем метадату {0} на основе экземпляра класса {1}</value>
     <comment>Заполняем метадату {0} на основе экземпляра класса {1}</comment>
