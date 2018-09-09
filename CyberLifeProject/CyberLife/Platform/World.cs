@@ -164,7 +164,6 @@ namespace CyberLife
         public bool DeleteReaction(string reactionName)
         {
             log.Trace("Удаляется реакция {0}", reactionName);
-
             if (!_reactions.ContainsKey(reactionName))
                 return false;
             _reactions.Remove(reactionName);

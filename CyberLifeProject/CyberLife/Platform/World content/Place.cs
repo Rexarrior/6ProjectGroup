@@ -294,6 +294,7 @@ namespace CyberLife
         /// </summary>
         /// <param name="points">Опорные точки</param>
         /// <param name="placeType">Способ описания</param>
+
         public Place(PlaceType placeType = PlaceType.Array, params Point[] points) : this(points.ToList(), placeType)
         {
 
@@ -370,6 +371,7 @@ namespace CyberLife
         public static Place RandomPlace(MapSize mapsize)
         {
             Random rnd = new Random();
+
             Place ret = new Place(PlaceType.Array, new Point(rnd.Next(0, mapsize.Width), rnd.Next(0, mapsize.Height)));
             log.Debug(CommonLogMessages.RandomPlaceGenerated, ret.ToString());
             return ret;

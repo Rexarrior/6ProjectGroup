@@ -90,6 +90,7 @@ namespace CyberLife.Simple2DWorld
         }
     }
 
+
     internal class ColorState : LifeFormState
     {
         public ColorState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
@@ -99,5 +100,7 @@ namespace CyberLife.Simple2DWorld
         public ColorState(StateMetadata metadata) : base(metadata)
         {
         }
+        
     }
+
 }

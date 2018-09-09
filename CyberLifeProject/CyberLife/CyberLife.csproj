@@ -82,6 +82,7 @@
       <DependentUpon>LogPhenomenMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Simple2DWorld\BotLifeForm.cs" />
+    <Compile Include="Simple2DWorld\ColorState.cs" />
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
     <Compile Include="Simple2DWorld\RemoteVIsualizer.cs" />
     <Compile Include="Simple2DWorld\SeasonsPhenomen.cs" />
