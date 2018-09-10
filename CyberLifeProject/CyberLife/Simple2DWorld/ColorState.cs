@@ -21,7 +21,6 @@ namespace CyberLife.Simple2DWorld
 
         #region properties
 
-
         #endregion
 
 
