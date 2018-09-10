@@ -9,9 +9,11 @@ namespace CyberLife
     public class WorldMetadata : Dictionary<Int64, LifeFormMetadata>
     {
         protected Logger log = LogManager.GetCurrentClassLogger();
+
+        #region fields
         /// <summary>
         /// Метаданные окружающей среды этого мира
-        /// </summary>
+        /// </summary>        
         public EnvironmentMetadata EnvironmentMetadata;
 
         /// <summary>
@@ -24,7 +26,15 @@ namespace CyberLife
         /// </summary>
         public int Age;
 
+        #endregion
 
+
+        #region properties
+
+        #endregion
+
+
+        #region methods
 
         /// <summary>
         /// Получает прототип метаданных мира. 
@@ -47,12 +57,10 @@ namespace CyberLife
             return ret;
         }
 
-        
+        #endregion
 
 
-       
-
-
+        #region constructors
 
         /// <summary>
         /// Инициализирует метаданные мира из метаданных его компонент. 
@@ -123,5 +131,7 @@ namespace CyberLife
             log.Info("Возраст {0}, Имя {1}, Кол-во метаданных форм жизни {2}", Age, Name, this.Count);
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
+
+        #endregion
     }
 }

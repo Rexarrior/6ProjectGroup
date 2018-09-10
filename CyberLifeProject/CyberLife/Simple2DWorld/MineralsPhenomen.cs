@@ -23,11 +23,13 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
+
         #region  properties
 
         public int Percent { get => PercentOfMap; }
 
         #endregion
+
 
         #region Methods
 
@@ -146,6 +148,7 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
+
         #region  constructors
 
         /// <summary>
@@ -170,8 +173,6 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-
-
         /// <summary>
         /// Инициализирует экземпляр MineralsPhenomen, 
         /// занимающий указанное place пространство
@@ -187,6 +188,7 @@ namespace CyberLife.Simple2DWorld
             _place = place;
 
         }
+
         #endregion
     }
 }

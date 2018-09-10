@@ -12,6 +12,12 @@ namespace CyberLife
     {
         Logger log = LogManager.GetCurrentClassLogger();
 
+        #region fields
+
+        #endregion
+
+
+        #region properties
 
         /// <summary>
         /// Пространство, занимаемое формой жизни
@@ -24,8 +30,11 @@ namespace CyberLife
         /// </summary>
         public long Id { get; set; }
 
+        #endregion
 
-     
+
+        #region methods
+
         /// <summary>
         /// Получает прототип метаданных формы жизни
         /// </summary>
@@ -48,6 +57,10 @@ namespace CyberLife
 
         }
 
+        #endregion
+
+
+        #region constructors
 
         /// <summary>
         /// Инициализирует метаданные формы жизни из 
@@ -92,5 +105,7 @@ namespace CyberLife
             }
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
+
+        #endregion
     }
 }

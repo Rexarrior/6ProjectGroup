@@ -15,6 +15,8 @@ namespace CyberLife
     {
         protected Logger log = LogManager.GetCurrentClassLogger();
 
+        public delegate void ReactionDelegate(World world);
+
         #region fields
         protected string _name;
         protected Environment _environment;
@@ -26,8 +28,6 @@ namespace CyberLife
 
         #endregion
 
-        public delegate void ReactionDelegate( World world);
-
 
         #region properties
         public string Name { get => _name; set => _name = value; }
@@ -36,8 +36,6 @@ namespace CyberLife
         public IVisualizer Visualizer { get => _visualizer; set => _visualizer = value; }//todo
 
         #endregion
-
-
 
 
         #region methods
@@ -189,8 +187,6 @@ namespace CyberLife
             return true;
         }
         #endregion
-
-
 
 
         #region constructors

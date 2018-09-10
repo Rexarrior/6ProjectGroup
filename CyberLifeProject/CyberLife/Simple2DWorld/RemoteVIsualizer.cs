@@ -8,9 +8,28 @@ namespace CyberLife.Simple2DWorld
 {
     class RemoteVisualizer: IVisualizer
     {
+        #region fields
+
+        #endregion
+
+
+        #region properties
+
+        #endregion
+
+
+        #region methods
+
         public void Update(WorldMetadata metadata)
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+
+        #region constructors
+
+        #endregion
     }
 }

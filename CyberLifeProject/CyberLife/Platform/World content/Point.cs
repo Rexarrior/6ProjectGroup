@@ -6,9 +6,15 @@ namespace CyberLife
     /// </summary>
     public class Point
     {
+        #region fields
+
         int _x;
         int _y;
 
+        #endregion
+
+
+        #region properties
 
         /// <summary>
         /// Абцисса точки
@@ -28,6 +34,11 @@ namespace CyberLife
             set => _y = value;
         }
 
+        #endregion
+
+
+        #region methods
+
         /// <summary>
         /// Преобразует Point в инициализирующую строку,
         /// которая может быть в дальнейшем использована для 
@@ -38,6 +49,7 @@ namespace CyberLife
         {
             return "" + _x + "|" + _y;
         }
+
 
 
         /// <summary>
@@ -85,6 +97,10 @@ namespace CyberLife
             return ret;
         }
 
+        #endregion
+
+
+        #region constructors
 
         /// <summary>
         /// Инициализирует экземпляр точки
@@ -97,6 +113,7 @@ namespace CyberLife
             _y = y;
         }
 
+
         /// <summary>
         /// Инициализирует экземпляр точки из прототипа
         /// </summary>
@@ -108,5 +125,7 @@ namespace CyberLife
             _x = protoPoint.X;
             _y = protoPoint.Y;
         }
+
+        #endregion
     }
 }

@@ -8,7 +8,41 @@ namespace CyberLife.Simple2DWorld
 {
     class BotLifeForm: LifeForm
     {
-        
+        #region fields
+
+        #endregion
+
+
+        #region properties
+
+        #endregion
+
+
+        #region methods
+
+        /// <summary>
+        /// Получает состояния, неоходимые для инициализации бота
+        /// </summary>
+        /// <returns>Состояния формы жизни "Бот"</returns>
+        private static Dictionary<string, LifeFormState> _getStates()
+        {
+            EnergyState energy = new EnergyState("EnergyState", 0);
+            GenotypeState genotype = new GenotypeState("GenotypeState", 0);
+            ColorState color = new ColorState("ColorState", 0 ,/*тут должен быть id*/  0);
+            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState>(3)
+            {
+                {"EnergyState", energy},
+                {"GenotypeState", genotype},
+                {"ColorState", color}
+            };
+            return states;
+        }
+
+        #endregion
+
+
+        #region constructors
+
         /// <inheritdoc />
         /// <summary>
         /// Инициализирует форму жизни "Бот"
@@ -17,9 +51,8 @@ namespace CyberLife.Simple2DWorld
         /// <param name="states">Состояния бота</param>
         public BotLifeForm(Place place, Dictionary<string, LifeFormState> states) : base(place, states)
         {
+
         }
-
-
 
 
         /// <inheritdoc />
@@ -33,27 +66,6 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-
-        /// <summary>
-        /// Получает состояния, неоходимые для инициализации бота
-        /// </summary>
-        /// <returns>Состояния формы жизни "Бот"</returns>
-        private static Dictionary<string, LifeFormState> _getStates()
-        {
-            EnergyState energy = new EnergyState("EnergyState", 0);
-            GenotypeState genotype = new GenotypeState("GenotypeState", 0);
-            ColorState color = new ColorState("ColorState", 0);
-            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState>(3)
-            {
-                {"EnergyState", energy},
-                {"GenotypeState", genotype},
-                {"ColorState", color}
-            };
-            return states;
-        }
-
-
-
         /// <summary>
         /// Инициирует бота базовыми состояниями и случайной точкой на карте.
         /// </summary>
@@ -62,6 +74,8 @@ namespace CyberLife.Simple2DWorld
         {
 
         }
+
+        #endregion
     }
 
 
@@ -91,16 +105,5 @@ namespace CyberLife.Simple2DWorld
     }
 
 
-    internal class ColorState : LifeFormState
-    {
-        public ColorState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
-        {
-        }
-
-        public ColorState(StateMetadata metadata) : base(metadata)
-        {
-        }
-        
-    }
 
 }

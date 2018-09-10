@@ -6,12 +6,15 @@ namespace CyberLife
     /// </summary>
     public class MapSize
     {
+        #region fields
 
         private int _width;
         private int _height;
 
-      
-        
+        #endregion
+
+
+        #region properties
 
         /// <summary>
         /// Ширина карты
@@ -29,8 +32,10 @@ namespace CyberLife
         /// </summary>
         public int CountOfPoint => _width * _height;
 
+        #endregion
 
 
+        #region methods
 
         /// <summary>
         /// Формирует прототип данного размера пооя
@@ -44,8 +49,10 @@ namespace CyberLife
             return ret;
         }
 
+        #endregion
 
 
+        #region constructors
 
         /// <summary>
         /// Инициализирует экземпляр MapSize из
@@ -72,5 +79,7 @@ namespace CyberLife
             _width = protoMapSize.Width;
             _height = protoMapSize.Height;
         }
+
+        #endregion
     }
 }

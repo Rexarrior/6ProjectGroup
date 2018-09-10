@@ -6,30 +6,38 @@ namespace CyberLife
 {
     public class LifeFormState
     {
+        #region fields
+
         private string _name;
         private double _value;
         private Dictionary<string, string> _params;
 
+        #endregion
 
+
+        #region properties
 
         /// <summary>
         /// Название состояния формы жизни
         /// </summary>
         public string Name { get => _name; }
         
+
         /// <summary>
         /// Числовое значение состояния формы жизни. 
         /// </summary>
         public double Value { get => _value; set => _value = value; }
+
 
         /// <summary>
         /// Дополнительные параметры формы жихни. 
         /// </summary>
         public Dictionary<string, string> Params { get; set; }
 
+        #endregion
 
 
-
+        #region methods
 
         /// <summary>
         /// Формирует метаданные этого состояния формы жизни
@@ -51,8 +59,11 @@ namespace CyberLife
             
         }
 
-        
-        
+        #endregion
+
+
+        #region constructors
+
         /// <summary>
         /// Инициализирует состояние формы жизни
         /// по его названию и значению
@@ -71,10 +82,6 @@ namespace CyberLife
         }
 
 
-
-
-
-
         /// <summary>
         /// Инициализирует состояние формы жизни по
         /// его метаданным
@@ -85,10 +92,11 @@ namespace CyberLife
             if (metadata == null)
                 throw new ArgumentNullException("metadata");
 
-
             _name = metadata.Name;
             _value = metadata.Value;
             _params = metadata;
         }
+
+        #endregion
     }
 }

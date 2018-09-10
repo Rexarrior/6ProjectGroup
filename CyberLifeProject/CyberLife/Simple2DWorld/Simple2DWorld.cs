@@ -43,7 +43,6 @@ namespace CyberLife.Simple2DWorld
 
 
 
-
         /// <summary>
         /// Получает список форм жизни "Бот" для первичной инициализации 
         /// Simple2DWorld
@@ -63,6 +62,7 @@ namespace CyberLife.Simple2DWorld
 
             return lifeForms;
         }
+
 
 
         /// <summary>
@@ -105,6 +105,7 @@ namespace CyberLife.Simple2DWorld
         {
 
         }
+
         #endregion
 
 
@@ -141,7 +142,6 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-
         /// <inheritdoc />
         /// <summary>
         /// Инициализирует Simple2DWorld из метаданных и фабрики природных явлений
@@ -165,8 +165,6 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-
-
         /// <summary>
         /// Производит первичную инициализацию мира
         /// </summary>
@@ -181,7 +179,5 @@ namespace CyberLife.Simple2DWorld
             log.Trace(LogMetadataMessages.OkConstructor, "Simple2DWorld");
         }
         #endregion
-
-
     }
 }
