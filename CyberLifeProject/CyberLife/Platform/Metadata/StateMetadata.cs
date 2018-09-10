@@ -9,10 +9,20 @@ namespace CyberLife
     {
         Logger log = LogManager.GetCurrentClassLogger();
 
+        #region fields
+
+        #endregion
+
+
+        #region properties
+
         public string Name { get; set; }
-        public double Value { get; set; }    
+        public double Value { get; set; }
+
+        #endregion
 
 
+        #region methods
 
         /// <summary>
         /// Получает прототип этих метаданных
@@ -33,11 +43,10 @@ namespace CyberLife
             return ret;
         }
 
+        #endregion
 
 
-
-
-
+        #region constructors
 
         /// <summary>
         /// Инициализирует класс метаданные состояния из 
@@ -77,8 +86,7 @@ namespace CyberLife
             log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(),this.Count);
             log.Trace(LogMetadataMessages.OkConstructor, "StateMetadata");
         }
-
-        
+      
 
         /// <summary>
         /// Инициализирует метаданные состояния из их прототипа.
@@ -102,6 +110,6 @@ namespace CyberLife
             log.Info("Имя {0}, значение{1}, кол-во доп. параметров{2}", Name, Value.ToString(), this.Count);
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
-
+        #endregion
     }
 }

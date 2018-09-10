@@ -14,15 +14,11 @@ namespace CyberLife
         #endregion
 
 
-
-
         #region properties
         internal List<IPhenomen> NaturalPhenomena { get => _naturalPhenomena; }
 
         internal MapSize Size { get => _size; }
         #endregion
-
-
 
 
         #region methods
@@ -109,6 +105,5 @@ namespace CyberLife
         }
 
         #endregion
-
     }
 }

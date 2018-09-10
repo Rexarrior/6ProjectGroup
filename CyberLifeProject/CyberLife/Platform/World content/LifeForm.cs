@@ -6,36 +6,38 @@ namespace CyberLife
     public class LifeForm
     {
         #region fields
+
         private Int64 _id; 
         private Place _lifeFormPlace;
-
         private Dictionary<string, LifeFormState> _states;
+
         #endregion
 
 
-
-
         #region properties
+
         /// <summary>
         /// Состояния этой формы жизни 
         /// </summary>
         internal Dictionary<string, LifeFormState> States { get => _states; set => _states = value; }
+
 
         /// <summary>
         /// Пространство, которое занимает эта форма жизни
         /// </summary>
         public Place LifeFormPlace { get => _lifeFormPlace; set => _lifeFormPlace = value; }
 
+
         /// <summary>
         /// Уникальный идентификатор этой формы жизни
         /// </summary>
         public long Id { get => _id;  }
+
         #endregion
 
 
-
-
         #region methods
+
         /// <summary>
         /// Обновляет состояния этой формы жизни на основании
         /// списка метаданных - результатов воздействия среды.
@@ -71,12 +73,12 @@ namespace CyberLife
         {
             return new LifeFormMetadata(_lifeFormPlace,_id, _states.Select(x => x.Value.GetMetadata()).ToList());
         }
+
         #endregion
 
 
-
-
         #region constructors
+
         /// <summary>
         /// Инициализирует экземпляр формы жизни 
         /// из занимаемого ей пространства и состояний, которыми она обладает. 
@@ -108,6 +110,7 @@ namespace CyberLife
             }
 
         }
+
         #endregion
     }
 }

@@ -9,12 +9,23 @@ namespace CyberLife
     public class EnvironmentMetadata: Dictionary<string, PhenomenMetadata>
     {
         Logger log = LogManager.GetCurrentClassLogger();
+
+        #region fields
+
         /// <summary>
         /// Размер поля окружающей среды
         /// </summary>
         public MapSize Size;
 
+        #endregion
 
+
+        #region properties
+
+        #endregion
+
+
+        #region methods
 
         /// <summary>
         /// Получает прототип метаданных этой окружающей среды
@@ -33,7 +44,10 @@ namespace CyberLife
             return ret;
         }
 
+        #endregion
 
+
+        #region constructors
 
         /// <inheritdoc />
         /// <summary>
@@ -67,7 +81,6 @@ namespace CyberLife
         }
 
 
-
         /// <inheritdoc />
         /// <summary>
         /// Инициализирует метаданные окружающей среды из их прототипа
@@ -83,5 +96,7 @@ namespace CyberLife
             }
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
+
+        #endregion
     }
 }

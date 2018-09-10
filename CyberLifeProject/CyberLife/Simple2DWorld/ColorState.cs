@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace CyberLife.Simple2DWorld
 {
     class ColorState : LifeFormState
-    {
-      
+    {  
         #region fields
 
         private Queue<string> _lastEnergyReactions;
@@ -19,10 +18,11 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
+
         #region properties
 
-
         #endregion
+
 
         #region methods
 
@@ -89,12 +89,14 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
+
         #region constructors
 
         public ColorState(string name, double value, long id, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
             lifeFormId = id;
         }
+
 
         public ColorState(StateMetadata metadata) : base(metadata)
         {

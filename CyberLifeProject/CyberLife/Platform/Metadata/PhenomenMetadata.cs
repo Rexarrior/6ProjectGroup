@@ -10,8 +10,13 @@ namespace CyberLife
     public class PhenomenMetadata : Dictionary<string, string>
     {
         Logger log = LogManager.GetCurrentClassLogger();
-       
 
+        #region fields
+
+        #endregion
+
+
+        #region properties
 
         /// <summary>
         /// Название природного явления
@@ -31,7 +36,10 @@ namespace CyberLife
         /// </summary>
         public string PhenomenTypeName { get; set; }
 
+        #endregion
 
+
+        #region methods
 
         /// <summary>
         /// Проверяет, содержится ли параметр с указанным именем в метаданных
@@ -66,13 +74,10 @@ namespace CyberLife
             return ret;
         }
 
+        #endregion
 
 
-
-
-
-
-
+        #region constructors
 
         /// <summary>
         /// Инициализирует метаданные природного явления из 
@@ -121,14 +126,6 @@ namespace CyberLife
         }
 
 
-
-      
-
-
-
-
-
-
         /// <summary>
         /// Инициализирует метаданные природного явления из прототипа
         /// </summary>
@@ -154,5 +151,6 @@ namespace CyberLife
             log.Trace(LogMetadataMessages.OkMetadataFromProtobuff);
         }
 
+        #endregion
     }
 }

@@ -20,8 +20,6 @@ namespace CyberLife
         #endregion
 
 
-
-
         #region properties
         /// <summary>
         /// Подконтрольные миры
@@ -30,14 +28,10 @@ namespace CyberLife
         #endregion
 
 
-
-
         #region methods
 
 
         #endregion
-
-
 
 
         #region constructors

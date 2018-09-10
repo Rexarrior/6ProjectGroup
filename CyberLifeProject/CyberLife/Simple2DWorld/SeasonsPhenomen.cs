@@ -24,6 +24,7 @@ namespace CyberLife.Platform.World_content
 
         #endregion
 
+
         #region properties
 
         public int Step
@@ -36,6 +37,7 @@ namespace CyberLife.Platform.World_content
         }
 
         #endregion
+
 
         #region methods
 
@@ -56,6 +58,8 @@ namespace CyberLife.Platform.World_content
             return stateMetadata;
         }
 
+
+
         /// <summary>
         /// Получает пространство, на котором действует это природное явление
         /// </summary>
@@ -65,6 +69,8 @@ namespace CyberLife.Platform.World_content
             log.Debug(LogPhenomenMessages.GetPlace, "SeasonsPhenomen");
             return _place;
         }
+
+
 
         /// <summary>
         /// Получает метаданные этого природного явления.
@@ -80,6 +86,8 @@ namespace CyberLife.Platform.World_content
             log.Trace(LogPhenomenMessages.EndMethod, "SeasonsPhenomen.GetMetadata");
             return phenomenMetadata;
         }
+
+
 
         /// <summary>
         /// проверяет, попадает ли точка под воздействие этого природного явления
@@ -105,6 +113,8 @@ namespace CyberLife.Platform.World_content
             ChangeSeason();
         }
 
+
+
         /// <summary>
         /// Изменяет сезон в соответствии с ходом
         /// </summary>
@@ -117,7 +127,8 @@ namespace CyberLife.Platform.World_content
 
         #endregion
 
-        #region constructor
+
+        #region constructors
 
         public SeasonsPhenomen()
         {
