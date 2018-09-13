@@ -41,6 +41,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -81,6 +82,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LogPhenomenMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Simple2DWorld\Simple2dVisualizer.cs" />
     <Compile Include="Simple2DWorld\BotLifeForm.cs" />
     <Compile Include="Simple2DWorld\ColorState.cs" />
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
