@@ -12,6 +12,7 @@ namespace CyberLife.Simple2DWorld
         #region fields
 
         private Bitmap map;
+        private MainForm form;
 
         #endregion
 
@@ -30,7 +31,11 @@ namespace CyberLife.Simple2DWorld
         public void Update(WorldMetadata metadata)
         {
             if (map == null)
+            {
                 map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
+                form = new MainForm(map);
+                form.Show();
+            }
             foreach (var pair in metadata)
             {
                 byte[] bytes = pair.Value["ColorState"]["Color"].Split(' ').Select(x => byte.Parse(x)).ToArray();
@@ -40,6 +45,7 @@ namespace CyberLife.Simple2DWorld
                 Color color = Color.FromArgb(R, G, B);
                 map.SetPixel(pair.Value.Place.Points[0].X, pair.Value.Place.Points[0].Y, color);
             }
+            form.mapPicture.Image = GetMap();
         }
 
 
