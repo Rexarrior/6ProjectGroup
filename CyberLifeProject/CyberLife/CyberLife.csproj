@@ -41,10 +41,12 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +83,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LogPhenomenMessages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Simple2DWorld\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Simple2DWorld\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simple2DWorld\Simple2dVisualizer.cs" />
     <Compile Include="Simple2DWorld\BotLifeForm.cs" />
     <Compile Include="Simple2DWorld\ColorState.cs" />
     <Compile Include="Simple2DWorld\MineralsPhenomen.cs" />
@@ -129,6 +138,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogMetadataMessages.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simple2DWorld\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Simple2DWorld\Simple2DWorldLogMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>

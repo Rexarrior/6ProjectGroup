@@ -26,6 +26,10 @@ namespace CyberLife.Simple2DWorld
 
         #region methods
 
+        /// <summary>
+        /// Обновляет информацию о последних действиях получения энергии формы жизни
+        /// </summary>
+        /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
             if (_lastEnergyReactions.Count >= 10)
@@ -49,6 +53,10 @@ namespace CyberLife.Simple2DWorld
 
 
 
+        /// <summary>
+        /// Формирует метаданные цвета формы жизни
+        /// </summary>
+        /// <returns></returns>
         public override StateMetadata GetMetadata()
         {
             StateMetadata stateMetadata = base.GetMetadata();
@@ -58,6 +66,9 @@ namespace CyberLife.Simple2DWorld
 
 
 
+        /// <summary>
+        /// Устанавливает RGB в соответствии с последними действиями формы жизни
+        /// </summary>
         public void SetRGB()
         {
             R = 0;
@@ -101,6 +112,9 @@ namespace CyberLife.Simple2DWorld
         public ColorState(StateMetadata metadata) : base(metadata)
         {
             byte[] bytes = metadata["Color"].Split(' ').Select(x => byte.Parse(x)).ToArray();
+            R = bytes[0];
+            G = bytes[1];
+            B = bytes[2];
         }
 
         #endregion

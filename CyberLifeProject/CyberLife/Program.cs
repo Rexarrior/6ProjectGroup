@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using CyberLife.Simple2DWorld;
 
 namespace CyberLife
 {
@@ -13,7 +14,6 @@ namespace CyberLife
         {
             Logger log = LogManager.GetCurrentClassLogger();
             log.Debug("Начало работы");
-            //there is nothing.
         }
     }
 }
