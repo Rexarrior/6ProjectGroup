@@ -93,6 +93,8 @@ namespace CyberLife.Simple2DWorld
                 }
             }
             byte part = 0;
+            if (R < 0 || G < 0 || B < 0)
+                throw new ArgumentException("Один из параметров RGB был отрицательным");
             if (R + G + B != 0)     
             part = Convert.ToByte(255 / (R + G + B));
             R = Convert.ToByte(part * R);

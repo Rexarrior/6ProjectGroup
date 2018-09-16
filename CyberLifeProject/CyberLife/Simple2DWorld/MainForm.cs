@@ -13,10 +13,9 @@ namespace CyberLife.Simple2DWorld
 {
     public partial class MainForm : Form
     {
-        public MainForm(Bitmap bitmap)
+        public MainForm()
         {
             InitializeComponent();
-            mapPicture.Image = bitmap;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

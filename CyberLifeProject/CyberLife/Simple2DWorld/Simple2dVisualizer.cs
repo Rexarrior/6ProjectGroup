@@ -33,7 +33,7 @@ namespace CyberLife.Simple2DWorld
             if (map == null)
             {
                 map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
-                form = new MainForm(map);
+                form = new MainForm();
                 form.Show();
             }
             foreach (var pair in metadata)
