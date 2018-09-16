@@ -92,7 +92,9 @@ namespace CyberLife.Simple2DWorld
                         break;
                 }
             }
-            byte part = Convert.ToByte(255 / (R + G + B));
+            byte part = 0;
+            if (R + G + B != 0)     
+            part = Convert.ToByte(255 / (R + G + B));
             R = Convert.ToByte(part * R);
             G = Convert.ToByte(part * G);
             B = Convert.ToByte(part * B);        
