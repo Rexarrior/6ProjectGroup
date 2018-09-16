@@ -13,17 +13,14 @@ namespace CyberLife.Simple2DWorld
 {
     public partial class MainForm : Form
     {
-        public MainForm(Bitmap bitmap)
+        public MainForm()
         {
-            this.Width = bitmap.Width;
-            this.Height = bitmap.Height;
-            mapPicture.Width = bitmap.Width;
-            mapPicture.Height = bitmap.Height;
             InitializeComponent();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+
         }
     }
 }
