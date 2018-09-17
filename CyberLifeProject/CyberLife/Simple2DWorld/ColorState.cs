@@ -12,15 +12,6 @@ namespace CyberLife.Simple2DWorld
         EnergyDisplay = 1
     }
 
-     #region SpecialRegion
-    /*
-     * 
-     *          Александр,с днём рождения :)
-     *         
-     *         
-     */
-    #endregion
-
     class ColorState : LifeFormState
     {
         #region fields
@@ -30,7 +21,7 @@ namespace CyberLife.Simple2DWorld
         private byte G;
         private byte B;
         long lifeFormId;
-        public WorldMetadata worldMetadata;
+        private double energy;
 
         #endregion
 
@@ -59,7 +50,7 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
-            this.worldMetadata = worldMetadata;
+            energy = worldMetadata[lifeFormId]["EnergyState"].Value;
             if (_lastEnergyReactions.Count >= 10)
                 _lastEnergyReactions.Dequeue();
             switch (worldMetadata[lifeFormId]["GenorypeState"]["Action"])
@@ -136,7 +127,7 @@ namespace CyberLife.Simple2DWorld
                 case ColorType.EnergyDisplay:
                     const int MaxBotEnergy = 1500;
                     R = 255;
-                    G = (byte)(255 - ((worldMetadata[lifeFormId]["EnergyState"].Value / 1500) * 255)); // Нужен ли отлов исключений при приведении к (byte)?
+                    G = (byte)(255 - ((energy / 1500) * 255)); // Нужен ли отлов исключений при приведении к (byte)?
                     break;
             }
        
