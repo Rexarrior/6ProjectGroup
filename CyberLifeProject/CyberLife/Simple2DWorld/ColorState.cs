@@ -130,7 +130,6 @@ namespace CyberLife.Simple2DWorld
                     G = (byte)(255 - ((energy / MaxBotEnergy) * 255)); // Нужен ли отлов исключений при приведении к (byte)?
                     break;
             }
-       
         }
 
         #endregion
