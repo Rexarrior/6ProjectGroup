@@ -6,20 +6,38 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    class ColorState : LifeFormState
-    {  
-        #region fields
+    public enum ColorType
+    {
+        Default = 0,
+        EnergyDisplay = 1
+    }
 
+    class ColorState : LifeFormState
+    {
+        #region fields
+        private ColorType colorType;
         private Queue<string> _lastEnergyReactions;
         private byte R;
         private byte G;
         private byte B;
         long lifeFormId;
+        private double energy;
 
         #endregion
 
 
         #region properties
+
+        public ColorType ColorType
+        {
+            get { return colorType; }
+            set { colorType = value; }
+        }
+        public long LifeFormId
+        {
+            get { return lifeFormId; }
+            set { lifeFormId = value; }
+        }
 
         #endregion
 
@@ -32,6 +50,7 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
+            energy = worldMetadata[lifeFormId]["EnergyState"].Value;
             if (_lastEnergyReactions.Count >= 10)
                 _lastEnergyReactions.Dequeue();
             switch (worldMetadata[lifeFormId]["GenorypeState"]["Action"])
@@ -61,6 +80,7 @@ namespace CyberLife.Simple2DWorld
         {
             StateMetadata stateMetadata = base.GetMetadata();
             stateMetadata.Add("Color", $"{R} {G} {B}");
+            stateMetadata.Add("ColorType", colorType.ToString());
             return stateMetadata;
         }
 
@@ -74,32 +94,42 @@ namespace CyberLife.Simple2DWorld
             R = 0;
             G = 0;
             B = 0;
-            if (_lastEnergyReactions == null)
-                throw new ArgumentNullException();
-            foreach(string Action in _lastEnergyReactions)
-            {
-                switch (Action)
-                {
-                    case "Extraction":
-                        B++;
-                        break;
-                    case "Photosynthesis":
-                        G++;
-                        _lastEnergyReactions.Enqueue("Photosynthesis");
-                        break;
-                    case "Meat": // Имя придумано,позже необходимо привести в соответсвие с текстом команды
-                        R++;
-                        break;
-                }
-            }
             byte part = 0;
-            if (R < 0 || G < 0 || B < 0)
-                throw new ArgumentException("Один из параметров RGB был отрицательным",R < 0 ? nameof(R) : G < 0 ? nameof(G) : nameof(B));
-            if (R + G + B != 0)     
-            part = Convert.ToByte(255 / (R + G + B));
-            R = Convert.ToByte(part * R);
-            G = Convert.ToByte(part * G);
-            B = Convert.ToByte(part * B);        
+            switch (colorType)
+            {
+                case ColorType.Default:
+                    if (_lastEnergyReactions == null)
+                        throw new ArgumentNullException();
+                    foreach (string Action in _lastEnergyReactions)
+                    {
+                        switch (Action)
+                        {
+                            case "Extraction":
+                                B++;
+                                break;
+                            case "Photosynthesis":
+                                G++;
+                                _lastEnergyReactions.Enqueue("Photosynthesis");
+                                break;
+                            case "Meat": // Имя придумано,позже необходимо привести в соответсвие с текстом команды
+                                R++;
+                                break;
+                        }
+                    }
+                    if (R < 0 || G < 0 || B < 0)
+                        throw new ArgumentException("Один из параметров RGB был отрицательным");
+                    if (R + G + B != 0)
+                        part = Convert.ToByte(255 / (R + G + B));
+                    R = Convert.ToByte(part * R);
+                    G = Convert.ToByte(part * G);
+                    B = Convert.ToByte(part * B);
+                    break;
+                case ColorType.EnergyDisplay:
+                    const int MaxBotEnergy = 1500;
+                    R = 255;
+                    G = (byte)(255 - ((energy / MaxBotEnergy) * 255)); // Нужен ли отлов исключений при приведении к (byte)?
+                    break;
+            }
         }
 
         #endregion
@@ -107,9 +137,10 @@ namespace CyberLife.Simple2DWorld
 
         #region constructors
 
-        public ColorState(string name, double value, long id, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public ColorState(string name, double value, long id,ColorType colorType, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
             lifeFormId = id;
+            this.colorType = colorType;
         }
 
 
@@ -119,6 +150,8 @@ namespace CyberLife.Simple2DWorld
             R = bytes[0];
             G = bytes[1];
             B = bytes[2];
+            if (!Enum.TryParse(metadata["ColorType"], out this.colorType))
+                throw new ArgumentException("Недопустимое знчение metadata[\"ColorType\"]", metadata["ColorType"]);
         }
 
         #endregion
