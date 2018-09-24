@@ -119,11 +119,7 @@ namespace CyberLife.Simple2DWorld
         public void SetGenom(string str)
         {
             genom.Clear();
-            foreach (string s in str.Split('|'))
-            {
-                if (s != "")
-                    genom.Add(Convert.ToByte(s));
-            }
+            genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
         }
 
         public override StateMetadata GetMetadata()
@@ -134,9 +130,11 @@ namespace CyberLife.Simple2DWorld
                 || action == Actions.Eat || action == Actions.DoDescendant)
             {
                 stateMetadata.Add("Action", action.ToString() + direction.ToString());
-                return stateMetadata;
             }
-            stateMetadata.Add("Action", action.ToString());
+            else
+            {
+                stateMetadata.Add("Action", action.ToString());
+            }
             foreach (byte b in genom)
             {
                 strGenom += b.ToString() + "|";
