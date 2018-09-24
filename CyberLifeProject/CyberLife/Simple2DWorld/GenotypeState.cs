@@ -29,14 +29,13 @@ namespace CyberLife.Simple2DWorld
         ForsedReproduction = 6,
         None = 0
     }
-/*
- Команда 1 = проверить энергию
- Команда 2 = фотосинтез
- Команда 3 = передвижение
- Команда 4 = съесть
- Команда 5 = отпочковать потомка
- Команда 6 = ForsedReproduction
-*/
+    /*
+     Команда 1 = проверить энергию
+     Команда 2 = фотосинтез
+     Команда 3 = передвижение
+     Команда 4 = съесть
+     Команда 5 = отпочковать потомка
+    */
     public class GenotypeState : LifeFormState
     {
         #region fields
@@ -44,7 +43,7 @@ namespace CyberLife.Simple2DWorld
         Directions direction;
         Actions action;
         private byte YTK;
-        private List<byte> Genom;
+        private List<byte> genom;
         public long id;
 
         #endregion
@@ -60,16 +59,15 @@ namespace CyberLife.Simple2DWorld
             if (metadata[id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
             {
                 action = Actions.ForsedReproduction;
-                NextStep();
             }
             else
             {
-                switch (Genom[YTK])
+                switch (genom[YTK])
                 {
                     case 1:
                         action = Actions.CheckEnergy;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)Genom[YTK] / 8]);
+                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
                         break;
                     case 2:
                         action = Actions.Photosynthesis;
@@ -77,19 +75,19 @@ namespace CyberLife.Simple2DWorld
                     case 3:
                         action = Actions.Move;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)Genom[YTK] / 8]);
+                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
                         break;
                     case 4:
                         action = Actions.Eat;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)Genom[YTK] / 8]);
+                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
                         break;
                     case 5:
                         if (metadata[id]["EnergyState"]["EnergyState"] == "CanReproduce")
                         {
                             action = Actions.DoDescendant;
                             NextStep();
-                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)Genom[YTK] / 8]);
+                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
                         }
                         else
                         {
@@ -98,7 +96,7 @@ namespace CyberLife.Simple2DWorld
                         }
                         break;
                     default:
-                        YTK = Convert.ToByte(YTK + Genom[YTK] - 1);
+                        YTK = Convert.ToByte(YTK + genom[YTK] - 1);
                         NextStep();
                         action = Actions.None;
                         direction = Directions.None;
@@ -107,9 +105,19 @@ namespace CyberLife.Simple2DWorld
             }
             NextStep();
         }
+        public void SetGenom(string str)
+        {
+            genom.Clear();
+            foreach (string s in str.Split('|'))
+            {
+                if (s != "")
+                    genom.Add(Convert.ToByte(s));
+            }
+        }
 
         public override StateMetadata GetMetadata()
         {
+            string strGenom = "";
             StateMetadata stateMetadata = base.GetMetadata();
             if(action == Actions.Move || action == Actions.CheckEnergy 
                 || action ==Actions.Eat || action == Actions.DoDescendant)
@@ -118,6 +126,12 @@ namespace CyberLife.Simple2DWorld
                 return stateMetadata;
             }
             stateMetadata.Add("Action", action.ToString());
+            foreach(byte b in genom)
+            {
+                strGenom += b.ToString() + "|";
+            }
+            stateMetadata.Add("Genom", "" + strGenom);
+            stateMetadata.Add("YTK", YTK.ToString());
             return stateMetadata;
         }
 
@@ -134,18 +148,28 @@ namespace CyberLife.Simple2DWorld
 
         public GenotypeState(string name, double value,long lifeFormId, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
+            genom = new List<byte> { };
             YTK = 0;
             direction = Directions.None;
             action = Actions.None;
-            // Заполнение генома
+            List<int> workingList = Enumerable.Repeat(1, 10)
+                .Concat(Enumerable.Repeat(2, 10))
+                .Concat(Enumerable.Repeat(3, 10))
+                .Concat(Enumerable.Repeat(4, 10))
+                .Concat(Enumerable.Repeat(5, 10))
+                .Concat(Enumerable.Repeat(0, 14)).ToList();
+            foreach (int i in workingList)
+            {
+                genom.Add(Convert.ToByte(i));
+            }
         }
 
         public GenotypeState(StateMetadata metadata) : base(metadata)
         {
-            YTK = 0;
+            YTK = Convert.ToByte( metadata["YTK"]);
+            SetGenom(metadata["Genom"]);
             direction = Directions.None;
             action = Actions.None;
-            // Заполнение генома
         }
 
         #endregion
