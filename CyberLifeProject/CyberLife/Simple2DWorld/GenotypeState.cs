@@ -69,7 +69,7 @@ namespace CyberLife.Simple2DWorld
                     case 1:
                         action = Actions.CheckEnergy;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
+                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] +1 / 8]);
                         NextStep();
                         Update(metadata);
                         break;
@@ -80,13 +80,13 @@ namespace CyberLife.Simple2DWorld
                     case 3:
                         action = Actions.Move;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
+                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] +1 / 8]);
                         NextStep();
                         break;
                     case 4:
                         action = Actions.Eat;
                         NextStep();
-                        direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
+                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] +1 / 8]);
                         NextStep();
                         break;
                     case 5:
@@ -94,7 +94,7 @@ namespace CyberLife.Simple2DWorld
                         {
                             action = Actions.DoDescendant;
                             NextStep();
-                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] / 8]);
+                            direction = (Directions)Enum.Parse(typeof(Directions), Enum.GetNames(typeof(Directions))[(byte)genom[YTK] +1 / 8]);
                             NextStep();
                         }
                         else
