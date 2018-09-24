@@ -27,7 +27,7 @@ namespace CyberLife.Simple2DWorld
         private static Dictionary<string, LifeFormState> _getStates()
         {
             EnergyState energy = new EnergyState("EnergyState", 0);
-            GenotypeState genotype = new GenotypeState("GenotypeState", 0);
+            GenotypeState genotype = new GenotypeState("GenotypeState", 0,/*тут должен быть id*/  0);
             ColorState color = new ColorState("ColorState", 0 ,/*тут должен быть id*/  0,ColorType.Default);
             Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState>(3)
             {

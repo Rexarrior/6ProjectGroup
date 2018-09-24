@@ -46,15 +46,20 @@ namespace CyberLife.Simple2DWorld
         private List<byte> genom;
         public long id;
 
-
         #endregion
+
 
         #region properties
 
         #endregion
 
+
         #region methods
 
+        /// <summary>
+        /// Обновляет действия бота в соответствии с геномом
+        /// </summary>
+        /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
             if (metadata[id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
@@ -106,7 +111,14 @@ namespace CyberLife.Simple2DWorld
                         }
                         break;
                     default:
-                        YTK = Convert.ToByte(YTK + genom[YTK] - 1);
+                        try
+                        {
+                            YTK = Convert.ToByte(YTK + genom[YTK] - 1);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + genom[YTK] - 1).ToString(), e);
+                        }
                         NextStep();
                         action = Actions.None;
                         direction = Directions.None;
@@ -116,9 +128,15 @@ namespace CyberLife.Simple2DWorld
                 }
             }
         }
+
+
+
+        /// <summary>
+        /// Устанавливает геном из его строкового представления
+        /// </summary>
+        /// <param name="str"></param>
         public void SetGenom(string str)
         {
-            genom.Clear();
             genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
         }
 
@@ -129,7 +147,7 @@ namespace CyberLife.Simple2DWorld
             if (action == Actions.Move || action == Actions.CheckEnergy
                 || action == Actions.Eat || action == Actions.DoDescendant)
             {
-                stateMetadata.Add("Action", action.ToString() + direction.ToString());
+                stateMetadata.Add("Action", action.ToString()+"|" + direction.ToString());
             }
             else
             {
@@ -144,11 +162,11 @@ namespace CyberLife.Simple2DWorld
             return stateMetadata;
         }
 
+
+
         public void NextStep()
         {
-            YTK++;
-            if (YTK == 64)
-                YTK = 0;
+            YTK = (byte) ((YTK + 1) % 64);
         }
 
         #endregion
@@ -172,6 +190,7 @@ namespace CyberLife.Simple2DWorld
                 genom.Add(Convert.ToByte(i));
             }
         }
+
 
         public GenotypeState(StateMetadata metadata) : base(metadata)
         {
