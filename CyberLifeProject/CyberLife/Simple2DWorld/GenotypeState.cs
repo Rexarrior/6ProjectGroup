@@ -6,70 +6,200 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
+    public enum Directions
+    {
+        TopLeft = 1,
+        Top,
+        TopRight,
+        Right,
+        BottomRight,
+        Bottom,
+        BottomLeft,
+        Left = 8,
 
-        enum Commands : byte
+        None = 0
+    }
+    public enum Actions
+    {
+        CheckEnergy = 1,
+        Photosynthesis,
+        Move,
+        Eat,
+        DoDescendant,
+        ForsedReproduction = 6,
+        None = 0
+    }
+    /*
+     Команда 1 = проверить энергию
+     Команда 2 = фотосинтез
+     Команда 3 = передвижение
+     Команда 4 = съесть
+     Команда 5 = отпочковать потомка
+    */
+    public class GenotypeState : LifeFormState
+    {
+        #region fields
+
+        Directions direction;
+        Actions action;
+        private byte YTK;
+        private List<byte> genom;
+        public long id;
+
+        #endregion
+
+
+        #region properties
+
+        #endregion
+
+
+        #region methods
+
+        /// <summary>
+        /// Обновляет действия бота в соответствии с геномом
+        /// </summary>
+        /// <param name="metadata"></param>
+        public void Update(WorldMetadata metadata)
         {
-            WhatEnergy, // = ? решить с какого индекса начать
-            SeeAround,
-            Go,
-            Photosynthes,
-            Eat,
-            TurnAround,
-            DoClone,
-            ShareEnergy
+            if (metadata[id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
+            {
+                action = Actions.ForsedReproduction;
+                NextStep();
+            }
+            else
+            {
+                switch (genom[YTK])
+                {
+                    case 1:
+                        action = Actions.CheckEnergy;
+                        NextStep();
+                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        NextStep();
+                        Update(metadata);
+                        break;
+                    case 2:
+                        action = Actions.Photosynthesis;
+                        NextStep();
+                        break;
+                    case 3:
+                        action = Actions.Move;
+                        NextStep();
+                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        NextStep();
+                        break;
+                    case 4:
+                        action = Actions.Eat;
+                        NextStep();
+                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        NextStep();
+                        break;
+                    case 5:
+                        if (metadata[id]["EnergyState"]["EnergyState"] == "CanReproduce")
+                        {
+                            action = Actions.DoDescendant;
+                            NextStep();
+                            direction = (Directions)((genom[YTK] / 8) + 1);
+                            NextStep();
+                        }
+                        else
+                        {
+                            action = Actions.None;
+                            direction = Directions.None;
+                            NextStep();
+                            Update(metadata);
+                        }
+                        break;
+                    default:
+                        try
+                        {
+                            YTK = Convert.ToByte(YTK + genom[YTK] - 1);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + genom[YTK] - 1).ToString(), e);
+                        }
+                        NextStep();
+                        action = Actions.None;
+                        direction = Directions.None;
+                        NextStep();
+                        Update(metadata);
+                        break;
+                }
+            }
         }
 
 
-        public class GenotypeState
+
+        /// <summary>
+        /// Устанавливает геном из его строкового представления
+        /// </summary>
+        /// <param name="str"></param>
+        public void SetGenom(string str)
         {
-            private const int CommandsCount = 8;
+            genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
+        }
 
-
-
-            /// <summary>
-            /// Геном-код бота
-            /// </summary>	
-            public int[] Genom; // ? Достать из метаданных бота с проверкой на наличие
-
-
-
-            /// <summary>
-            /// УТК - указатель текущей команды
-            /// </summary>	
-            public byte YTK;// ? Достать из метаданных бота с проверкой на наличие
-
-
-            /// <summary>
-            /// Кол-во энергии бота
-            /// </summary>	
-            public int EnergyState;  // ? Достать из метаданных бота
-
-
-            /// <summary>
-            /// Конструктор 
-            /// </summary>	
-            public GenotypeState()
+        public override StateMetadata GetMetadata()
+        {
+            string strGenom = "";
+            StateMetadata stateMetadata = base.GetMetadata();
+            if (action == Actions.Move || action == Actions.CheckEnergy
+                || action == Actions.Eat || action == Actions.DoDescendant)
             {
-
-                Commands cod;
-
-                //Если геном еще не сгенерирован
-                Genom = new int[CommandsCount] { (int)Commands.DoClone, (int)Commands.Eat, (int)Commands.Go,
-                    (int)Commands.Photosynthes, (int)Commands.SeeAround, (int)Commands.ShareEnergy, (int)Commands.TurnAround,
-                    (int)Commands.WhatEnergy
-                };
-
+                stateMetadata.Add("Action", action.ToString()+"|" + direction.ToString());
             }
-
-
-
-            /// <summary>
-            /// Просчет следующего УТК
-            /// </summary>
-            public void NextYTK()
+            else
             {
+                stateMetadata.Add("Action", action.ToString());
+            }
+            foreach (byte b in genom)
+            {
+                strGenom += b.ToString() + "|";
+            }
+            stateMetadata.Add("Genom", "" + strGenom);
+            stateMetadata.Add("YTK", YTK.ToString());
+            return stateMetadata;
+        }
 
+
+
+        public void NextStep()
+        {
+            YTK = (byte) ((YTK + 1) % 64);
+        }
+
+        #endregion
+
+        #region constructors
+
+        public GenotypeState(string name, double value, long lifeFormId, Dictionary<string, string> Params = null) : base(name, value, Params)
+        {
+            genom = new List<byte> { };
+            YTK = 0;
+            direction = Directions.None;
+            action = Actions.None;
+            List<int> workingList = Enumerable.Repeat(1, 10)
+                .Concat(Enumerable.Repeat(2, 10))
+                .Concat(Enumerable.Repeat(3, 10))
+                .Concat(Enumerable.Repeat(4, 10))
+                .Concat(Enumerable.Repeat(5, 10))
+                .Concat(Enumerable.Repeat(0, 14)).ToList();
+            foreach (int i in workingList)
+            {
+                genom.Add(Convert.ToByte(i));
             }
         }
-    
+
+
+        public GenotypeState(StateMetadata metadata) : base(metadata)
+        {
+            YTK = Convert.ToByte(metadata["YTK"]);
+            SetGenom(metadata["Genom"]);
+            direction = Directions.None;
+            action = Actions.None;
+        }
+
+        #endregion
+    }
 }

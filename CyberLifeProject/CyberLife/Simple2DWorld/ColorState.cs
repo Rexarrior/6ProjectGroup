@@ -127,7 +127,7 @@ namespace CyberLife.Simple2DWorld
                 case ColorType.EnergyDisplay:
                     const int MaxBotEnergy = 1500;
                     R = 255;
-                    G = (byte)(255 - ((energy / MaxBotEnergy) * 255)); // Нужен ли отлов исключений при приведении к (byte)?
+                    G = (byte)(255 - ((energy / MaxBotEnergy) * 255));
                     break;
             }
         }

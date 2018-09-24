@@ -88,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Simple2DWorld\GenotypeState.cs" />
     <Compile Include="Simple2DWorld\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +139,7 @@
     <EmbeddedResource Include="Platform\Logging\LogMessages\LogPhenomenMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogPhenomenMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Platform\Logging\LogMessages\LogMetadataMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
