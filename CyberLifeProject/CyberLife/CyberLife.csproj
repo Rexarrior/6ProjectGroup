@@ -88,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Simple2DWorld\EnergyState.cs" />
     <Compile Include="Simple2DWorld\GenotypeState.cs" />
     <Compile Include="Simple2DWorld\MainForm.cs">
       <SubType>Form</SubType>

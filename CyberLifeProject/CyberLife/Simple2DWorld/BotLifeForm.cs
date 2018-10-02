@@ -77,23 +77,4 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
     }
-
-
-
-
-
-    //Заглушки
-    internal class EnergyState:LifeFormState
-    {
-        public EnergyState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
-        {
-        }
-
-        public EnergyState(StateMetadata metadata) : base(metadata)
-        {
-        }
-    }
-
-
-
 }
