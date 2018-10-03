@@ -10,15 +10,20 @@ namespace CyberLife.Simple2DWorld
 {
     class Simple2DWorld : World
     {
+        public  const double OrganicZeroEnergyFactor = 0.1;
+        public  const double OrganicCollapseEnergyFactor = 0.7;
+
         #region fields
 
         private Dictionary<Int64, LifeForm> _organic;
+
+       
 
         #endregion
 
 
         #region properties
-
+        public Dictionary<long, LifeForm> Organic { get => _organic; set => _organic = value; }
 
         #endregion
 
@@ -89,7 +94,23 @@ namespace CyberLife.Simple2DWorld
         /// <param name="world">Обрабатываемый мир</param>
         private static void _energyReaction(World world)
         {
+            Simple2DWorld sworld = (Simple2DWorld)world;
 
+            IEnumerable<Int64> deadBots = sworld.LifeForms
+                .Where(
+                    x => ((EnergyState)x.Value.States["EnergyState"]).IsDead
+                ).Select(x => x.Key).ToArray();
+            foreach (var botId in deadBots)
+            {
+                LifeForm bot = sworld.LifeForms[botId];
+                sworld.Organic.Add(botId, bot);
+                sworld.LifeForms.Remove(botId);
+                EnergyState state = (EnergyState)bot.States["EnergyState"];
+                state.Value = EnergyState.MaxEnergy * (
+                    state.State == Flags.EnergyCollapse ? 
+                        OrganicCollapseEnergyFactor:
+                                      OrganicZeroEnergyFactor); 
+            }
         }
 
 
