@@ -12,27 +12,58 @@ namespace CyberLife.Simple2DWorld
         CanReproduce,
         ForsedReproduction,
         EnergyCollapse,
+        Alive
     }
     class EnergyState : LifeFormState
     {
         private const int maxEnergy = 1500;
-        private Flags _state;
 
+        #region fields
+
+        private Flags _state;
+        private bool _isDead;
+
+        #endregion
+
+
+        #region properties
+
+        public bool IsDead { get => _isDead; }
+
+        #endregion
+
+
+        #region methods
+
+        /// <summary>
+        /// Обновляет флаги энергии бота 
+        /// </summary>
+        /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            _state = GetState();            
+            if (!_isDead)
+                _state = GetState();            
         }
+
+
+        /// <summary>
+        /// получает флаг бота на основании текущей энергии бота
+        /// </summary>
+        /// <returns></returns>
         public Flags GetState()
         {
             Flags flag;
             if (Value < 0)
             {
                 flag = Flags.Dead;
+                _isDead = true;
                 return flag;
             }
             if(Value >= maxEnergy)
             {
                 flag = Flags.EnergyCollapse;
+                _isDead = true;
+                return flag;
             }
             if (Value >= maxEnergy * 0.9)
             {
@@ -44,8 +75,11 @@ namespace CyberLife.Simple2DWorld
                 flag = Flags.CanReproduce;
                 return flag;
             }
-            throw new ArgumentException("Пустой экземпляр flag,энергия была равна "+Value);
+            flag = Flags.Alive;
+            return flag;
         }
+
+
 
         public override StateMetadata GetMetadata()
         {
@@ -55,14 +89,23 @@ namespace CyberLife.Simple2DWorld
             metadata.Add(_state.ToString(), "true");
             return metadata;
         }
+
+        #endregion
+
+
+        #region constructors
+
         public EnergyState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-
+            _isDead = false;
         }
+
 
         public EnergyState(StateMetadata metadata) : base(metadata)
         {
-
+            _isDead = false;
         }
+
+        #endregion
     }
 }
