@@ -11,8 +11,8 @@ namespace CyberLife.Simple2DWorld
     class Simple2DWorld : World
     {
         public  const double OrganicZeroEnergyFactor = 0.1;
-        public  const double OrganicCollapseEnergyFactor = 0.7;
-
+        public  const double OrganicCollapseEnergyFactor = 0.3;
+        public const double OutflowEnergyFactor = 0.01; 
         #region fields
 
         private Dictionary<Int64, LifeForm> _organic;
@@ -111,6 +111,21 @@ namespace CyberLife.Simple2DWorld
                         OrganicCollapseEnergyFactor:
                                       OrganicZeroEnergyFactor); 
             }
+
+            foreach (var bot in sworld.Organic.Values)
+            {
+                EnergyState state = (EnergyState)bot.States["EnergyState"];
+                state.Value -= state.Value * OutflowEnergyFactor;
+            }
+
+            Int64[] rottenOrganic = sworld.Organic.Where(x => x.Value.States["EnergyState"].Value <= 0)
+                .Select(x => x.Key).ToArray();
+
+            foreach (var botId in rottenOrganic)
+            {
+                sworld.Organic.Remove(botId);
+            }
+
         }
 
 
