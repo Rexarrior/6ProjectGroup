@@ -15,13 +15,13 @@ namespace CyberLife.Simple2DWorld
     class ColorState : LifeFormState
     {
         #region fields
-        private ColorType colorType;
+        private ColorType _colorType;
         private Queue<string> _lastEnergyReactions;
         private byte R;
         private byte G;
         private byte B;
-        long lifeFormId;
-        private double energy;
+        long _lifeFormId;
+        private double _energy;
 
         #endregion
 
@@ -30,13 +30,13 @@ namespace CyberLife.Simple2DWorld
 
         public ColorType ColorType
         {
-            get { return colorType; }
-            set { colorType = value; }
+            get { return _colorType; }
+            set { _colorType = value; }
         }
         public long LifeFormId
         {
-            get { return lifeFormId; }
-            set { lifeFormId = value; }
+            get { return _lifeFormId; }
+            set { _lifeFormId = value; }
         }
 
         #endregion
@@ -50,10 +50,10 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
-            energy = worldMetadata[lifeFormId]["EnergyState"].Value;
+            _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
             if (_lastEnergyReactions.Count >= 10)
                 _lastEnergyReactions.Dequeue();
-            switch (worldMetadata[lifeFormId]["GenorypeState"]["Action"])
+            switch (worldMetadata[_lifeFormId]["GenorypeState"]["Action"])
             {
                 case "Extraction":
                     _lastEnergyReactions.Enqueue("Extraction");
@@ -80,7 +80,7 @@ namespace CyberLife.Simple2DWorld
         {
             StateMetadata stateMetadata = base.GetMetadata();
             stateMetadata.Add("Color", $"{R} {G} {B}");
-            stateMetadata.Add("ColorType", colorType.ToString());
+            stateMetadata.Add("ColorType", _colorType.ToString());
             return stateMetadata;
         }
 
@@ -95,7 +95,7 @@ namespace CyberLife.Simple2DWorld
             G = 0;
             B = 0;
             byte part = 0;
-            switch (colorType)
+            switch (_colorType)
             {
                 case ColorType.Default:
                     if (_lastEnergyReactions == null)
@@ -127,7 +127,7 @@ namespace CyberLife.Simple2DWorld
                 case ColorType.EnergyDisplay:
                     const int MaxBotEnergy = 1500;
                     R = 255;
-                    G = (byte)(255 - ((energy / MaxBotEnergy) * 255));
+                    G = (byte)(255 - ((_energy / MaxBotEnergy) * 255));
                     break;
             }
         }
@@ -139,8 +139,8 @@ namespace CyberLife.Simple2DWorld
 
         public ColorState(string name, double value, long id,ColorType colorType, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-            lifeFormId = id;
-            this.colorType = colorType;
+            _lifeFormId = id;
+            this._colorType = colorType;
         }
 
 
@@ -150,7 +150,7 @@ namespace CyberLife.Simple2DWorld
             R = bytes[0];
             G = bytes[1];
             B = bytes[2];
-            if (!Enum.TryParse(metadata["ColorType"], out this.colorType))
+            if (!Enum.TryParse(metadata["ColorType"], out this._colorType))
                 throw new ArgumentException("Недопустимое знчение metadata[\"ColorType\"]", metadata["ColorType"]);
         }
 
