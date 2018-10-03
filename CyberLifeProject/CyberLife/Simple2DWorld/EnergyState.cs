@@ -16,7 +16,7 @@ namespace CyberLife.Simple2DWorld
     }
     class EnergyState : LifeFormState
     {
-        private const int maxEnergy = 1500;
+        public const int MaxEnergy = 1500;
 
         #region fields
 
@@ -29,6 +29,7 @@ namespace CyberLife.Simple2DWorld
         #region properties
 
         public bool IsDead { get => _isDead; }
+        internal Flags State { get => _state;}
 
         #endregion
 
@@ -59,13 +60,13 @@ namespace CyberLife.Simple2DWorld
                 _isDead = true;
                 return flag;
             }
-            if(Value >= maxEnergy)
+            if(Value >= MaxEnergy)
             {
                 flag = Flags.EnergyCollapse;
                 _isDead = true;
                 return flag;
             }
-            if (Value >= maxEnergy * 0.9)
+            if (Value >= MaxEnergy * 0.9)
             {
                 flag = Flags.ForsedReproduction;
                 return flag;
