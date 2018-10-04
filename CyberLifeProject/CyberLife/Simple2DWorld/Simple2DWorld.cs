@@ -132,7 +132,88 @@ namespace CyberLife.Simple2DWorld
 
         private static void _genotypeReaction(World world)
         {
+            Simple2DWorld sworld = (Simple2DWorld)world;
+            int Width = sworld.Environment.Size.Width;
+            int Height = sworld.Environment.Size.Height;
+            foreach(var bot in sworld.LifeForms)
+            {
+                GenotypeState genotypeState = (GenotypeState)bot.Value.States["GenotypeState"];
+                StateMetadata botMetadata = genotypeState.GetMetadata();
+                if (botMetadata["Action"].Contains("|")) 
+                {
+                    int X = bot.Value.LifeFormPlace.Points[0].X;
+                    int Y = bot.Value.LifeFormPlace.Points[0].Y;
+                    switch(botMetadata["Action"].Split('|')[1])
+                    {
+                        case "TopLeft":
+                            X--;
+                            Y++;
+                            break;
+                        case "Top":
+                            Y++;
+                            break;
+                        case "TopRight":
+                            X++;
+                            Y++;
+                            break;
+                        case "Right":
+                            X++;
+                            break;
+                        case "BottomRight":
+                            X++;
+                            Y--;
+                            break;
+                        case "Bottom":
+                            Y--;
+                            break;
+                        case "BottomLeft":
+                            X--;
+                            Y--;
+                            break;
+                        case "Left":
+                            X--;
+                            break;
+                        default:
+                            throw new ArgumentException("Неопределенное направление  " + botMetadata["Action"].Split('|')[1]);
+                    }
+                    if (Y > Height)
+                        Y = Height;
+                    if (Y < 0)
+                        Y = 0;
+                    if (X > Width)
+                        X = 0;
+                    if (X < 0)
+                        X = Width;
+                    switch (botMetadata["Action"].Split('|')[0])
+                    {
+                        case "Move":
+                            if (sworld.IsPlaceEmpty(X, Y))
+                            {
+                                bot.Value.LifeFormPlace.Points[0].X = X;
+                                bot.Value.LifeFormPlace.Points[0].Y = Y;
+                            }
+                            break;
+                        case "CheckEnergy":
+                           //todo
+                            break;
+                        case "Eat":
+                            if(sworld.IsPlaceEmpty(X,Y))
+                            {
 
+                            }
+                            break;
+                        case "DoDescendant":
+                            if(sworld.IsPlaceEmpty(X,Y))
+                            {
+                                EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии
+                                GenotypeState genotype = new GenotypeState("GenotypeState", 0,sworld.LifeForms[sworld.LifeForms.co]);
+                                ColorState color = new ColorState("ColorState", 0,/*тут должен быть id*/  0, ColorType.Default);
+                                BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array,new Point(X,Y)),
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
 

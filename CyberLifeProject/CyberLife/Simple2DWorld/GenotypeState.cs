@@ -40,11 +40,11 @@ namespace CyberLife.Simple2DWorld
     {
         #region fields
 
-        Directions direction;
-        Actions action;
+        Directions _direction;
+        Actions _action;
         private byte YTK;
-        private List<byte> genom;
-        public long id;
+        private List<byte> _genom;
+        public long _id;
 
         #endregion
 
@@ -62,50 +62,50 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            if (metadata[id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
+            if (metadata[_id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
             {
-                action = Actions.ForsedReproduction;
+                _action = Actions.ForsedReproduction;
                 NextStep();
             }
             else
             {
-                switch (genom[YTK])
+                switch (_genom[YTK])
                 {
                     case 1:
-                        action = Actions.CheckEnergy;
+                        _action = Actions.CheckEnergy;
                         NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        _direction = (Directions)((_genom[YTK] / 8) + 1);
                         NextStep();
                         Update(metadata);
                         break;
                     case 2:
-                        action = Actions.Photosynthesis;
+                        _action = Actions.Photosynthesis;
                         NextStep();
                         break;
                     case 3:
-                        action = Actions.Move;
+                        _action = Actions.Move;
                         NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        _direction = (Directions)((_genom[YTK] / 8) + 1);
                         NextStep();
                         break;
                     case 4:
-                        action = Actions.Eat;
+                        _action = Actions.Eat;
                         NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
+                        _direction = (Directions)((_genom[YTK] / 8) + 1);
                         NextStep();
                         break;
                     case 5:
-                        if (metadata[id]["EnergyState"]["EnergyState"] == "CanReproduce")
+                        if (metadata[_id]["EnergyState"]["EnergyState"] == "CanReproduce")
                         {
-                            action = Actions.DoDescendant;
+                            _action = Actions.DoDescendant;
                             NextStep();
-                            direction = (Directions)((genom[YTK] / 8) + 1);
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
                             NextStep();
                         }
                         else
                         {
-                            action = Actions.None;
-                            direction = Directions.None;
+                            _action = Actions.None;
+                            _direction = Directions.None;
                             NextStep();
                             Update(metadata);
                         }
@@ -113,15 +113,15 @@ namespace CyberLife.Simple2DWorld
                     default:
                         try
                         {
-                            YTK = Convert.ToByte(YTK + genom[YTK] - 1);
+                            YTK = Convert.ToByte(YTK + _genom[YTK] - 1);
                         }
                         catch (Exception e)
                         {
-                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + genom[YTK] - 1).ToString(), e);
+                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + _genom[YTK] - 1).ToString(), e);
                         }
                         NextStep();
-                        action = Actions.None;
-                        direction = Directions.None;
+                        _action = Actions.None;
+                        _direction = Directions.None;
                         NextStep();
                         Update(metadata);
                         break;
@@ -137,23 +137,23 @@ namespace CyberLife.Simple2DWorld
         /// <param name="str"></param>
         public void SetGenom(string str)
         {
-            genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
+            _genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
         }
 
         public override StateMetadata GetMetadata()
         {
             string strGenom = "";
             StateMetadata stateMetadata = base.GetMetadata();
-            if (action == Actions.Move || action == Actions.CheckEnergy
-                || action == Actions.Eat || action == Actions.DoDescendant)
+            if (_action == Actions.Move || _action == Actions.CheckEnergy
+                || _action == Actions.Eat || _action == Actions.DoDescendant)
             {
-                stateMetadata.Add("Action", action.ToString()+"|" + direction.ToString());
+                stateMetadata.Add("Action", _action.ToString()+"|" + _direction.ToString());
             }
             else
             {
-                stateMetadata.Add("Action", action.ToString());
+                stateMetadata.Add("Action", _action.ToString());
             }
-            foreach (byte b in genom)
+            foreach (byte b in _genom)
             {
                 strGenom += b.ToString() + "|";
             }
@@ -171,14 +171,15 @@ namespace CyberLife.Simple2DWorld
 
         #endregion
 
+
         #region constructors
 
         public GenotypeState(string name, double value, long lifeFormId, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-            genom = new List<byte> { };
+            _genom = new List<byte> { };
             YTK = 0;
-            direction = Directions.None;
-            action = Actions.None;
+            _direction = Directions.None;
+            _action = Actions.None;
             List<int> workingList = Enumerable.Repeat(1, 10)
                 .Concat(Enumerable.Repeat(2, 10))
                 .Concat(Enumerable.Repeat(3, 10))
@@ -187,7 +188,7 @@ namespace CyberLife.Simple2DWorld
                 .Concat(Enumerable.Repeat(0, 14)).ToList();
             foreach (int i in workingList)
             {
-                genom.Add(Convert.ToByte(i));
+                _genom.Add(Convert.ToByte(i));
             }
         }
 
@@ -196,8 +197,8 @@ namespace CyberLife.Simple2DWorld
         {
             YTK = Convert.ToByte(metadata["YTK"]);
             SetGenom(metadata["Genom"]);
-            direction = Directions.None;
-            action = Actions.None;
+            _direction = Directions.None;
+            _action = Actions.None;
         }
 
         #endregion

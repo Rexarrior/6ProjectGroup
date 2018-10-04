@@ -186,6 +186,18 @@ namespace CyberLife
             log.Trace(CommonLogMessages.EndMethod, "ReplaceReaction");
             return true;
         }
+
+
+        public bool IsPlaceEmpty(int X,int Y)
+        {
+            foreach(var Bot in LifeForms.Values)
+            {
+                if (Bot.LifeFormPlace.Points[0].X == X &&
+                    Bot.LifeFormPlace.Points[0].Y == Y)
+                    return false;
+            }
+            return true;
+        }
         #endregion
 
 
