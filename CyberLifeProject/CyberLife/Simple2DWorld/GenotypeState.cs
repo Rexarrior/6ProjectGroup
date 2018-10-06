@@ -33,6 +33,7 @@ namespace CyberLife.Simple2DWorld
 
     public class GenotypeState : LifeFormState
     {
+        Random rnd = new Random();
         #region fields
 
         Directions _direction;
@@ -137,9 +138,9 @@ namespace CyberLife.Simple2DWorld
         /// <param name="str"></param>
         public void SetGenom(string str)
         {
-            Random rnd = new Random();
+            const byte mutationPercent = 10;
             _genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
-            if(rnd.Next(0,100) == 1)
+            if(rnd.Next(1,(100/mutationPercent)+1) == 1)
             {
                 _genom[rnd.Next(0, 64)] =(Byte) rnd.Next(0, 64); 
             }

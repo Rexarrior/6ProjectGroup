@@ -132,12 +132,13 @@ namespace CyberLife.Simple2DWorld
 
         private static void _genotypeReaction(World world)
         {
+            const int descendantPrice = 500;
             Simple2DWorld sworld = (Simple2DWorld)world;
             int worldWidth = sworld.Environment.Size.Width;
             int worldHeight = sworld.Environment.Size.Height;
             foreach (var bot in sworld.LifeForms.Values)
             {
-                bot.States["EnergyState"].Value -= 100; // обсудить цену одного хода
+                bot.States["EnergyState"].Value -= 10; 
                 StateMetadata botMetadata = bot.States["GenotypeState"].GetMetadata();
                 BotLifeForm botOnPlace;
                 int X = bot.LifeFormPlace.Points[0].X;
@@ -205,7 +206,7 @@ namespace CyberLife.Simple2DWorld
                             }
                             else
                             {
-                                bot.States["EnergyState"].Value += 200; // обсудить кол-во получаемой энергии
+                                bot.States["EnergyState"].Value += botOnPlace.States["EnergyState"].Value * OrganicCollapseEnergyFactor;
                                 sworld.LifeForms.Remove(botOnPlace.Id);
                             }
                         }
@@ -213,33 +214,21 @@ namespace CyberLife.Simple2DWorld
                     case "DoDescendant":
                         if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
-                            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState> { };
                             long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
-                            EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии                               
-                            GenotypeState genotype = new GenotypeState("GenotypeState", 0, id);
-                            ColorState color = new ColorState("ColorState", 0, id, ColorType.Default);
-                            states.Add("EnergyState", energy);
-                            states.Add("GenotypeState", genotype);
-                            states.Add("ColorState", color);
-                            genotype.SetGenom(botMetadata["Genom"]); // устанавливаем геном предка
+                            Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
+                            ((GenotypeState)states["GenotypeState"]).SetGenom(botMetadata["Genom"]);
                             BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
-                            bot.States["EnergyState"].Value -= 500; // обсудить "цену" потомка
+                            bot.States["EnergyState"].Value -= descendantPrice; 
                         }
                         break;
                     case "ForsedReproduction":
                         if (sworld.IsAroundEmpty(ref X, ref Y))
                         {
-                            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState> { };
                             long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
-                            EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии                               
-                            GenotypeState genotype = new GenotypeState("GenotypeState", 0, id);
-                            ColorState color = new ColorState("ColorState", 0, id, ColorType.Default);
-                            states.Add("EnergyState", energy);
-                            states.Add("GenotypeState", genotype);
-                            states.Add("ColorState", color);
-                            genotype.SetGenom(botMetadata["Genom"]); // устанавливаем геном предка
+                            Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
+                            ((GenotypeState)states["GenotypeState"]).SetGenom(botMetadata["Genom"]);
                             BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
-                            bot.States["EnergyState"].Value -= 500; // обсудить "цену" потомка
+                            bot.States["EnergyState"].Value -= descendantPrice; 
                         }
                         break;
                     case "Photosynthesis":

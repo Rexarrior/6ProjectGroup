@@ -24,11 +24,13 @@ namespace CyberLife.Simple2DWorld
         /// Получает состояния, неоходимые для инициализации бота
         /// </summary>
         /// <returns>Состояния формы жизни "Бот"</returns>
-        private static Dictionary<string, LifeFormState> _getStates()
+        public static Dictionary<string, LifeFormState> _getStates(long id = 0)
         {
-            EnergyState energy = new EnergyState("EnergyState", 0);
-            GenotypeState genotype = new GenotypeState("GenotypeState", 0,/*тут должен быть id*/  0);
-            ColorState color = new ColorState("ColorState", 0 ,/*тут должен быть id*/  0,ColorType.Default);
+            if(id == 0)
+            { /*Как-то заполняем id (или не знаполняем)*/ }
+            EnergyState energy = new EnergyState("EnergyState", 300);
+            GenotypeState genotype = new GenotypeState("GenotypeState", 0,id);
+            ColorState color = new ColorState("ColorState", 0 ,id,ColorType.Default);
             Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState>(3)
             {
                 {"EnergyState", energy},
