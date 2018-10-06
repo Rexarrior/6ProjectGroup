@@ -133,17 +133,18 @@ namespace CyberLife.Simple2DWorld
         private static void _genotypeReaction(World world)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
-            int Width = sworld.Environment.Size.Width;
-            int Height = sworld.Environment.Size.Height;
-            foreach(var bot in sworld.LifeForms)
+            int worldWidth = sworld.Environment.Size.Width;
+            int worldHeight = sworld.Environment.Size.Height;
+            foreach (var bot in sworld.LifeForms.Values)
             {
-                GenotypeState genotypeState = (GenotypeState)bot.Value.States["GenotypeState"];
-                StateMetadata botMetadata = genotypeState.GetMetadata();
-                if (botMetadata["Action"].Contains("|")) 
+                bot.States["EnergyState"].Value -= 100; // обсудить цену одного хода
+                StateMetadata botMetadata = bot.States["GenotypeState"].GetMetadata();
+                BotLifeForm botOnPlace;
+                int X = bot.LifeFormPlace.Points[0].X;
+                int Y = bot.LifeFormPlace.Points[0].Y;
+                if (botMetadata["Action"].Contains('|'))
                 {
-                    int X = bot.Value.LifeFormPlace.Points[0].X;
-                    int Y = bot.Value.LifeFormPlace.Points[0].Y;
-                    switch(botMetadata["Action"].Split('|')[1])
+                    switch (botMetadata["Action"].Split('|')[1])
                     {
                         case "TopLeft":
                             X--;
@@ -176,42 +177,80 @@ namespace CyberLife.Simple2DWorld
                         default:
                             throw new ArgumentException("Неопределенное направление  " + botMetadata["Action"].Split('|')[1]);
                     }
-                    if (Y > Height)
-                        Y = Height;
+                    if (Y > worldHeight - 1)
+                        Y = worldHeight - 1;
                     if (Y < 0)
                         Y = 0;
-                    if (X > Width)
+                    if (X > worldWidth - 1)
                         X = 0;
                     if (X < 0)
-                        X = Width;
-                    switch (botMetadata["Action"].Split('|')[0])
-                    {
-                        case "Move":
-                            if (sworld.IsPlaceEmpty(X, Y))
+                        X = worldWidth - 1;
+                }
+                switch (botMetadata["Action"].Split('|')[0])
+                {
+                    case "Move":
+                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            bot.LifeFormPlace.Points[0].X = X;
+                            bot.LifeFormPlace.Points[0].Y = Y;
+                        }
+                        break;
+                    case "Eat":
+                        if (!sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            if (((EnergyState)botOnPlace.States["EnergyState"]).IsDead)
                             {
-                                bot.Value.LifeFormPlace.Points[0].X = X;
-                                bot.Value.LifeFormPlace.Points[0].Y = Y;
+                                bot.States["EnergyState"].Value += botOnPlace.States["EnergyState"].Value;
+                                sworld._organic.Remove(botOnPlace.Id);
                             }
-                            break;
-                        case "CheckEnergy":
-                           //todo
-                            break;
-                        case "Eat":
-                            if(sworld.IsPlaceEmpty(X,Y))
+                            else
                             {
-
+                                bot.States["EnergyState"].Value += 200; // обсудить кол-во получаемой энергии
+                                sworld.LifeForms.Remove(botOnPlace.Id);
                             }
-                            break;
-                        case "DoDescendant":
-                            if(sworld.IsPlaceEmpty(X,Y))
-                            {
-                                EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии
-                                GenotypeState genotype = new GenotypeState("GenotypeState", 0,sworld.LifeForms[sworld.LifeForms.co]);
-                                ColorState color = new ColorState("ColorState", 0,/*тут должен быть id*/  0, ColorType.Default);
-                                BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array,new Point(X,Y)),
-                            }
-                            break;
-                    }
+                        }
+                        break;
+                    case "DoDescendant":
+                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState> { };
+                            long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
+                            EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии                               
+                            GenotypeState genotype = new GenotypeState("GenotypeState", 0, id);
+                            ColorState color = new ColorState("ColorState", 0, id, ColorType.Default);
+                            states.Add("EnergyState", energy);
+                            states.Add("GenotypeState", genotype);
+                            states.Add("ColorState", color);
+                            genotype.SetGenom(botMetadata["Genom"]); // устанавливаем геном предка
+                            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
+                            bot.States["EnergyState"].Value -= 500; // обсудить "цену" потомка
+                        }
+                        break;
+                    case "ForsedReproduction":
+                        if (sworld.IsAroundEmpty(ref X, ref Y))
+                        {
+                            Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState> { };
+                            long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
+                            EnergyState energy = new EnergyState("EnergyState", 300); // обсудить начальное значение энергии                               
+                            GenotypeState genotype = new GenotypeState("GenotypeState", 0, id);
+                            ColorState color = new ColorState("ColorState", 0, id, ColorType.Default);
+                            states.Add("EnergyState", energy);
+                            states.Add("GenotypeState", genotype);
+                            states.Add("ColorState", color);
+                            genotype.SetGenom(botMetadata["Genom"]); // устанавливаем геном предка
+                            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
+                            bot.States["EnergyState"].Value -= 500; // обсудить "цену" потомка
+                        }
+                        break;
+                    case "Photosynthesis":
+                        // получение энергии
+                        break;
+                    case "Extraction":
+                        // получение энергии
+                        break;
+                    case "CheckEnergy":
+                        //todo
+                        break;
                 }
             }
         }
@@ -221,6 +260,117 @@ namespace CyberLife.Simple2DWorld
         private static void _colorReaction(World world)
         {
 
+        }
+
+
+
+        /// <summary>
+        /// Определяет,свободна ли выбранная клетка,и если нет,то возвращает форму жизни в данной клетке
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="botOnPlace"></param>
+        /// <returns></returns>
+        public bool IsPlaceEmpty(int X, int Y,out BotLifeForm botOnPlace)
+        {
+            foreach (var Bot in LifeForms.Values)
+            {
+                if (Bot.LifeFormPlace.Points[0].X == X &&
+                    Bot.LifeFormPlace.Points[0].Y == Y)
+                {
+                    botOnPlace = (BotLifeForm)Bot;
+                    return false;
+                }
+            }
+            foreach(var Bot in Organic.Values)
+            {
+                if (Bot.LifeFormPlace.Points[0].X == X &&
+                    Bot.LifeFormPlace.Points[0].Y == Y)
+                {
+                    botOnPlace = (BotLifeForm)Bot;
+                    return false;
+                }
+            }
+            botOnPlace = null;
+            return true;
+        }
+
+        /// <summary>
+        /// Определяет,есть ли вокруг данной клетки свободное пространство,возвращает bool и передаёт координаты клетки в ref параметрах,
+        /// в противном случае возвращает false и исходные координаты центральной клетки
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <returns></returns>
+        public bool IsAroundEmpty(ref int X,ref int Y)
+        {
+            BotLifeForm bot = null;
+            int workX = X;
+            int workY = Y;
+            workY++;
+            workX--;
+            for (int i = 1; i < 4; i++)
+            {
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if(IsPlaceEmpty(workX,workY,out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }
+                workY--;
+            }
+            workX++;
+            workY--;
+            for (int i = 1; i < 4; i++)
+            {
+                workY++;
+                if (i == 2)
+                {
+                    continue;
+                }
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if (IsPlaceEmpty(workX, workY, out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }                
+            }
+            workX++;            
+            for (int i = 1; i < 4; i++)
+            {
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if (IsPlaceEmpty(workX, workY, out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }
+                workY--;
+            }
+            return false;
         }
 
         #endregion

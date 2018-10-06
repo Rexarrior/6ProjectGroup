@@ -26,16 +26,11 @@ namespace CyberLife.Simple2DWorld
         Move,
         Eat,
         DoDescendant,
-        ForsedReproduction = 6,
+        Extraction,
+        ForsedReproduction = 7,
         None = 0
     }
-    /*
-     Команда 1 = проверить энергию
-     Команда 2 = фотосинтез
-     Команда 3 = передвижение
-     Команда 4 = съесть
-     Команда 5 = отпочковать потомка
-    */
+
     public class GenotypeState : LifeFormState
     {
         #region fields
@@ -125,6 +120,11 @@ namespace CyberLife.Simple2DWorld
                         NextStep();
                         Update(metadata);
                         break;
+                    case 6:
+                        _action = Actions.Extraction;
+                        NextStep();
+                        break;
+
                 }
             }
         }
@@ -137,7 +137,12 @@ namespace CyberLife.Simple2DWorld
         /// <param name="str"></param>
         public void SetGenom(string str)
         {
+            Random rnd = new Random();
             _genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
+            if(rnd.Next(0,100) == 1)
+            {
+                _genom[rnd.Next(0, 64)] =(Byte) rnd.Next(0, 64); 
+            }
         }
 
         public override StateMetadata GetMetadata()
@@ -185,7 +190,7 @@ namespace CyberLife.Simple2DWorld
                 .Concat(Enumerable.Repeat(3, 10))
                 .Concat(Enumerable.Repeat(4, 10))
                 .Concat(Enumerable.Repeat(5, 10))
-                .Concat(Enumerable.Repeat(0, 14)).ToList();
+                .Concat(Enumerable.Repeat(6, 14)).ToList();
             foreach (int i in workingList)
             {
                 _genom.Add(Convert.ToByte(i));

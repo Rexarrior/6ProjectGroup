@@ -61,10 +61,9 @@ namespace CyberLife.Simple2DWorld
                 case "Photosynthesis":
                     _lastEnergyReactions.Enqueue("Photosynthesis");
                     break;
-                case "Meat": // Имя придумано,позже необходимо привести в соответсвие с текстом команды
-                    _lastEnergyReactions.Enqueue("Meat");
-                    break;
                 default:
+                    if (worldMetadata[_lifeFormId]["GenorypeState"]["Action"].Split('|')[0] == "Eat")
+                        _lastEnergyReactions.Enqueue("Eat");
                     break;
             }
             SetRGB();
@@ -111,8 +110,7 @@ namespace CyberLife.Simple2DWorld
                                 G++;
                                 _lastEnergyReactions.Enqueue("Photosynthesis");
                                 break;
-                            case "Meat": // Имя придумано,позже необходимо привести в соответсвие с текстом команды
-                                R++;
+                            case "Eat": 
                                 break;
                         }
                     }

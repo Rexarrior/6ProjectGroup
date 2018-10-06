@@ -11,9 +11,6 @@ using NLog;
 
 namespace CyberLife.Simple2DWorld
 {
-    /// <summary>
-    /// Природное явление "солнце". Не реализовано.
-    /// </summary>
     class SunPhenomen : IPhenomen
     {
         Logger log = LogManager.GetCurrentClassLogger();
