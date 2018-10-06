@@ -108,9 +108,9 @@ namespace CyberLife.Simple2DWorld
                                 break;
                             case "Photosynthesis":
                                 G++;
-                                _lastEnergyReactions.Enqueue("Photosynthesis");
                                 break;
-                            case "Eat": 
+                            case "Eat":
+                                R++;
                                 break;
                         }
                     }
