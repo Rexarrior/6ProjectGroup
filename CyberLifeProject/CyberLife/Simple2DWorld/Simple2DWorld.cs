@@ -214,20 +214,14 @@ namespace CyberLife.Simple2DWorld
                     case "DoDescendant":
                         if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
-                            long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
-                            Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
-                            ((GenotypeState)states["GenotypeState"]).SetGenom(botMetadata["Genom"]);
-                            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
-                            bot.States["EnergyState"].Value -= descendantPrice; 
+                            GenotypeState.DoDescendant(sworld, bot, X, Y);
+                            bot.States["EnergyState"].Value -= descendantPrice;
                         }
                         break;
                     case "ForsedReproduction":
                         if (sworld.IsAroundEmpty(ref X, ref Y))
                         {
-                            long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
-                            Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
-                            ((GenotypeState)states["GenotypeState"]).SetGenom(botMetadata["Genom"]);
-                            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
+                            GenotypeState.DoDescendant(sworld, bot, X, Y);
                             bot.States["EnergyState"].Value -= descendantPrice; 
                         }
                         break;

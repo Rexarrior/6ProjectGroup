@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    class BotLifeForm: LifeForm
+    public class BotLifeForm: LifeForm
     {
         #region fields
 
