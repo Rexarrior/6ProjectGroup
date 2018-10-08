@@ -176,10 +176,19 @@ namespace CyberLife.Simple2DWorld
         }
 
 
+        public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms)
+        {
+            return  Enumerable.Range(0, lifeForms.Count + 1).
+                               Select(x => (Int64)x).
+                               First(x => !lifeForms.ContainsKey(x)); 
+        }
+
+
+
         public static void DoDescendant(World world,LifeForm bot,int X,int Y)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
-            long id = Enumerable.Range(0, sworld.LifeForms.Count + 1).Select(x => (Int64)x).Where(x => !sworld.LifeForms.ContainsKey(x)).First();
+            long id = GetFreeId(sworld.LifeForms);
             Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
             ((GenotypeState)states["GenotypeState"]).SetGenom(bot.States["GenotypeState"].GetMetadata()["Genom"]);
             BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
