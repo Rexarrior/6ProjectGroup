@@ -67,7 +67,7 @@ namespace CyberLife.Simple2DWorld
                 throw ex;
             }
 
-            Season season = (Season)(int.Parse(worldMetadata.EnvironmentMetadata["SeasonsPhenomen"]["season"]));
+            Season season = SeasonsPhenomen.ParseSeason(worldMetadata.EnvironmentMetadata["SeasonsPhenomen"]["season"]);
             log.Info(LogPhenomenMessages.CurrentSeason, season.ToString());
             switch (season)
             {

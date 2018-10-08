@@ -13,7 +13,7 @@ namespace CyberLife.Simple2DWorld
 
         private Bitmap map;
         private MainForm form;
-
+        private Task _showingTask; 
         #endregion
 
 
@@ -34,7 +34,8 @@ namespace CyberLife.Simple2DWorld
             {
                 map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
                 form = new MainForm();
-                form.Show();
+                _showingTask = new Task(form.Show);
+                _showingTask.Start();
             }
             foreach (var pair in metadata)
             {
@@ -45,7 +46,7 @@ namespace CyberLife.Simple2DWorld
                 Color color = Color.FromArgb(R, G, B);
                 map.SetPixel(pair.Value.Place.Points[0].X, pair.Value.Place.Points[0].Y, color);
             }
-            form.mapPicture.Image = GetMap();
+            form.UpdatePicture(map);
         }
 
 

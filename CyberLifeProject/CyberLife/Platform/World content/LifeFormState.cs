@@ -76,7 +76,7 @@ namespace CyberLife
                 throw new ArgumentException("name shouldn't be empty", nameof(name));
             if (double.IsNaN(value))
                 throw new ArgumentException("value shouldn't be NaN", nameof(value));
-            _params = Params;
+            _params = Params ?? new Dictionary<string, string>();
             _name = name;
             _value = value;
         }

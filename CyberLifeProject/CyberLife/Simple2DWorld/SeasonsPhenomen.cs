@@ -125,6 +125,37 @@ namespace CyberLife.Platform.World_content
             log.Info(LogPhenomenMessages.ChangeSeason, _season.ToString());
         }
 
+
+
+
+        public static Season ParseSeason(string season)
+        {
+            switch (season)
+            {
+                case "Winter":
+                {
+                    return Season.Winter;
+                }
+                case "Autumn":
+                {
+                    return Season.Autumn;
+                }
+                case "Summer":
+                {
+                    return Season.Summer;
+
+                }
+                case "Spring":
+                {
+                    return Season.Spring;
+
+                }
+                default:
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
         #endregion
 
 

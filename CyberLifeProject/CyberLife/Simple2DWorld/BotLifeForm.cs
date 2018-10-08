@@ -49,7 +49,7 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         /// <param name="place">Пространство, занимаемое ботом</param>
         /// <param name="states">Состояния бота</param>
-        public BotLifeForm(Place place, Dictionary<string, LifeFormState> states) : base(place, states)
+        public BotLifeForm(Place place, long id,  Dictionary<string, LifeFormState> states) : base(place,id, states)
         {
 
         }
@@ -70,7 +70,7 @@ namespace CyberLife.Simple2DWorld
         /// Инициирует бота базовыми состояниями и случайной точкой на карте.
         /// </summary>
         /// <param name="mapsize">Размер карты</param>
-        public BotLifeForm(MapSize mapsize,long id):this(Place.RandomPlace(mapsize), _getStates(id))
+        public BotLifeForm(MapSize mapsize,long id):this(Place.RandomPlace(mapsize),id,  _getStates(id))
         {
 
         }

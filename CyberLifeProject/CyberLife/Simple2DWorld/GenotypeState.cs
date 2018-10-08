@@ -191,7 +191,7 @@ namespace CyberLife.Simple2DWorld
             long id = GetFreeId(sworld.LifeForms);
             Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
             ((GenotypeState)states["GenotypeState"]).SetGenom(bot.States["GenotypeState"].GetMetadata()["Genom"]);
-            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), states);
+            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id, states);
             sworld.LifeForms.Add(id, lifeForm);
         }
 

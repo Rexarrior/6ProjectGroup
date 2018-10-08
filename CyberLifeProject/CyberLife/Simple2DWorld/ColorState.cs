@@ -16,7 +16,7 @@ namespace CyberLife.Simple2DWorld
     {
         #region fields
         private ColorType _colorType;
-        private Queue<string> _lastEnergyReactions;
+        private readonly Queue<string> _lastEnergyReactions;
         private byte R;
         private byte G;
         private byte B;
@@ -139,11 +139,13 @@ namespace CyberLife.Simple2DWorld
         {
             _lifeFormId = id;
             this._colorType = colorType;
+            _lastEnergyReactions = new Queue<string>();
         }
 
 
         public ColorState(StateMetadata metadata) : base(metadata)
         {
+            _lastEnergyReactions = new Queue<string>();
             byte[] bytes = metadata["Color"].Split(' ').Select(x => byte.Parse(x)).ToArray();
             R = bytes[0];
             G = bytes[1];

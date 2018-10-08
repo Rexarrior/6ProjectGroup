@@ -257,28 +257,35 @@ namespace CyberLife
         {
             if (placeType == PlaceType.Array)
                 _points = points ?? throw new ArgumentNullException(nameof(points));
-            if (PlaceType == PlaceType.Rectangle)
-            {
-                _points = points ?? throw new ArgumentNullException(nameof(points));
-                if (points.Count != 2)
-                    throw new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
-                                                "If more or less points has been defined, Exception will be thrown.",
-                        nameof(points));
-
-                if (_points[0].X > _points[1].X)
+            else
+                if (placeType == PlaceType.Rectangle)
                 {
-                    var tmp = _points[0].X;
-                    _points[0].X = _points[1].X;
-                    _points[1].X = tmp;
+                    _points = points ?? throw new ArgumentNullException(nameof(points));
+                    if (points.Count != 2)
+                        throw new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
+                                                    "If more or less points has been defined, Exception will be thrown.",
+                            nameof(points));
+
+                    if (_points[0].X > _points[1].X)
+                    {
+                        var tmp = _points[0].X;
+                        _points[0].X = _points[1].X;
+                        _points[1].X = tmp;
+                    }
+
+                    if (_points[0].Y > _points[1].Y)
+                    {
+                        var tmp = _points[0].Y;
+                        _points[0].Y = _points[1].Y;
+                        _points[1].Y = tmp;
+                    }
+                }
+                else
+                {
+                      throw new NotImplementedException();
+
                 }
 
-                if (_points[0].Y > _points[1].Y)
-                {
-                    var tmp = _points[0].Y;
-                    _points[0].Y = _points[1].Y;
-                    _points[1].Y = tmp;
-                }
-            }
         }
 
 

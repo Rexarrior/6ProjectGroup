@@ -79,17 +79,20 @@ namespace CyberLife
 
         #region constructors
 
+       
+
+
         /// <summary>
         /// Инициализирует экземпляр формы жизни 
         /// из занимаемого ей пространства и состояний, которыми она обладает. 
         /// </summary>
         /// <param name="place">Пространство, которое будет занимать эта форма жизни</param>
         /// <param name="states">Состояния этой формы жизни</param>
-        public LifeForm(Place place, Dictionary<string, LifeFormState> states)
+        public LifeForm(Place place, long id, Dictionary<string, LifeFormState> states)
         {
             _lifeFormPlace = place ?? throw new ArgumentNullException(nameof(place));
             _states = states ?? throw new ArgumentNullException(nameof(states));
-            _id = DateTime.UtcNow.Second;
+            _id = id;
         }
 
 

@@ -53,8 +53,14 @@ namespace CyberLife
                 
                 lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));
             }
+
+            foreach (var reaction in _reactions.Values)
+            {
+                reaction(this);
+            }
             log.Trace("Текущий Age = " + _age.ToString());
             _age++;
+            _visualizer?.Update(this.GetMetadata());
             log.Trace(CommonLogMessages.EndMethod, "World.Update");
         }
 
