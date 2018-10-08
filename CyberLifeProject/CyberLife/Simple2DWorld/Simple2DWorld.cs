@@ -62,7 +62,7 @@ namespace CyberLife.Simple2DWorld
             List<LifeForm> lifeForms = new List<LifeForm>(count);
             for (int i = 0; i < count; i++)
             {
-                lifeForms.Add(new BotLifeForm(mapsize));
+                lifeForms.Add(new BotLifeForm(mapsize, i));
             }
 
             return lifeForms;
