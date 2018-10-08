@@ -186,6 +186,7 @@ namespace CyberLife
             log.Trace(CommonLogMessages.EndMethod, "ReplaceReaction");
             return true;
         }
+
         #endregion
 
 
