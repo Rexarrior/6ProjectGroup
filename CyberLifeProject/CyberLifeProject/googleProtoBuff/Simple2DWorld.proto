@@ -1,0 +1,12 @@
+syntax = "proto3";
+package CyberLife.Protobuff.Simple2DWorld;
+
+
+import "metadata.proto";
+
+
+message Simple2DWorldMetadata
+{
+    Metadata.WorldMetadata worldmetadata = 1; 
+    repeated Metadata.LifeFormMetadata organicMetadata  = 2; 
+}
