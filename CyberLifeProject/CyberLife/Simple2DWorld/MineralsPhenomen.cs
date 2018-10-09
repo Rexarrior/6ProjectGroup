@@ -169,6 +169,7 @@ namespace CyberLife.Simple2DWorld
             points.Add(new Point(0, mapSize.Height *(PercentOfMap/100)));
             points.Add(new Point(mapSize.Width, mapSize.Height));
             _place = new Place(points, PlaceType.Rectangle);
+            _place.PlaceType = PlaceType.Rectangle;
             log.Trace(LogPhenomenMessages.OkConstructor, "MineralsPhenomen");
         }
 
