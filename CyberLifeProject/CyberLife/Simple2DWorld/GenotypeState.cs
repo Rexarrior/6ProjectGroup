@@ -35,6 +35,7 @@ namespace CyberLife.Simple2DWorld
     public class GenotypeState : LifeFormState
     {
         Random rnd = new Random();
+
         #region fields
 
         Directions _direction;
@@ -47,7 +48,7 @@ namespace CyberLife.Simple2DWorld
 
 
         #region properties
-
+         
         #endregion
 
 
@@ -59,11 +60,6 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            if (!metadata.ContainsKey(_id)) // случается так,что формы id бота нет в словаре,почему - непонятно.Надо будет разобраться,а пока так
-            {
-            }
-            else
-            {
                 if (metadata[_id]["EnergyState"].ContainsKey("ForsedReproduction"))
                 {
                     _action = Actions.ForsedReproduction;
@@ -81,7 +77,14 @@ namespace CyberLife.Simple2DWorld
                             Update(metadata);
                             break;
                         case 2:
-                            _action = Actions.Photosynthesis;
+                            if (metadata.EnvironmentMetadata["SunPhenomen"].Place.IsIn(new Point(metadata[_id].Place.Points[0].X, metadata[_id].Place.Points[0].Y)))
+                            {
+                                _action = Actions.Photosynthesis;
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                            }
                             NextStep();
                             break;
                         case 3:
@@ -128,13 +131,20 @@ namespace CyberLife.Simple2DWorld
                             Update(metadata);
                             break;
                         case 6:
-                            _action = Actions.Extraction;
+                            if (metadata.EnvironmentMetadata["MineralsPhenomen"].Place.IsIn(new Point(metadata[_id].Place.Points[0].X, metadata[_id].Place.Points[0].Y)))
+                            {
+                                _action = Actions.Extraction;
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                            }
                             NextStep();
                             break;
 
                     }
                 }
-            }
+            
         }
 
 

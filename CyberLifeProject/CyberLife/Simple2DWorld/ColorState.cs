@@ -52,8 +52,6 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
-            if (worldMetadata.ContainsKey(_lifeFormId)) // почему-то может не быть id,надо разобраться
-            {
                 if (!worldMetadata[_lifeFormId]["EnergyState"].ContainsKey("Dead"))
                 {
                     _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
@@ -68,7 +66,7 @@ namespace CyberLife.Simple2DWorld
                             _lastEnergyReactions.Enqueue("Photosynthesis");
                             break;
                         default:
-                            if (worldMetadata[_lifeFormId]["GenotypeState"]["Action"].Split('|')[0] == "Eat")
+                            if (worldMetadata[_lifeFormId]["GenotypeState"]["Action"].Split('|')[0] == "RealEat")
                                 _lastEnergyReactions.Enqueue("Eat");
                             break;
                     }
@@ -78,7 +76,7 @@ namespace CyberLife.Simple2DWorld
                 {
                     _color = Color.FromArgb(132, 132, 132);
                 }
-            }
+            
         }
 
 

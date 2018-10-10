@@ -45,7 +45,7 @@ namespace CyberLife.Simple2DWorld
                 map.SetPixel(pair.Value.Place.Points[0].X, pair.Value.Place.Points[0].Y, color);
             }
             form.UpdatePicture(map);
-            // map.Save(@"D:\" + i.ToString() + ".jpg");
+             //map.Save(@"D:\" + i.ToString() + ".jpg");
             // i ++;
         }
 

@@ -52,9 +52,14 @@ namespace CyberLife
             _environment.Update(metadata);
             foreach (var bot in LifeForms.Values)
             {
-                ((EnergyState)bot.States["EnergyState"]).Update(metadata);
-                ((GenotypeState)bot.States["GenotypeState"]).Update(metadata);
-                ((ColorState)bot.States["ColorState"]).Update(metadata);
+                EnergyState energy = ((EnergyState)bot.States["EnergyState"]);
+                GenotypeState genotype = ((GenotypeState)bot.States["GenotypeState"]);
+                ColorState color = ((ColorState)bot.States["ColorState"]);
+                genotype._id = bot.Id;
+                color.LifeFormId = bot.Id;
+                energy.Update(metadata);
+                genotype.Update(metadata);
+                color.Update(metadata);
             }
             foreach (var lifeForm in LifeForms.Values)
             {
