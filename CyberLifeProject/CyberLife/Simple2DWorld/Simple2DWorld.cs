@@ -211,6 +211,7 @@ namespace CyberLife.Simple2DWorld
                                 bot.States["EnergyState"].Value += botOnPlace.States["EnergyState"].Value * OrganicCollapseEnergyFactor;
                                 sworld.LifeForms.Remove(botOnPlace.Id);
                             }
+                            botMetadata["Action"] = "RealEat";
                         }
                         break;
                     case "DoDescendant":
