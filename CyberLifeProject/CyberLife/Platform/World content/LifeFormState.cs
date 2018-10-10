@@ -54,7 +54,6 @@ namespace CyberLife
         {
             if (stateMetadata.Name != _name)
                 throw new ArgumentException("metadata of another state given.", nameof(stateMetadata));
-
             _value += stateMetadata.Value; 
             
         }
@@ -73,10 +72,10 @@ namespace CyberLife
         public LifeFormState(string name, double value, Dictionary<string, string> Params)
         {
             if (name == "")
-                throw new ArgumentException("name shouldn't be empty", "name");
+                throw new ArgumentException("name shouldn't be empty", nameof(name));
             if (double.IsNaN(value))
-                throw new ArgumentException("value shouldn't be NaN", "value");
-            _params = Params ?? throw new ArgumentNullException("empty dictionary parameters");
+                throw new ArgumentException("value shouldn't be NaN", nameof(value));
+            _params = Params ?? new Dictionary<string, string>();
             _name = name;
             _value = value;
         }
@@ -90,7 +89,7 @@ namespace CyberLife
         public LifeFormState(StateMetadata metadata)
         {
             if (metadata == null)
-                throw new ArgumentNullException("metadata");
+                throw new ArgumentNullException(nameof(metadata));
 
             _name = metadata.Name;
             _value = metadata.Value;

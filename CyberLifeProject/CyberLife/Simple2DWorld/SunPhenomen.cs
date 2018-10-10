@@ -11,9 +11,6 @@ using NLog;
 
 namespace CyberLife.Simple2DWorld
 {
-    /// <summary>
-    /// Природное явление "солнце". Не реализовано.
-    /// </summary>
     class SunPhenomen : IPhenomen
     {
         Logger log = LogManager.GetCurrentClassLogger();
@@ -70,7 +67,7 @@ namespace CyberLife.Simple2DWorld
                 throw ex;
             }
 
-            Season season = (Season)(int.Parse(worldMetadata.EnvironmentMetadata["SeasonsPhenomen"]["season"]));
+            Season season = SeasonsPhenomen.ParseSeason(worldMetadata.EnvironmentMetadata["SeasonsPhenomen"]["season"]);
             log.Info(LogPhenomenMessages.CurrentSeason, season.ToString());
             switch (season)
             {
@@ -241,6 +238,7 @@ namespace CyberLife.Simple2DWorld
             points.Add(new Point(0, 0));            
             points.Add(new Point(mapSize.Width, (int)Math.Round(mapSize.Height * SunDepthFactor)));
             _place = new Place(points, PlaceType.Rectangle);
+            _place.PlaceType = PlaceType.Rectangle;
             log.Trace(LogPhenomenMessages.OkConstructor, "SunPhenomen");
         }
 

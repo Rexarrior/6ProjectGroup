@@ -62,7 +62,7 @@ namespace CyberLife.Simple2DWorld
             List<LifeForm> lifeForms = new List<LifeForm>(count);
             for (int i = 0; i < count; i++)
             {
-                lifeForms.Add(new BotLifeForm(mapsize));
+                lifeForms.Add(new BotLifeForm(mapsize, i));
             }
 
             return lifeForms;
@@ -132,7 +132,113 @@ namespace CyberLife.Simple2DWorld
 
         private static void _genotypeReaction(World world)
         {
+            const int descendantPrice = 500;
+            Simple2DWorld sworld = (Simple2DWorld)world;
+            int worldWidth = sworld.Environment.Size.Width;
+            int worldHeight = sworld.Environment.Size.Height;
 
+            foreach (var bot in sworld.LifeForms.Values.ToList())
+
+            {
+                bot.States["EnergyState"].Value -= 10; 
+                StateMetadata botMetadata = bot.States["GenotypeState"].GetMetadata();
+                BotLifeForm botOnPlace;
+                int X = bot.LifeFormPlace.Points[0].X;
+                int Y = bot.LifeFormPlace.Points[0].Y;
+                if (botMetadata["Action"].Contains('|'))
+                {
+                    switch (botMetadata["Action"].Split('|')[1])
+                    {
+                        case "TopLeft":
+                            X--;
+                            Y++;
+                            break;
+                        case "Top":
+                            Y++;
+                            break;
+                        case "TopRight":
+                            X++;
+                            Y++;
+                            break;
+                        case "Right":
+                            X++;
+                            break;
+                        case "BottomRight":
+                            X++;
+                            Y--;
+                            break;
+                        case "Bottom":
+                            Y--;
+                            break;
+                        case "BottomLeft":
+                            X--;
+                            Y--;
+                            break;
+                        case "Left":
+                            X--;
+                            break;
+                        default:
+                            throw new ArgumentException("Неопределенное направление  " + botMetadata["Action"].Split('|')[1]);
+                    }
+                    if (Y > worldHeight - 1)
+                        Y = worldHeight - 1;
+                    if (Y < 0)
+                        Y = 0;
+                    if (X > worldWidth - 1)
+                        X = 0;
+                    if (X < 0)
+                        X = worldWidth - 1;
+                }
+                switch (botMetadata["Action"].Split('|')[0])
+                {
+                    case "Move":
+                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            bot.LifeFormPlace.Points[0].X = X;
+                            bot.LifeFormPlace.Points[0].Y = Y;
+                        }
+                        break;
+                    case "Eat":
+                        if (!sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            if (((EnergyState)botOnPlace.States["EnergyState"]).IsDead)
+                            {
+                                bot.States["EnergyState"].Value += botOnPlace.States["EnergyState"].Value;
+                                sworld._organic.Remove(botOnPlace.Id);
+                            }
+                            else
+                            {
+                                bot.States["EnergyState"].Value += botOnPlace.States["EnergyState"].Value * OrganicCollapseEnergyFactor;
+                                sworld.LifeForms.Remove(botOnPlace.Id);
+                            }
+                            botMetadata["Action"] = "RealEat";
+                        }
+                        break;
+                    case "DoDescendant":
+                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        {
+                            GenotypeState.DoDescendant(sworld, bot, X, Y);
+                            bot.States["EnergyState"].Value -= descendantPrice;
+                        }
+                        break;
+                    case "ForsedReproduction":
+                        if (sworld.IsAroundEmpty(ref X, ref Y))
+                        {
+                            GenotypeState.DoDescendant(sworld, bot, X, Y);
+                            bot.States["EnergyState"].Value -= descendantPrice; 
+                        }
+                        break;
+                    case "Photosynthesis":
+                        // получение энергии
+                        break;
+                    case "Extraction":
+                        // получение энергии
+                        break;
+                    case "CheckEnergy":
+                        //todo
+                        break;
+                }
+            }
         }
 
 
@@ -140,6 +246,117 @@ namespace CyberLife.Simple2DWorld
         private static void _colorReaction(World world)
         {
 
+        }
+
+
+
+        /// <summary>
+        /// Определяет,свободна ли выбранная клетка,и если нет,то возвращает форму жизни в данной клетке
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="botOnPlace"></param>
+        /// <returns></returns>
+        public bool IsPlaceEmpty(int X, int Y,out BotLifeForm botOnPlace)
+        {
+            foreach (var Bot in LifeForms.Values)
+            {
+                if (Bot.LifeFormPlace.Points[0].X == X &&
+                    Bot.LifeFormPlace.Points[0].Y == Y)
+                {
+                    botOnPlace = (BotLifeForm)Bot;
+                    return false;
+                }
+            }
+            foreach(var Bot in Organic.Values)
+            {
+                if (Bot.LifeFormPlace.Points[0].X == X &&
+                    Bot.LifeFormPlace.Points[0].Y == Y)
+                {
+                    botOnPlace = (BotLifeForm)Bot;
+                    return false;
+                }
+            }
+            botOnPlace = null;
+            return true;
+        }
+
+        /// <summary>
+        /// Определяет,есть ли вокруг данной клетки свободное пространство,возвращает bool и передаёт координаты клетки в ref параметрах,
+        /// в противном случае возвращает false и исходные координаты центральной клетки
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <returns></returns>
+        public bool IsAroundEmpty(ref int X,ref int Y)
+        {
+            BotLifeForm bot = null;
+            int workX = X;
+            int workY = Y;
+            workY++;
+            workX--;
+            for (int i = 1; i < 4; i++)
+            {
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if(IsPlaceEmpty(workX,workY,out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }
+                workY--;
+            }
+            workX++;
+            workY--;
+            for (int i = 1; i < 4; i++)
+            {
+                workY++;
+                if (i == 2)
+                {
+                    continue;
+                }
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if (IsPlaceEmpty(workX, workY, out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }                
+            }
+            workX++;            
+            for (int i = 1; i < 4; i++)
+            {
+                if (workY > Environment.Size.Height - 1)
+                    workY = Environment.Size.Height - 1;
+                if (workY < 0)
+                    workY = 0;
+                if (workX > Environment.Size.Width - 1)
+                    workX = 0;
+                if (workX < 0)
+                    workX = Environment.Size.Width - 1;
+                if (IsPlaceEmpty(workX, workY, out bot))
+                {
+                    X = workX;
+                    Y = workY;
+                    return true;
+                }
+                workY--;
+            }
+            return false;
         }
 
         #endregion

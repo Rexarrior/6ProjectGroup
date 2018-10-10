@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    class BotLifeForm: LifeForm
+    public class BotLifeForm: LifeForm
     {
         #region fields
 
@@ -24,11 +24,11 @@ namespace CyberLife.Simple2DWorld
         /// Получает состояния, неоходимые для инициализации бота
         /// </summary>
         /// <returns>Состояния формы жизни "Бот"</returns>
-        private static Dictionary<string, LifeFormState> _getStates()
+        public static Dictionary<string, LifeFormState> _getStates(long id)
         {
-            EnergyState energy = new EnergyState("EnergyState", 0);
-            GenotypeState genotype = new GenotypeState("GenotypeState", 0,/*тут должен быть id*/  0);
-            ColorState color = new ColorState("ColorState", 0 ,/*тут должен быть id*/  0,ColorType.Default);
+            EnergyState energy = new EnergyState("EnergyState", 300);
+            GenotypeState genotype = new GenotypeState("GenotypeState", 0,id);
+            ColorState color = new ColorState("ColorState", 0 ,id,ColorType.Default);
             Dictionary<string, LifeFormState> states = new Dictionary<string, LifeFormState>(3)
             {
                 {"EnergyState", energy},
@@ -49,7 +49,7 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         /// <param name="place">Пространство, занимаемое ботом</param>
         /// <param name="states">Состояния бота</param>
-        public BotLifeForm(Place place, Dictionary<string, LifeFormState> states) : base(place, states)
+        public BotLifeForm(Place place, long id,  Dictionary<string, LifeFormState> states) : base(place,id, states)
         {
 
         }
@@ -70,7 +70,7 @@ namespace CyberLife.Simple2DWorld
         /// Инициирует бота базовыми состояниями и случайной точкой на карте.
         /// </summary>
         /// <param name="mapsize">Размер карты</param>
-        public BotLifeForm(MapSize mapsize):this(Place.RandomPlace(mapsize), _getStates())
+        public BotLifeForm(MapSize mapsize,long id):this(Place.RandomPlace(mapsize),id,  _getStates(id))
         {
 
         }

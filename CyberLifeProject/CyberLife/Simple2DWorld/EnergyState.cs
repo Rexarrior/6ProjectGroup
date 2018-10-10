@@ -86,8 +86,10 @@ namespace CyberLife.Simple2DWorld
         {
             StateMetadata metadata = base.GetMetadata();
             if (_state == Flags.EnergyCollapse)
-                metadata.Add(Flags.Dead.ToString(), "true");
-            metadata.Add(_state.ToString(), "true");
+            {
+                metadata.Add("Dead", "True");
+            }
+            metadata.Add(_state.ToString(), "True");
             return metadata;
         }
 

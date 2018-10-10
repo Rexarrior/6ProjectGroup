@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CyberLife.Simple2DWorld
 {
@@ -26,31 +27,28 @@ namespace CyberLife.Simple2DWorld
         Move,
         Eat,
         DoDescendant,
-        ForsedReproduction = 6,
+        Extraction,
+        ForsedReproduction = 7,
         None = 0
     }
-    /*
-     Команда 1 = проверить энергию
-     Команда 2 = фотосинтез
-     Команда 3 = передвижение
-     Команда 4 = съесть
-     Команда 5 = отпочковать потомка
-    */
+
     public class GenotypeState : LifeFormState
     {
+        Random rnd = new Random();
+
         #region fields
 
-        Directions direction;
-        Actions action;
+        Directions _direction;
+        Actions _action;
         private byte YTK;
-        private List<byte> genom;
-        public long id;
+        private List<byte> _genom;
+        public long _id;
 
         #endregion
 
 
         #region properties
-
+         
         #endregion
 
 
@@ -62,71 +60,93 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            if (metadata[id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
-            {
-                action = Actions.ForsedReproduction;
-                NextStep();
-            }
-            else
-            {
-                switch (genom[YTK])
+                if (metadata[_id]["EnergyState"].ContainsKey("ForsedReproduction"))
                 {
-                    case 1:
-                        action = Actions.CheckEnergy;
-                        NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
-                        NextStep();
-                        Update(metadata);
-                        break;
-                    case 2:
-                        action = Actions.Photosynthesis;
-                        NextStep();
-                        break;
-                    case 3:
-                        action = Actions.Move;
-                        NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
-                        NextStep();
-                        break;
-                    case 4:
-                        action = Actions.Eat;
-                        NextStep();
-                        direction = (Directions)((genom[YTK] / 8) + 1);
-                        NextStep();
-                        break;
-                    case 5:
-                        if (metadata[id]["EnergyState"]["EnergyState"] == "CanReproduce")
-                        {
-                            action = Actions.DoDescendant;
+                    _action = Actions.ForsedReproduction;
+                    NextStep();
+                }
+                else
+                {
+                    switch (_genom[YTK])
+                    {
+                        case 1:
+                            _action = Actions.CheckEnergy;
                             NextStep();
-                            direction = (Directions)((genom[YTK] / 8) + 1);
-                            NextStep();
-                        }
-                        else
-                        {
-                            action = Actions.None;
-                            direction = Directions.None;
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
                             NextStep();
                             Update(metadata);
-                        }
-                        break;
-                    default:
-                        try
-                        {
-                            YTK = Convert.ToByte(YTK + genom[YTK] - 1);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + genom[YTK] - 1).ToString(), e);
-                        }
-                        NextStep();
-                        action = Actions.None;
-                        direction = Directions.None;
-                        NextStep();
-                        Update(metadata);
-                        break;
+                            break;
+                        case 2:
+                            if (metadata.EnvironmentMetadata["SunPhenomen"].Place.IsIn(new Point(metadata[_id].Place.Points[0].X, metadata[_id].Place.Points[0].Y)))
+                            {
+                                _action = Actions.Photosynthesis;
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                            }
+                            NextStep();
+                            break;
+                        case 3:
+                            _action = Actions.Move;
+                            NextStep();
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
+                            NextStep();
+                            break;
+                        case 4:
+                            _action = Actions.Eat;
+                            NextStep();
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
+                            NextStep();
+                            break;
+                        case 5:
+                            if (metadata[_id]["EnergyState"].ContainsKey("CanReproduce"))
+                            {
+                                _action = Actions.DoDescendant;
+                                NextStep();
+                                _direction = (Directions)((_genom[YTK] / 8) + 1);
+                                NextStep();
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                                _direction = Directions.None;
+                                NextStep();
+                                Update(metadata);
+                            }
+                            break;
+                        default:
+                            try
+                            {
+                                YTK = Convert.ToByte(YTK + _genom[YTK] - 1);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new ArgumentException("Недопустимое значение YTK", (YTK + _genom[YTK] - 1).ToString(), e);
+                            }
+                            NextStep();
+                            _action = Actions.None;
+                            _direction = Directions.None;
+                            NextStep();
+                            Update(metadata);
+
+                            break;
+                        case 6:
+                            if (metadata.EnvironmentMetadata["MineralsPhenomen"].Place.IsIn(new Point(metadata[_id].Place.Points[0].X, metadata[_id].Place.Points[0].Y)))
+                            {
+                                _action = Actions.Extraction;
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                            }
+                            NextStep();
+                            break;
+
+                    }
+
                 }
-            }
+            
         }
 
 
@@ -137,26 +157,32 @@ namespace CyberLife.Simple2DWorld
         /// <param name="str"></param>
         public void SetGenom(string str)
         {
-            genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
+            const byte mutationPercent = 10;
+            _genom = str.Split('|').Select(x => Convert.ToByte(x)).ToList();
+            if(rnd.Next(1,(100/mutationPercent)+1) == 1)
+            {
+                _genom[rnd.Next(0, 64)] =(Byte) rnd.Next(0, 64); 
+            }
         }
 
         public override StateMetadata GetMetadata()
         {
             string strGenom = "";
             StateMetadata stateMetadata = base.GetMetadata();
-            if (action == Actions.Move || action == Actions.CheckEnergy
-                || action == Actions.Eat || action == Actions.DoDescendant)
+            if (_action == Actions.Move || _action == Actions.CheckEnergy
+                || _action == Actions.Eat || _action == Actions.DoDescendant)
             {
-                stateMetadata.Add("Action", action.ToString()+"|" + direction.ToString());
+                stateMetadata.Add("Action", _action.ToString()+"|" + _direction.ToString());
             }
             else
             {
-                stateMetadata.Add("Action", action.ToString());
+                stateMetadata.Add("Action", _action.ToString());
             }
-            foreach (byte b in genom)
+            foreach (byte b in _genom)
             {
                 strGenom += b.ToString() + "|";
             }
+            strGenom = strGenom.TrimEnd('|');
             stateMetadata.Add("Genom", "" + strGenom);
             stateMetadata.Add("YTK", YTK.ToString());
             return stateMetadata;
@@ -169,25 +195,49 @@ namespace CyberLife.Simple2DWorld
             YTK = (byte) ((YTK + 1) % 64);
         }
 
+
+
+        public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms, Dictionary<long, LifeForm> organic)
+        {
+            return  Enumerable.Range(0, lifeForms.Count + organic.Count+1).
+                               Select(x => (Int64)x).
+                               First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x)); 
+
+        }
+
+
+
+        public static void DoDescendant(World world,LifeForm bot,int X,int Y)
+        {
+            Simple2DWorld sworld = (Simple2DWorld)world;
+
+            long id = GetFreeId(sworld.LifeForms,sworld.Organic);
+            Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
+            ((GenotypeState)states["GenotypeState"]).SetGenom(bot.States["GenotypeState"].GetMetadata()["Genom"]);
+            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id, states);
+            sworld.LifeForms.Add(id, lifeForm);
+        }
+
         #endregion
+
 
         #region constructors
 
         public GenotypeState(string name, double value, long lifeFormId, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-            genom = new List<byte> { };
+            _genom = new List<byte> { };
             YTK = 0;
-            direction = Directions.None;
-            action = Actions.None;
+            _direction = Directions.None;
+            _action = Actions.None;
             List<int> workingList = Enumerable.Repeat(1, 10)
                 .Concat(Enumerable.Repeat(2, 10))
                 .Concat(Enumerable.Repeat(3, 10))
                 .Concat(Enumerable.Repeat(4, 10))
                 .Concat(Enumerable.Repeat(5, 10))
-                .Concat(Enumerable.Repeat(0, 14)).ToList();
+                .Concat(Enumerable.Repeat(6, 14)).ToList();
             foreach (int i in workingList)
             {
-                genom.Add(Convert.ToByte(i));
+                _genom.Add(Convert.ToByte(i));
             }
         }
 
@@ -196,8 +246,8 @@ namespace CyberLife.Simple2DWorld
         {
             YTK = Convert.ToByte(metadata["YTK"]);
             SetGenom(metadata["Genom"]);
-            direction = Directions.None;
-            action = Actions.None;
+            _direction = Directions.None;
+            _action = Actions.None;
         }
 
         #endregion

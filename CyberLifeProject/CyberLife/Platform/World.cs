@@ -5,6 +5,8 @@ using  System.IO;
 using Google.Protobuf;
 using NLog;
 using CyberLife.Platform.Logging.LogMessages;
+using CyberLife;
+using CyberLife.Simple2DWorld;
 
 namespace CyberLife
 {
@@ -48,13 +50,30 @@ namespace CyberLife
             WorldMetadata metadata = GetMetadata();
             log.Trace(CommonLogMessages.SetMetadata, "WorldMetadata", "World");
             _environment.Update(metadata);
+            foreach (var bot in LifeForms.Values)
+            {
+                EnergyState energy = ((EnergyState)bot.States["EnergyState"]);
+                GenotypeState genotype = ((GenotypeState)bot.States["GenotypeState"]);
+                ColorState color = ((ColorState)bot.States["ColorState"]);
+                genotype._id = bot.Id;
+                color.LifeFormId = bot.Id;
+                energy.Update(metadata);
+                genotype.Update(metadata);
+                color.Update(metadata);
+            }
             foreach (var lifeForm in LifeForms.Values)
             {
                 
                 lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));
             }
+
+            foreach (var reaction in _reactions.Values)
+            {
+                reaction(this);
+            }
             log.Trace("Текущий Age = " + _age.ToString());
             _age++;
+            _visualizer?.Update(this.GetMetadata());
             log.Trace(CommonLogMessages.EndMethod, "World.Update");
         }
 
@@ -186,6 +205,7 @@ namespace CyberLife
             log.Trace(CommonLogMessages.EndMethod, "ReplaceReaction");
             return true;
         }
+
         #endregion
 
 

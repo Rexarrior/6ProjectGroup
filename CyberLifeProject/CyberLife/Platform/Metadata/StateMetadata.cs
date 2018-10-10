@@ -71,15 +71,13 @@ namespace CyberLife
                 log.Error("Входной параметр double value не может быть NaN",ex);
                 throw ex;
             }
-            if (Params == null)
+            
+            if (Params != null)
             {
-                ArgumentNullException ex = new ArgumentNullException(nameof(Params));
-                log.Error(LogMetadataMessages.NullArgument, "Dictionary<string,string> Params", ex);
-                throw ex;
-            }
-            foreach (var pair in Params)
-            {
-                this.Add(pair.Key, pair.Value);
+                foreach (var pair in Params)
+                {
+                    this.Add(pair.Key, pair.Value);
+                }
             }
             Name = stateName;
             Value = value;
