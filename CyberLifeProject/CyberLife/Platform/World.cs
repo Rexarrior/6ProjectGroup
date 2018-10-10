@@ -5,6 +5,8 @@ using  System.IO;
 using Google.Protobuf;
 using NLog;
 using CyberLife.Platform.Logging.LogMessages;
+using CyberLife;
+using CyberLife.Simple2DWorld;
 
 namespace CyberLife
 {
@@ -48,6 +50,12 @@ namespace CyberLife
             WorldMetadata metadata = GetMetadata();
             log.Trace(CommonLogMessages.SetMetadata, "WorldMetadata", "World");
             _environment.Update(metadata);
+            foreach (var bot in LifeForms.Values)
+            {
+                ((EnergyState)bot.States["EnergyState"]).Update(metadata);
+                ((GenotypeState)bot.States["GenotypeState"]).Update(metadata);
+                ((ColorState)bot.States["ColorState"]).Update(metadata);
+            }
             foreach (var lifeForm in LifeForms.Values)
             {
                 

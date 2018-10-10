@@ -54,7 +54,6 @@ namespace CyberLife
         {
             if (stateMetadata.Name != _name)
                 throw new ArgumentException("metadata of another state given.", nameof(stateMetadata));
-
             _value += stateMetadata.Value; 
             
         }

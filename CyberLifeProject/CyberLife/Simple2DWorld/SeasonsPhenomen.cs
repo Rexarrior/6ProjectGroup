@@ -165,6 +165,7 @@ namespace CyberLife.Platform.World_content
         {
             log.Trace(LogPhenomenMessages.Constructor, "SeasonsPhenomen");
             _place = Place.Everything();
+            _place.PlaceType = PlaceType.Rectangle;
             log.Trace(LogPhenomenMessages.OkConstructor, "SeasonsPhenomen");
         }
 

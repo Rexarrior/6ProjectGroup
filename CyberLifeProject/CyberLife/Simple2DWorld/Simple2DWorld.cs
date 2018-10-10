@@ -136,7 +136,9 @@ namespace CyberLife.Simple2DWorld
             Simple2DWorld sworld = (Simple2DWorld)world;
             int worldWidth = sworld.Environment.Size.Width;
             int worldHeight = sworld.Environment.Size.Height;
-            foreach (var bot in sworld.LifeForms.Values)
+
+            foreach (var bot in sworld.LifeForms.Values.ToList())
+
             {
                 bot.States["EnergyState"].Value -= 10; 
                 StateMetadata botMetadata = bot.States["GenotypeState"].GetMetadata();

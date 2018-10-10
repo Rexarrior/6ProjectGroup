@@ -36,7 +36,7 @@ namespace CyberLife
     public class Place
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
-
+        static Random rnd = new Random();
         #region fields
 
         private List<Point> _points;
@@ -62,6 +62,7 @@ namespace CyberLife
         public PlaceType PlaceType
         {
             get { return _placeType; }
+            set { _placeType = value; }
         }
 
 
@@ -173,7 +174,7 @@ namespace CyberLife
                 return anotherPlace;
             if (IsEverything(anotherPlace))
                 return this;
-            if (_placeType == PlaceType.Array || anotherPlace.PlaceType == PlaceType.Array)
+            if (_placeType == PlaceType.Array && anotherPlace.PlaceType == PlaceType.Array)
                 return new Place(_points.Intersect(anotherPlace.Points).ToList());
 
             if (PlaceType == anotherPlace.PlaceType && PlaceType == PlaceType.Rectangle)
@@ -239,7 +240,7 @@ namespace CyberLife
         public static Place Everything()
         {
 
-            return new Place((new Point[2] { new Point(-1, -1), new Point(1, 1) }).ToList());
+            return new Place((new Point[2] { new Point(-1, -1), new Point(1, 1) }).ToList(),PlaceType.Rectangle);
         }
 
         #endregion
@@ -361,8 +362,6 @@ namespace CyberLife
         /// <returns>Случайная точка на карте</returns>
         public static Place RandomPlace(MapSize mapsize)
         {
-            Random rnd = new Random();
-
             Place ret = new Place(PlaceType.Array, new Point(rnd.Next(0, mapsize.Width), rnd.Next(0, mapsize.Height)));
             log.Debug(CommonLogMessages.RandomPlaceGenerated, ret.ToString());
             return ret;

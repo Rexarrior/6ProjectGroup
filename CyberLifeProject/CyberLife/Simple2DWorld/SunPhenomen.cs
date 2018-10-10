@@ -238,6 +238,7 @@ namespace CyberLife.Simple2DWorld
             points.Add(new Point(0, 0));            
             points.Add(new Point(mapSize.Width, (int)Math.Round(mapSize.Height * SunDepthFactor)));
             _place = new Place(points, PlaceType.Rectangle);
+            _place.PlaceType = PlaceType.Rectangle;
             log.Trace(LogPhenomenMessages.OkConstructor, "SunPhenomen");
         }
 

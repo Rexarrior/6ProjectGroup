@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,9 +18,7 @@ namespace CyberLife.Simple2DWorld
         #region fields
         private ColorType _colorType;
         private readonly Queue<string> _lastEnergyReactions;
-        private byte R;
-        private byte G;
-        private byte B;
+        private Color _color;
         long _lifeFormId;
         private double _energy;
 
@@ -38,7 +37,10 @@ namespace CyberLife.Simple2DWorld
             get { return _lifeFormId; }
             set { _lifeFormId = value; }
         }
-
+        public Color Color
+        {
+            get { return _color; }
+        }
         #endregion
 
 
@@ -50,23 +52,33 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
-            _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
-            if (_lastEnergyReactions.Count >= 10)
-                _lastEnergyReactions.Dequeue();
-            switch (worldMetadata[_lifeFormId]["GenorypeState"]["Action"])
+            if (worldMetadata.ContainsKey(_lifeFormId)) // почему-то может не быть id,надо разобраться
             {
-                case "Extraction":
-                    _lastEnergyReactions.Enqueue("Extraction");
-                    break;
-                case "Photosynthesis":
-                    _lastEnergyReactions.Enqueue("Photosynthesis");
-                    break;
-                default:
-                    if (worldMetadata[_lifeFormId]["GenorypeState"]["Action"].Split('|')[0] == "Eat")
-                        _lastEnergyReactions.Enqueue("Eat");
-                    break;
+                if (!worldMetadata[_lifeFormId]["EnergyState"].ContainsKey("Dead"))
+                {
+                    _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
+                    if (_lastEnergyReactions.Count >= 10)
+                        _lastEnergyReactions.Dequeue();
+                    switch (worldMetadata[_lifeFormId]["GenotypeState"]["Action"])
+                    {
+                        case "Extraction":
+                            _lastEnergyReactions.Enqueue("Extraction");
+                            break;
+                        case "Photosynthesis":
+                            _lastEnergyReactions.Enqueue("Photosynthesis");
+                            break;
+                        default:
+                            if (worldMetadata[_lifeFormId]["GenotypeState"]["Action"].Split('|')[0] == "Eat")
+                                _lastEnergyReactions.Enqueue("Eat");
+                            break;
+                    }
+                    SetRGB();
+                }
+                else
+                {
+                    _color = Color.FromArgb(132, 132, 132);
+                }
             }
-            SetRGB();
         }
 
 
@@ -78,7 +90,7 @@ namespace CyberLife.Simple2DWorld
         public override StateMetadata GetMetadata()
         {
             StateMetadata stateMetadata = base.GetMetadata();
-            stateMetadata.Add("Color", $"{R} {G} {B}");
+            stateMetadata.Add("Color", ColorTranslator.ToHtml(_color));
             stateMetadata.Add("ColorType", _colorType.ToString());
             return stateMetadata;
         }
@@ -90,9 +102,9 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         public void SetRGB()
         {
-            R = 0;
-            G = 0;
-            B = 0;
+            byte R = 0;
+            byte G = 0;
+            byte B = 0;
             byte part = 0;
             switch (_colorType)
             {
@@ -118,14 +130,13 @@ namespace CyberLife.Simple2DWorld
                         throw new ArgumentException("Один из параметров RGB был отрицательным");
                     if (R + G + B != 0)
                         part = Convert.ToByte(255 / (R + G + B));
-                    R = Convert.ToByte(part * R);
-                    G = Convert.ToByte(part * G);
-                    B = Convert.ToByte(part * B);
+                    _color = Color.FromArgb((part * R), (part * G), (part * B));
                     break;
                 case ColorType.EnergyDisplay:
                     const int MaxBotEnergy = 1500;
                     R = 255;
                     G = (byte)(255 - ((_energy / MaxBotEnergy) * 255));
+                    _color = Color.FromArgb(R, G, B);
                     break;
             }
         }
@@ -135,7 +146,7 @@ namespace CyberLife.Simple2DWorld
 
         #region constructors
 
-        public ColorState(string name, double value, long id,ColorType colorType, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public ColorState(string name, double value, long id, ColorType colorType, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
             _lifeFormId = id;
             this._colorType = colorType;
@@ -146,10 +157,8 @@ namespace CyberLife.Simple2DWorld
         public ColorState(StateMetadata metadata) : base(metadata)
         {
             _lastEnergyReactions = new Queue<string>();
-            byte[] bytes = metadata["Color"].Split(' ').Select(x => byte.Parse(x)).ToArray();
-            R = bytes[0];
-            G = bytes[1];
-            B = bytes[2];
+            _color = ColorTranslator.FromHtml(metadata["Color"]);
+
             if (!Enum.TryParse(metadata["ColorType"], out this._colorType))
                 throw new ArgumentException("Недопустимое знчение metadata[\"ColorType\"]", metadata["ColorType"]);
         }

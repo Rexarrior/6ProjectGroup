@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CyberLife.Simple2DWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CyberLife
 {
@@ -30,7 +32,7 @@ namespace CyberLife
         /// <returns></returns>
         public List<StateMetadata> GetEffects(LifeFormMetadata metadata)
         {
-            List<StateMetadata> ret = new List<StateMetadata>(); 
+            List<StateMetadata> ret = new List<StateMetadata>();
 
             foreach (var phenomen in _naturalPhenomena)
             {
