@@ -126,6 +126,7 @@ namespace CyberLife.Simple2DWorld
                             _direction = Directions.None;
                             NextStep();
                             Update(metadata);
+
                             break;
                         case 6:
                             _action = Actions.Extraction;
@@ -133,6 +134,7 @@ namespace CyberLife.Simple2DWorld
                             break;
 
                     }
+
                 }
             }
         }
@@ -184,11 +186,13 @@ namespace CyberLife.Simple2DWorld
         }
 
 
+
         public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms, Dictionary<long, LifeForm> organic)
         {
             return  Enumerable.Range(0, lifeForms.Count + organic.Count+1).
                                Select(x => (Int64)x).
                                First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x)); 
+
         }
 
 
@@ -196,6 +200,7 @@ namespace CyberLife.Simple2DWorld
         public static void DoDescendant(World world,LifeForm bot,int X,int Y)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
+
             long id = GetFreeId(sworld.LifeForms,sworld.Organic);
             Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
             ((GenotypeState)states["GenotypeState"]).SetGenom(bot.States["GenotypeState"].GetMetadata()["Genom"]);
