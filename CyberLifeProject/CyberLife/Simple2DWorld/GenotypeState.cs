@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CyberLife.Simple2DWorld
 {
@@ -58,74 +59,80 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            if (metadata[_id]["EnergyState"]["EnergyState"] == "ForsedReproduction")
+            if (!metadata.ContainsKey(_id)) // случается так,что формы id бота нет в словаре,почему - непонятно.Надо будет разобраться,а пока так
             {
-                _action = Actions.ForsedReproduction;
-                NextStep();
             }
             else
             {
-                switch (_genom[YTK])
+                if (metadata[_id]["EnergyState"].ContainsKey("ForsedReproduction"))
                 {
-                    case 1:
-                        _action = Actions.CheckEnergy;
-                        NextStep();
-                        _direction = (Directions)((_genom[YTK] / 8) + 1);
-                        NextStep();
-                        Update(metadata);
-                        break;
-                    case 2:
-                        _action = Actions.Photosynthesis;
-                        NextStep();
-                        break;
-                    case 3:
-                        _action = Actions.Move;
-                        NextStep();
-                        _direction = (Directions)((_genom[YTK] / 8) + 1);
-                        NextStep();
-                        break;
-                    case 4:
-                        _action = Actions.Eat;
-                        NextStep();
-                        _direction = (Directions)((_genom[YTK] / 8) + 1);
-                        NextStep();
-                        break;
-                    case 5:
-                        if (metadata[_id]["EnergyState"]["EnergyState"] == "CanReproduce")
-                        {
-                            _action = Actions.DoDescendant;
+                    _action = Actions.ForsedReproduction;
+                    NextStep();
+                }
+                else
+                {
+                    switch (_genom[YTK])
+                    {
+                        case 1:
+                            _action = Actions.CheckEnergy;
                             NextStep();
                             _direction = (Directions)((_genom[YTK] / 8) + 1);
                             NextStep();
-                        }
-                        else
-                        {
+                            Update(metadata);
+                            break;
+                        case 2:
+                            _action = Actions.Photosynthesis;
+                            NextStep();
+                            break;
+                        case 3:
+                            _action = Actions.Move;
+                            NextStep();
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
+                            NextStep();
+                            break;
+                        case 4:
+                            _action = Actions.Eat;
+                            NextStep();
+                            _direction = (Directions)((_genom[YTK] / 8) + 1);
+                            NextStep();
+                            break;
+                        case 5:
+                            if (metadata[_id]["EnergyState"].ContainsKey("CanReproduce"))
+                            {
+                                _action = Actions.DoDescendant;
+                                NextStep();
+                                _direction = (Directions)((_genom[YTK] / 8) + 1);
+                                NextStep();
+                            }
+                            else
+                            {
+                                _action = Actions.None;
+                                _direction = Directions.None;
+                                NextStep();
+                                Update(metadata);
+                            }
+                            break;
+                        default:
+                            try
+                            {
+                                YTK = Convert.ToByte(YTK + _genom[YTK] - 1);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new ArgumentException("Недопустимое значение YTK", (YTK + _genom[YTK] - 1).ToString(), e);
+                            }
+                            NextStep();
                             _action = Actions.None;
                             _direction = Directions.None;
                             NextStep();
                             Update(metadata);
-                        }
-                        break;
-                    default:
-                        try
-                        {
-                            YTK = Convert.ToByte(YTK + _genom[YTK] - 1);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new  ArgumentException("Недопустимое значение YTK", (YTK + _genom[YTK] - 1).ToString(), e);
-                        }
-                        NextStep();
-                        _action = Actions.None;
-                        _direction = Directions.None;
-                        NextStep();
-                        Update(metadata);
-                        break;
-                    case 6:
-                        _action = Actions.Extraction;
-                        NextStep();
-                        break;
+                            break;
+                        case 6:
+                            _action = Actions.Extraction;
+                            NextStep();
+                            break;
 
+                    }
                 }
             }
         }
@@ -163,6 +170,7 @@ namespace CyberLife.Simple2DWorld
             {
                 strGenom += b.ToString() + "|";
             }
+            strGenom = strGenom.TrimEnd('|');
             stateMetadata.Add("Genom", "" + strGenom);
             stateMetadata.Add("YTK", YTK.ToString());
             return stateMetadata;
@@ -176,11 +184,11 @@ namespace CyberLife.Simple2DWorld
         }
 
 
-        public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms)
+        public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms, Dictionary<long, LifeForm> organic)
         {
-            return  Enumerable.Range(0, lifeForms.Count + 1).
+            return  Enumerable.Range(0, lifeForms.Count + organic.Count+1).
                                Select(x => (Int64)x).
-                               First(x => !lifeForms.ContainsKey(x)); 
+                               First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x)); 
         }
 
 
@@ -188,7 +196,7 @@ namespace CyberLife.Simple2DWorld
         public static void DoDescendant(World world,LifeForm bot,int X,int Y)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
-            long id = GetFreeId(sworld.LifeForms);
+            long id = GetFreeId(sworld.LifeForms,sworld.Organic);
             Dictionary<string, LifeFormState> states = BotLifeForm._getStates(id);
             ((GenotypeState)states["GenotypeState"]).SetGenom(bot.States["GenotypeState"].GetMetadata()["Genom"]);
             BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id, states);

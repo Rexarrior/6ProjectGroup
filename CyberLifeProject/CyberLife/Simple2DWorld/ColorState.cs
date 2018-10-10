@@ -52,29 +52,32 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata"></param>
         public void Update(WorldMetadata worldMetadata)
         {
-            if (!worldMetadata[_lifeFormId]["EnergyState"].ContainsKey("Dead"))
+            if (worldMetadata.ContainsKey(_lifeFormId)) // почему-то может не быть id,надо разобраться
             {
-                _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
-                if (_lastEnergyReactions.Count >= 10)
-                    _lastEnergyReactions.Dequeue();
-                switch (worldMetadata[_lifeFormId]["GenorypeState"]["Action"])
+                if (!worldMetadata[_lifeFormId]["EnergyState"].ContainsKey("Dead"))
                 {
-                    case "Extraction":
-                        _lastEnergyReactions.Enqueue("Extraction");
-                        break;
-                    case "Photosynthesis":
-                        _lastEnergyReactions.Enqueue("Photosynthesis");
-                        break;
-                    default:
-                        if (worldMetadata[_lifeFormId]["GenorypeState"]["Action"].Split('|')[0] == "Eat")
-                            _lastEnergyReactions.Enqueue("Eat");
-                        break;
+                    _energy = worldMetadata[_lifeFormId]["EnergyState"].Value;
+                    if (_lastEnergyReactions.Count >= 10)
+                        _lastEnergyReactions.Dequeue();
+                    switch (worldMetadata[_lifeFormId]["GenotypeState"]["Action"])
+                    {
+                        case "Extraction":
+                            _lastEnergyReactions.Enqueue("Extraction");
+                            break;
+                        case "Photosynthesis":
+                            _lastEnergyReactions.Enqueue("Photosynthesis");
+                            break;
+                        default:
+                            if (worldMetadata[_lifeFormId]["GenotypeState"]["Action"].Split('|')[0] == "Eat")
+                                _lastEnergyReactions.Enqueue("Eat");
+                            break;
+                    }
+                    SetRGB();
                 }
-                SetRGB();
-            }
-            else
-            {
-                _color = Color.FromArgb(132, 132, 132);
+                else
+                {
+                    _color = Color.FromArgb(132, 132, 132);
+                }
             }
         }
 

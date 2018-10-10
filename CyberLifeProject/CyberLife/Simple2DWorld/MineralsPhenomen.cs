@@ -73,7 +73,7 @@ namespace CyberLife.Simple2DWorld
 
 
             if (!lifeFormMetadata["GenotypeState"].ContainsKey("Action") ||
-            lifeFormMetadata["GenotypeState"]["Action"] != ActionExtractionName)
+            lifeFormMetadata["GenotypeState"]["Action"] != ActionExtractionName )
             {
                 log.Info(LogPhenomenMessages.GenotypeStateAction);
                 return new List<StateMetadata>(0);
@@ -166,7 +166,7 @@ namespace CyberLife.Simple2DWorld
                 throw ex;
             }
             List<Point> points = new List<Point>(2);
-            points.Add(new Point(0, mapSize.Height *(PercentOfMap/100)));
+            points.Add(new Point(0, mapSize.Height /(100/PercentOfMap)));
             points.Add(new Point(mapSize.Width, mapSize.Height));
             _place = new Place(points, PlaceType.Rectangle);
             _place.PlaceType = PlaceType.Rectangle;
