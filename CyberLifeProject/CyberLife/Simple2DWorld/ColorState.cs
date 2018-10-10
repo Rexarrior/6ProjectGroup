@@ -156,6 +156,7 @@ namespace CyberLife.Simple2DWorld
         {
             _lastEnergyReactions = new Queue<string>();
             _color = ColorTranslator.FromHtml(metadata["Color"]);
+
             if (!Enum.TryParse(metadata["ColorType"], out this._colorType))
                 throw new ArgumentException("Недопустимое знчение metadata[\"ColorType\"]", metadata["ColorType"]);
         }
