@@ -36,6 +36,7 @@ namespace CyberLife
         public Dictionary<Int64, LifeForm> LifeForms { get => _lifeForms;  }
         public Environment Environment { get => _environment;  }
         public IVisualizer Visualizer { get => _visualizer; set => _visualizer = value; }//todo
+        public int Age { get { return _age; } }
 
         #endregion
 
@@ -61,7 +62,7 @@ namespace CyberLife
                 genotype.Update(metadata);
                 color.Update(metadata);
             }
-            foreach (var lifeForm in LifeForms.Values)
+            foreach (var lifeForm in LifeForms.Values.ToList())
             {
                 
                 lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));

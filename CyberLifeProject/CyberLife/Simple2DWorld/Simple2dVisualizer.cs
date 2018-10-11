@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Threading;
 
 namespace CyberLife.Simple2DWorld
 {
@@ -12,15 +13,15 @@ namespace CyberLife.Simple2DWorld
         #region fields
 
         private Bitmap map;
-        private MainForm form;
-        private Task _showingTask;
-        // int i = 0;
+        int i = 0;
 
 
         #endregion
 
 
         #region properties
+
+        public Bitmap Map { get { return map; } }
 
         #endregion
 
@@ -33,22 +34,20 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(WorldMetadata metadata)
         {
-            if (map == null)
-            {
-                map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
-                form = new MainForm();
-                _showingTask = new Task(form.Show);
-                _showingTask.Start();
-            }
+            map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);            
             map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
             foreach (var pair in metadata)
             {
                 Color color = ColorTranslator.FromHtml(pair.Value["ColorState"]["Color"]);
                 map.SetPixel(pair.Value.Place.Points[0].X, pair.Value.Place.Points[0].Y, color);
             }
-            form.UpdatePicture(map);
-             //map.Save(@"D:\" + i.ToString() + ".jpg");
-            // i ++;
+            // form.UpdatePicture(map);
+            if (i % 10 == 0)
+            {
+                map.Save(@"D:\" + i.ToString() + ".jpg");
+             }
+             i ++;
+
         }
 
 

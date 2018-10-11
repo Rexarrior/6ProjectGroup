@@ -8,29 +8,80 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace CyberLife.Simple2DWorld
 {
     public partial class MainForm : Form
     {
-        public bool IsLoading; 
-        public MainForm()
+        public bool IsLoading;
+        Simple2DWorld world;
+        public MainForm(World simple2DWorld)
         {
+            world = (Simple2DWorld)simple2DWorld;
             InitializeComponent();
-            IsLoading = false;
+            mapPicture.Height = world.Environment.Size.Height;
+            mapPicture.Width = world.Environment.Size.Width;
+            this.Size = Screen.PrimaryScreen.Bounds.Size;
+            while (true)
+            {
+                mapPicture.Width++;
+                mapPicture.Height++;
+                if (mapPicture.Width  +500> this.Width || mapPicture.Height +100 > this.Height)
+                {
+                    mapPicture.Width--;
+                    mapPicture.Height--;
+                    break;
+                }
+            }
+           // statsLabel.Location = mapPicture.Width
 
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            IsLoading = true;
         }
 
-
-        public void UpdatePicture(Bitmap map)
+        Changed changed;
+        public void UpdateMap()
         {
-            if (IsLoading)
-                this.BeginInvoke(new Action(() => this.mapPicture.Image = map));
+            while (true)
+            {
+                world.Update();
+                Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() + "\r\nТекущий ход " + world.Age.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
+            }
+        }
+
+        private void mapPicture_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            Thread thread = new Thread(UpdateMap);
+            thread.Start();
+
+        }
+        delegate void Changed(string str, Bitmap map);
+        public void Invoke(string str, Bitmap map)
+        {
+            changed = new Changed(Change);
+            
+            statsLabel.Invoke(changed, new object[] { str,map });
+        }
+        public void Change(string str,Bitmap map)
+        {
+            statsLabel.Text = str;
+            mapPicture.Image = map;
+        }
+
+        private void ColorTypeButton_Click(object sender, EventArgs e)
+        {
+            foreach(var bot in world.LifeForms.Values)
+            {
+                ((ColorState)bot.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // работает плохо
+                    
+            }
         }
     }
 }
