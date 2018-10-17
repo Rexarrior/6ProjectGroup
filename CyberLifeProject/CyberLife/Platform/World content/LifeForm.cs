@@ -9,18 +9,11 @@ namespace CyberLife
 
         private Int64 _id; 
         private Place _lifeFormPlace;
-        private Dictionary<string, LifeFormState> _states;
 
         #endregion
 
 
         #region properties
-
-        /// <summary>
-        /// Состояния этой формы жизни 
-        /// </summary>
-        internal Dictionary<string, LifeFormState> States { get => _states; set => _states = value; }
-
 
         /// <summary>
         /// Пространство, которое занимает эта форма жизни
@@ -31,7 +24,7 @@ namespace CyberLife
         /// <summary>
         /// Уникальный идентификатор этой формы жизни
         /// </summary>
-        public long Id { get => _id;  }
+        public long Id { get => _id; set => _id = value; }
 
         #endregion
 
@@ -47,31 +40,9 @@ namespace CyberLife
         /// увеличены на соответствующие им значения состояний из метаданных. 
         /// </summary>
         /// <param name="phenomenEffects"></param>
-        public virtual void Update(WorldMetadata metadata, List<StateMetadata> phenomenEffects)
+        public virtual void Update(World world)
         {
-            foreach (var effect in phenomenEffects)
-            {
-                if (_states.ContainsKey(effect.Name))
-                {
-                    _states[effect.Name].Update(metadata, effect);
-                }
-                else
-                {
 
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
-
-
-        /// <summary>
-        /// Формирует метаданные этой формы жизни
-        /// </summary>
-        /// <returns>Метаданные этой формы жизни</returns>
-        public LifeFormMetadata GetMetadata()
-        {
-            return new LifeFormMetadata(_lifeFormPlace,_id, _states.Select(x => x.Value.GetMetadata()).ToList());
         }
 
         #endregion
@@ -88,30 +59,10 @@ namespace CyberLife
         /// </summary>
         /// <param name="place">Пространство, которое будет занимать эта форма жизни</param>
         /// <param name="states">Состояния этой формы жизни</param>
-        public LifeForm(Place place, long id, Dictionary<string, LifeFormState> states)
+        public LifeForm(Place place, long id)
         {
             _lifeFormPlace = place ?? throw new ArgumentNullException(nameof(place));
-            _states = states ?? throw new ArgumentNullException(nameof(states));
             _id = id;
-        }
-
-
-        /// <summary>
-        /// Инициализирует экземпляр формы жизни из ее метаданных
-        /// </summary>
-        /// <param name="metadata">Метаданные формы жизни</param>
-        public LifeForm(LifeFormMetadata metadata)
-        {
-            if (metadata == null)
-                throw new ArgumentNullException(nameof(metadata));
-            _id = metadata.Id;
-            _lifeFormPlace = metadata.Place;
-            States = new Dictionary<string, LifeFormState>();
-            foreach (var stateMetadata in metadata.Values)
-            {
-                States.Add(stateMetadata.Name, new LifeFormState(stateMetadata));
-            }
-
         }
 
         #endregion

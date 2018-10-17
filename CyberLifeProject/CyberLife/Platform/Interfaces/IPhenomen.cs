@@ -9,7 +9,7 @@ namespace CyberLife
         /// метаданных окружающей среды.
         /// </summary>
         /// <param name="worldMetadata">Метаданные окружающей среды.</param>
-        void Update(WorldMetadata worldMetadata);
+        void Update(World world);
 
         /// <summary>
         /// Получает эффекты воздействия этого феномена на точку пространства.
@@ -19,7 +19,7 @@ namespace CyberLife
         /// <param name="point">Точка пространства</param>
         /// <param name="lifeFormMetadata">Метаданные формы жизни</param>
         /// <returns></returns>
-        List<StateMetadata> GetEffects(Point point, LifeFormMetadata lifeFormMetadata);
+        void GetEffects(LifeForm lifeForm);
 
         /// <summary>
         /// проверяет, попадает ли точка под воздействие этого природного явления
@@ -34,13 +34,6 @@ namespace CyberLife
         /// </summary>
         /// <returns></returns>
         Place GetItPlace();
-
-
-        /// <summary>
-        /// Получает метаданные этого природного явления.
-        /// </summary>
-        /// <returns></returns>
-        PhenomenMetadata GetMetadata();
         
     }
 }

@@ -9,7 +9,7 @@
         /// Обновить визуализацию на основании изменений мира.
         /// </summary>
         /// <param name="metadata"></param>
-        void Update(WorldMetadata metadata);
+        void Update(World world);
 
 
     }

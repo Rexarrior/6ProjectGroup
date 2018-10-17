@@ -95,15 +95,11 @@
       <DependentUpon>LogMetadataMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Platform\World content\Environment.cs" />
-    <Compile Include="Platform\Metadata\EnvironmentMetadata.cs" />
     <Compile Include="Platform\Interfaces\IPhenomen.cs" />
     <Compile Include="Platform\Interfaces\IVisualizer.cs" />
     <Compile Include="Platform\World content\LifeForm.cs" />
-    <Compile Include="Platform\Metadata\LifeFormMetadata.cs" />
     <Compile Include="Platform\World content\LifeFormState.cs" />
     <Compile Include="Platform\World content\MapSize.cs" />
-    <Compile Include="Platform\Metadata\IPhenomenaFabrica.cs" />
-    <Compile Include="Platform\Metadata\PhenomenMetadata.cs" />
     <Compile Include="Platform\World content\Place.cs" />
     <Compile Include="Platform\World content\Point.cs" />
     <Compile Include="Platform\Logging\LogMessages\LogPhenomenMessages.Designer.cs">
@@ -140,9 +136,7 @@
     </Compile>
     <Compile Include="Simple2DWorld\Simple2DWorldMetadata.cs" />
     <Compile Include="Simple2DWorld\SunPhenomen.cs" />
-    <Compile Include="Platform\Metadata\StateMetadata.cs" />
     <Compile Include="Platform\World.cs" />
-    <Compile Include="Platform\Metadata\WorldMetadata.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

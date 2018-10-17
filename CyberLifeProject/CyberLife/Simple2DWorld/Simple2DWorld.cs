@@ -8,7 +8,7 @@ using CyberLife.Platform.World_content;
 
 namespace CyberLife.Simple2DWorld
 {
-    class Simple2DWorld : World
+    public class Simple2DWorld : World
     {
         public  const double OrganicZeroEnergyFactor = 0.1;
         public  const double OrganicCollapseEnergyFactor = 0.3;
@@ -16,7 +16,7 @@ namespace CyberLife.Simple2DWorld
         #region fields
 
         private Dictionary<Int64, LifeForm> _organic;
-
+        private Dictionary<string,LifeFormState> _states; 
        
 
         #endregion
@@ -107,7 +107,7 @@ namespace CyberLife.Simple2DWorld
                 sworld.LifeForms.Remove(botId);
                 EnergyState state = (EnergyState)bot.States["EnergyState"];
                 state.Value = EnergyState.MaxEnergy * (
-                    state.State == Flags.EnergyCollapse ? 
+                    state.State == EnergyStates.EnergyCollapse ? 
                         OrganicCollapseEnergyFactor:
                                       OrganicZeroEnergyFactor); 
             }
@@ -430,6 +430,15 @@ namespace CyberLife.Simple2DWorld
         {
            
             _InitReactions();
+            EnergyState energy = new EnergyState("EnergyState", 300);
+            GenotypeState genotype = new GenotypeState("GenotypeState", 0, id);
+            ColorState color = new ColorState("ColorState", 0, ColorType.Default);
+            _states =  = new Dictionary<string, LifeFormState>(3)
+            {
+                {"EnergyState", energy},
+                {"GenotypeState", genotype},
+                {"ColorState", color}
+            };
             log.Trace(LogMetadataMessages.OkConstructor, "Simple2DWorld");
         }
         #endregion
