@@ -9,28 +9,49 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing.Drawing2D;
 
 namespace CyberLife.Simple2DWorld
 {
     public partial class MainForm : Form
     {
+        public class CustomPictureBox : PictureBox
+        {
+            private InterpolationMode interpolationMode = InterpolationMode.NearestNeighbor;
+
+            public InterpolationMode InterpolationMode
+            {
+                get => interpolationMode;
+                set
+                {
+                    interpolationMode = value;
+                    this.Invalidate(); 
+                }
+            }
+
+            protected override void OnPaint(PaintEventArgs pe)
+            {
+                pe.Graphics.InterpolationMode = interpolationMode;
+                base.OnPaint(pe);
+            }
+        }
         public bool IsLoading;
         Simple2DWorld world;
         public MainForm(World simple2DWorld)
         {
             world = (Simple2DWorld)simple2DWorld;
             InitializeComponent();
-            mapPicture.Height = world.Size.Height;
-            mapPicture.Width = world.Size.Width;
+            mapPicture2.Height = world.Size.Height;
+            mapPicture2.Width = world.Size.Width;
             this.Size = Screen.PrimaryScreen.Bounds.Size;
             while (true)
             {
-                mapPicture.Width++;
-                mapPicture.Height++;
-                if (mapPicture.Width  +500> this.Width || mapPicture.Height +100 > this.Height)
+                mapPicture2.Width++;
+                mapPicture2.Height++;
+                if (mapPicture2.Width + 500 > this.Width || mapPicture2.Height + 100 > this.Height)
                 {
-                    mapPicture.Width--;
-                    mapPicture.Height--;
+                    mapPicture2.Width--;
+                    mapPicture2.Height--;
                     break;
                 }
             }
@@ -47,10 +68,10 @@ namespace CyberLife.Simple2DWorld
             while (true)
             {
                 world.Update();
-                Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() + 
-                    "\r\nКол-во органики " + world.Organic.Count.ToString() + 
-                    "\r\nТекущий ход " + world.Age.ToString()+ 
-                    "\r\nТекущий сезон "+((SeasonsPhenomen) world.NaturalPhenomena["SeasonsPhenomen"]).CurSeason.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
+                Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() +
+                    "\r\nКол-во органики " + world.Organic.Count.ToString() +
+                    "\r\nТекущий ход " + world.Age.ToString() +
+                    "\r\nТекущий сезон " + ((SeasonsPhenomen)world.NaturalPhenomena["SeasonsPhenomen"]).CurSeason.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
             }
         }
 
@@ -68,22 +89,29 @@ namespace CyberLife.Simple2DWorld
         public void Invoke(string str, Bitmap map)
         {
             changed = new Changed(Change);
-            
-            statsLabel.Invoke(changed, new object[] { str,map });
+
+            statsLabel.Invoke(changed, new object[] { str, map });
         }
-        public void Change(string str,Bitmap map)
+        public void Change(string str, Bitmap map)
         {
             statsLabel.Text = str;
-            mapPicture.Image = map;
-        }
+            mapPicture2.Image = map;
 
+        }
+        bool colortype = true;
         private void ColorTypeButton_Click(object sender, EventArgs e)
         {
-            foreach(var bot in world.LifeForms.Values)
+            if (colortype)
             {
-             ((ColorState) world.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // пофиксить отображение энергии в colorstate,пока что все желтые
-                    
+                colortype = false;
+                ((ColorState)world.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // пофиксить отображение энергии в colorstate,пока что все желтые
             }
+            else
+            {
+                colortype = true;
+                ((ColorState)world.States["ColorState"]).ColorType = ColorType.Default;
+            }
+
         }
     }
 }

@@ -46,7 +46,7 @@ namespace CyberLife.Simple2DWorld
                 {
                     if (bot._lastEnergyActions.Count >= 10)
                         bot._lastEnergyActions.Dequeue();
-                        SetRGB(bot);
+                    SetRGB(bot);
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace CyberLife.Simple2DWorld
                 case ColorType.EnergyDisplay:
                     const int MaxBotEnergy = 1500;
                     R = 255;
-                    G = (byte)(255 - ((bot._energy / MaxBotEnergy) * 255));
+                    G = (byte)(255 - (bot._energy / (double)MaxBotEnergy) * 255);
                     bot._color = Color.FromArgb(R, G, B);
                     break;
             }

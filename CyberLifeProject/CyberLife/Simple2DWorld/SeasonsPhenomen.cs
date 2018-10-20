@@ -41,8 +41,6 @@ namespace CyberLife.Platform.World_content
 
         #region methods
 
-
-
         /// <summary>
         /// Получает пространство, на котором действует это природное явление
         /// </summary>

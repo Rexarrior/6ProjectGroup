@@ -8,13 +8,13 @@ using NLog;
 
 namespace CyberLife.Simple2DWorld
 {
-    
+
     class MineralsPhenomen : IPhenomen
     {
-        Logger log = LogManager.GetCurrentClassLogger(); 
-        
+        Logger log = LogManager.GetCurrentClassLogger();
+
         private const int MineralsSpread = 100;
-        private const int PercentOfMap = 50;    
+        private const int PercentOfMap = 50;
 
         #region fields
 
@@ -45,7 +45,7 @@ namespace CyberLife.Simple2DWorld
             if (bot == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(bot));
-                log.Error(LogPhenomenMessages.NullArgument,"Point",ex);
+                log.Error(LogPhenomenMessages.NullArgument, "Point", ex);
                 throw ex;
             }
             Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
@@ -79,9 +79,9 @@ namespace CyberLife.Simple2DWorld
         {
             log.Trace(LogPhenomenMessages.PhenomenIsIn, "MineralsPhenomen");
             if (point == null)
-            {                
+            {
                 ArgumentNullException ex = new ArgumentNullException(nameof(point));
-                log.Error(LogPhenomenMessages.NullArgument,"Point",ex);
+                log.Error(LogPhenomenMessages.NullArgument, "Point", ex);
                 throw ex;
             }
 
@@ -92,7 +92,7 @@ namespace CyberLife.Simple2DWorld
 
         public void Update(World worldMetadata)
         {
-            
+
         }
 
         #endregion
@@ -108,14 +108,14 @@ namespace CyberLife.Simple2DWorld
         public MineralsPhenomen(MapSize mapSize)
         {
             log.Trace(LogPhenomenMessages.Constructor, "MineralsPhenomen");
-            if(mapSize ==null)
+            if (mapSize == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(mapSize));
                 log.Error(LogPhenomenMessages.NullArgument, "MapSize", ex);
                 throw ex;
             }
             List<Point> points = new List<Point>(2);
-            points.Add(new Point(0, mapSize.Height /(100/PercentOfMap)));
+            points.Add(new Point(0, mapSize.Height / (100 / PercentOfMap)));
             points.Add(new Point(mapSize.Width, mapSize.Height));
             _place = new Place(points, PlaceType.Rectangle);
             _place.PlaceType = PlaceType.Rectangle;

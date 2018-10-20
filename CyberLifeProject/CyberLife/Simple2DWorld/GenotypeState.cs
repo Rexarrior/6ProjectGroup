@@ -41,7 +41,7 @@ namespace CyberLife.Simple2DWorld
 
 
         #region properties
-         
+
         #endregion
 
 
@@ -77,34 +77,34 @@ namespace CyberLife.Simple2DWorld
                     NextStep(lifeForm);
                     lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
-                   // SetAction(lifeForm);
+                    // SetAction(lifeForm);
                     break;
                 case 2:
-                    lifeForm._action = Actions.Photosynthesis;                    
+                    lifeForm._action = Actions.Photosynthesis;
                     NextStep(lifeForm);
                     break;
                 case 3:
-                   lifeForm._action = Actions.Move;
+                    lifeForm._action = Actions.Move;
                     NextStep(lifeForm);
-                  lifeForm.  _direction = (Directions)((lifeForm. _genom[lifeForm. YTK] / 8) + 1);
+                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
                 case 4:
-                   lifeForm. _action = Actions.Eat;
+                    lifeForm._action = Actions.Eat;
                     NextStep(lifeForm);
-                   lifeForm. _direction = (Directions)((lifeForm. _genom[lifeForm. YTK] / 8) + 1);
+                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
                 case 5:
-                       lifeForm. _action = Actions.DoDescendant;
-                        NextStep(lifeForm);
-                       lifeForm. _direction = (Directions)((lifeForm. _genom[lifeForm. YTK] / 8) + 1);
-                        NextStep(lifeForm);
+                    lifeForm._action = Actions.DoDescendant;
+                    NextStep(lifeForm);
+                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    NextStep(lifeForm);
                     break;
                 default:
                     try
                     {
-                        lifeForm.YTK = Convert.ToByte(lifeForm.YTK + lifeForm._genom[lifeForm. YTK] - 1);
+                        lifeForm.YTK = Convert.ToByte(lifeForm.YTK + lifeForm._genom[lifeForm.YTK] - 1);
                     }
                     catch (Exception e)
                     {
@@ -114,7 +114,7 @@ namespace CyberLife.Simple2DWorld
                     lifeForm._action = Actions.None;
                     lifeForm._direction = Directions.None;
                     NextStep(lifeForm);
-                   // SetAction(lifeForm);
+                    // SetAction(lifeForm);
 
                     break;
                 case 6:
@@ -127,26 +127,26 @@ namespace CyberLife.Simple2DWorld
 
         public void NextStep(BotLifeForm bot)
         {
-           bot. YTK = (byte) ((bot.YTK + 1) % 64);
+            bot.YTK = (byte)((bot.YTK + 1) % 64);
         }
 
 
 
         public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms, Dictionary<long, LifeForm> organic)
         {
-            return  Enumerable.Range(0, lifeForms.Count + organic.Count+1).
+            return Enumerable.Range(0, lifeForms.Count + organic.Count + 1).
                                Select(x => (Int64)x).
-                               First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x)); 
+                               First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x));
 
         }
 
 
 
-        public static void DoDescendant(World world,LifeForm bot,int X,int Y)
+        public static void DoDescendant(World world, LifeForm bot, int X, int Y)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
-            long id = GetFreeId(sworld.LifeForms,sworld.Organic);
-            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id,((BotLifeForm)bot));
+            long id = GetFreeId(sworld.LifeForms, sworld.Organic);
+            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), id, ((BotLifeForm)bot));
             sworld.LifeForms.Add(id, lifeForm);
         }
 

@@ -28,23 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.mapPicture = new System.Windows.Forms.PictureBox();
             this.statsLabel = new System.Windows.Forms.Label();
             this.ColorTypeButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.mapPicture)).BeginInit();
+            this.mapPicture2 = new CyberLife.Simple2DWorld.MainForm.CustomPictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicture2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // mapPicture
-            // 
-            this.mapPicture.BackColor = System.Drawing.SystemColors.Control;
-            this.mapPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.mapPicture.Location = new System.Drawing.Point(12, 12);
-            this.mapPicture.Name = "mapPicture";
-            this.mapPicture.Size = new System.Drawing.Size(178, 162);
-            this.mapPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.mapPicture.TabIndex = 0;
-            this.mapPicture.TabStop = false;
-            this.mapPicture.Click += new System.EventHandler(this.mapPicture_Click);
             // 
             // statsLabel
             // 
@@ -60,7 +48,7 @@
             // ColorTypeButton
             // 
             this.ColorTypeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ColorTypeButton.Location = new System.Drawing.Point(156, 109);
+            this.ColorTypeButton.Location = new System.Drawing.Point(156, 101);
             this.ColorTypeButton.Name = "ColorTypeButton";
             this.ColorTypeButton.Size = new System.Drawing.Size(131, 65);
             this.ColorTypeButton.TabIndex = 2;
@@ -68,29 +56,40 @@
             this.ColorTypeButton.UseVisualStyleBackColor = true;
             this.ColorTypeButton.Click += new System.EventHandler(this.ColorTypeButton_Click);
             // 
+            // mapPicture2
+            // 
+            this.mapPicture2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.mapPicture2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            this.mapPicture2.Location = new System.Drawing.Point(23, 12);
+            this.mapPicture2.Margin = new System.Windows.Forms.Padding(0);
+            this.mapPicture2.Name = "mapPicture2";
+            this.mapPicture2.Size = new System.Drawing.Size(167, 154);
+            this.mapPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.mapPicture2.TabIndex = 3;
+            this.mapPicture2.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 352);
             this.Controls.Add(this.ColorTypeButton);
+            this.Controls.Add(this.mapPicture2);
             this.Controls.Add(this.statsLabel);
-            this.Controls.Add(this.mapPicture);
             this.MaximumSize = new System.Drawing.Size(10000, 10000);
             this.Name = "MainForm";
             this.Text = "NoMetadata version";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.mapPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicture2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        public System.Windows.Forms.PictureBox mapPicture;
         private System.Windows.Forms.Label statsLabel;
         private System.Windows.Forms.Button ColorTypeButton;
+        private CustomPictureBox mapPicture2;
     }
 }

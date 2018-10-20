@@ -10,15 +10,15 @@ namespace CyberLife.Simple2DWorld
 {
     public class Simple2DWorld : World
     {
-        public  const double OrganicZeroEnergyFactor = 0.1;
-        public  const double OrganicCollapseEnergyFactor = 0.3;
-        public const double OutflowEnergyFactor = 0.01; 
+        public const double OrganicZeroEnergyFactor = 0.1;
+        public const double OrganicCollapseEnergyFactor = 0.3;
+        public const double OutflowEnergyFactor = 0.01;
 
         #region fields
 
         private Dictionary<long, LifeForm> _organic;
-        private Dictionary<string,LifeFormState> _states; 
-       
+        private Dictionary<string, LifeFormState> _states;
+
         #endregion
 
 
@@ -36,7 +36,7 @@ namespace CyberLife.Simple2DWorld
         {
             foreach (IPhenomen phenomen in _naturalPhenomena.Values)
                 phenomen.Update(this);
-            foreach(var state in _states.Values)
+            foreach (var state in _states.Values)
             {
                 state.Update(this);
             }
@@ -79,8 +79,8 @@ namespace CyberLife.Simple2DWorld
             if (_reactions.Count > 0)
                 return;
 
-            _reactions.Add("EnergyReaction",_energyReaction);
-            _reactions.Add("GenotypeReaction",_genotypeReaction);
+            _reactions.Add("EnergyReaction", _energyReaction);
+            _reactions.Add("GenotypeReaction", _genotypeReaction);
             _reactions.Add("ColorReaction", _colorReaction);
         }
 
@@ -101,21 +101,21 @@ namespace CyberLife.Simple2DWorld
                 ).Select(x => x.Key).ToArray();
             foreach (var botId in deadBots)
             {
-                BotLifeForm bot =(BotLifeForm) sworld.LifeForms[botId];
+                BotLifeForm bot = (BotLifeForm)sworld.LifeForms[botId];
                 sworld.Organic.Add(botId, bot);
                 sworld.LifeForms.Remove(botId);
-                bot._energy =(int)(EnergyState.MaxEnergy * (
-                    bot._energyState == EnergyStates.EnergyCollapse ? 
-                        OrganicCollapseEnergyFactor:
-                                      OrganicZeroEnergyFactor)); 
+                bot._energy = (int)(EnergyState.MaxEnergy * (
+                    bot._energyState == EnergyStates.EnergyCollapse ?
+                        OrganicCollapseEnergyFactor :
+                                      OrganicZeroEnergyFactor));
             }
 
             foreach (BotLifeForm bot in sworld.Organic.Values)
             {
-                bot._energy -=(int) (bot._energy * OutflowEnergyFactor);
+                bot._energy -= (int)(bot._energy * OutflowEnergyFactor);
             }
 
-            Int64[] rottenOrganic = sworld.Organic.Where(x =>((BotLifeForm)x.Value)._energy <= 0)
+            Int64[] rottenOrganic = sworld.Organic.Where(x => ((BotLifeForm)x.Value)._energy <= 0)
                 .Select(x => x.Key).ToArray();
 
             foreach (var botId in rottenOrganic)
@@ -137,8 +137,8 @@ namespace CyberLife.Simple2DWorld
             foreach (BotLifeForm bot in sworld.LifeForms.Values.ToList())
 
             {
-                bot._energy -= 10; 
-                
+                bot._energy -= 10;
+
                 BotLifeForm botOnPlace;
                 int X = bot.LifeFormPlace.Points[0].X;
                 int Y = bot.LifeFormPlace.Points[0].Y;
@@ -205,7 +205,7 @@ namespace CyberLife.Simple2DWorld
                             }
                             else
                             {
-                                bot._energy +=(int) (botOnPlace._energy * OrganicCollapseEnergyFactor);
+                                bot._energy += (int)(botOnPlace._energy * OrganicCollapseEnergyFactor);
                                 sworld.LifeForms.Remove(botOnPlace.Id);
                             }
                             bot._lastEnergyActions.Enqueue(Actions.Eat);
@@ -222,7 +222,7 @@ namespace CyberLife.Simple2DWorld
                         if (sworld.IsAroundEmpty(ref X, ref Y))
                         {
                             GenotypeState.DoDescendant(sworld, bot, X, Y);
-                            bot._energy -= descendantPrice; 
+                            bot._energy -= descendantPrice;
                         }
                         break;
                     case Actions.Photosynthesis:
@@ -262,7 +262,7 @@ namespace CyberLife.Simple2DWorld
         /// <param name="Y"></param>
         /// <param name="botOnPlace"></param>
         /// <returns></returns>
-        public bool IsPlaceEmpty(int X, int Y,out BotLifeForm botOnPlace)
+        public bool IsPlaceEmpty(int X, int Y, out BotLifeForm botOnPlace)
         {
             foreach (var Bot in LifeForms.Values)
             {
@@ -273,7 +273,7 @@ namespace CyberLife.Simple2DWorld
                     return false;
                 }
             }
-            foreach(var Bot in Organic.Values)
+            foreach (var Bot in Organic.Values)
             {
                 if (Bot.LifeFormPlace.Points[0].X == X &&
                     Bot.LifeFormPlace.Points[0].Y == Y)
@@ -293,7 +293,7 @@ namespace CyberLife.Simple2DWorld
         /// <param name="X"></param>
         /// <param name="Y"></param>
         /// <returns></returns>
-        public bool IsAroundEmpty(ref int X,ref int Y)
+        public bool IsAroundEmpty(ref int X, ref int Y)
         {
             BotLifeForm bot = null;
             int workX = X;
@@ -310,7 +310,7 @@ namespace CyberLife.Simple2DWorld
                     workX = 0;
                 if (workX < 0)
                     workX = Size.Width - 1;
-                if(IsPlaceEmpty(workX,workY,out bot))
+                if (IsPlaceEmpty(workX, workY, out bot))
                 {
                     X = workX;
                     Y = workY;
@@ -340,9 +340,9 @@ namespace CyberLife.Simple2DWorld
                     X = workX;
                     Y = workY;
                     return true;
-                }                
+                }
             }
-            workX++;            
+            workX++;
             for (int i = 1; i < 4; i++)
             {
                 if (workY > Size.Height - 1)
@@ -364,7 +364,7 @@ namespace CyberLife.Simple2DWorld
             return false;
         }
 
-        public static Dictionary<string,IPhenomen> GetPhenomens(MapSize map)
+        public static Dictionary<string, IPhenomen> GetPhenomens(MapSize map)
         {
             Dictionary<string, IPhenomen> ret = new Dictionary<string, IPhenomen> { };
             SunPhenomen sun = new SunPhenomen(map);
@@ -389,8 +389,8 @@ namespace CyberLife.Simple2DWorld
         /// <param name="visualizer">Визуализатор для мира</param>
         /// <param name="lifeForms">Формы жизни</param>
         /// <param name="organic">"мертвые" формы жизни, являющиеся органикой</param>
-        public Simple2DWorld(string name, IVisualizer visualizer, List<LifeForm> lifeForms, List<LifeForm> organic,Dictionary<string,IPhenomen> phenomens, MapSize map) :
-            base(name, visualizer, lifeForms,phenomens,map)
+        public Simple2DWorld(string name, IVisualizer visualizer, List<LifeForm> lifeForms, List<LifeForm> organic, Dictionary<string, IPhenomen> phenomens, MapSize map) :
+            base(name, visualizer, lifeForms, phenomens, map)
         {
             log.Trace(LogMetadataMessages.Constructor, "Simple2DWorld");
 
@@ -402,7 +402,7 @@ namespace CyberLife.Simple2DWorld
                     _organic.Add(lifeForm.Id, lifeForm);
                 }
             }
-                
+
             log.Info("Кол-во органики " + _organic.Count.ToString());
 
             _InitReactions();
@@ -417,8 +417,8 @@ namespace CyberLife.Simple2DWorld
         /// <param name="width">Ширина карты мира</param>
         /// <param name="height">Высота карты мира</param>
         /// <param name="lifeFormCount">Количество форм жизни</param>
-        public Simple2DWorld(int width = 1000, int height = 1000, int lifeFormCount = 100 ):
-            this("Simple2DWorld", new RemoteVisualizer(), _getLifeForms(lifeFormCount, width, height), null,GetPhenomens(new MapSize(width,height)), new MapSize(width, height))
+        public Simple2DWorld(int width = 1000, int height = 1000, int lifeFormCount = 100) :
+            this("Simple2DWorld", new RemoteVisualizer(), _getLifeForms(lifeFormCount, width, height), null, GetPhenomens(new MapSize(width, height)), new MapSize(width, height))
         {
             _states = new Dictionary<string, LifeFormState> { };
             EnergyState energy = new EnergyState("EnergyState", 0); // по моей задумке доп. параметры во всех состояниях бессмысленны

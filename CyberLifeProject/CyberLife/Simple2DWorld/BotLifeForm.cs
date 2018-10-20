@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    public class BotLifeForm: LifeForm
+    public class BotLifeForm : LifeForm
     {
         Random rnd = new Random();
         #region fields
 
         public List<byte> _genom;
         public Color _color;
-        public  Queue<Actions> _lastEnergyActions;
+        public Queue<Actions> _lastEnergyActions;
         public byte YTK;
         public Directions _direction;
         public Actions _action;
@@ -34,7 +34,7 @@ namespace CyberLife.Simple2DWorld
 
         public List<byte> GetCommonGenom()
         {
-            List<byte> Genom =new List<byte> { };
+            List<byte> Genom = new List<byte> { };
             List<int> workingList = Enumerable.Repeat(1, 10)
                                   .Concat(Enumerable.Repeat(2, 10))
                                   .Concat(Enumerable.Repeat(3, 10))
@@ -64,7 +64,7 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         /// <param name="place">Пространство, занимаемое ботом</param>
         /// <param name="states">Состояния бота</param>
-        public BotLifeForm(Place place, long id, BotLifeForm byBot = null) : base(place,id)
+        public BotLifeForm(Place place, long id, BotLifeForm byBot = null) : base(place, id)
         {
             _dead = false;
             if (byBot == null)
@@ -91,7 +91,7 @@ namespace CyberLife.Simple2DWorld
         /// Инициирует бота базовыми состояниями и случайной точкой на карте.
         /// </summary>
         /// <param name="mapsize">Размер карты</param>
-        public BotLifeForm(MapSize mapsize,long id, BotLifeForm byBot = null) :this(Place.RandomPlace(mapsize),id,byBot)
+        public BotLifeForm(MapSize mapsize, long id, BotLifeForm byBot = null) : this(Place.RandomPlace(mapsize), id, byBot)
         {
 
         }

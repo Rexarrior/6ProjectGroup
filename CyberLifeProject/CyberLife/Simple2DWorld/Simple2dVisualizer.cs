@@ -34,21 +34,21 @@ namespace CyberLife.Simple2DWorld
         /// <param name="metadata"></param>
         public void Update(World world)
         {
-            map = new Bitmap(world.Size.Width, world.Size.Height);            
+            map = new Bitmap(world.Size.Width, world.Size.Height);
             map = new Bitmap(world.Size.Width, world.Size.Height);
             foreach (var bot in world.LifeForms.Values)
             {
-                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y,((BotLifeForm)bot)._color);
+                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
             }
-            foreach(var bot in ((Simple2DWorld)world).Organic.Values)
+            foreach (var bot in ((Simple2DWorld)world).Organic.Values)
             {
                 map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
             }
-            if (i % 100 == 0)
-            {
-                map.Save(@"D:\" + i.ToString() + ".jpg");
-             }
-             i ++;
+            // if (i % 50 == 0)
+            //  {
+            //      map.Save(@"D:\" + i.ToString() + ".jpg");
+            // }
+            //  i ++;
 
         }
 
