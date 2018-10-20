@@ -44,11 +44,11 @@ namespace CyberLife.Simple2DWorld
             {
                 map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
             }
-           // if (i % 100 == 0)
-           // {
-           //     map.Save(@"D:\" + i.ToString() + ".jpg");
-           //  }
-           //  i ++;
+            if (i % 100 == 0)
+            {
+                map.Save(@"D:\" + i.ToString() + ".jpg");
+             }
+             i ++;
 
         }
 

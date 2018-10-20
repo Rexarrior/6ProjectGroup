@@ -226,12 +226,18 @@ namespace CyberLife.Simple2DWorld
                         }
                         break;
                     case Actions.Photosynthesis:
-                        sworld.NaturalPhenomena["SunPhenomen"].GetEffects(bot);
-                        bot._lastEnergyActions.Enqueue(Actions.Photosynthesis);
+                        if (((SunPhenomen)sworld.NaturalPhenomena["SunPhenomen"]).isIn(bot.LifeFormPlace[0]))
+                        {
+                            sworld.NaturalPhenomena["SunPhenomen"].GetEffects(bot);
+                            bot._lastEnergyActions.Enqueue(Actions.Photosynthesis);
+                        }
                         break;
                     case Actions.Extraction:
-                        sworld.NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
-                        bot._lastEnergyActions.Enqueue(Actions.Extraction);
+                        if (((MineralsPhenomen)sworld.NaturalPhenomena["MineralsPhenomen"]).isIn(bot.LifeFormPlace[0]))
+                        {
+                            sworld.NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
+                            bot._lastEnergyActions.Enqueue(Actions.Extraction);
+                        }
                         break;
                     case Actions.CheckEnergy:
                         //todo
