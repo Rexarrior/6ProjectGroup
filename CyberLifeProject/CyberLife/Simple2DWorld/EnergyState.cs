@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    enum EnergyStates
+    public enum EnergyStates
     {
         Dead,
         CanReproduce,
@@ -30,6 +30,14 @@ namespace CyberLife.Simple2DWorld
 
         #region methods
 
+        public override void Update(Simple2DWorld world)
+        {
+            foreach(BotLifeForm bot in world.LifeForms.Values)
+            {
+                bot._energyState = GetState(bot);
+            }
+        }
+
         /// <summary>
         /// получает флаг бота на основании текущей энергии бота
         /// </summary>
@@ -37,24 +45,24 @@ namespace CyberLife.Simple2DWorld
         private EnergyStates GetState(BotLifeForm bot)
         {
             EnergyStates flag;
-                if (Value < 0)
+                if (bot._energy < 0)
                 {
                    flag = EnergyStates.Dead;
-                    bot._isDead = true;
+                    bot._dead = true;
                     return flag;
                 }
-                if (Value >= MaxEnergy)
+                if (bot._energy >= MaxEnergy)
                 {
                     flag = EnergyStates.EnergyCollapse;
-                    _isDead = true;
+                    bot._dead = true;
                     return flag;
                 }
-                if (Value >= MaxEnergy * 0.9)
+                if (bot._energy >= MaxEnergy * 0.9)
                 {
                     flag = EnergyStates.ForsedReproduction;
                     return flag;
                 }
-                if (Value >= 500)
+                if (bot._energy >= 500)
                 {
                     flag = EnergyStates.CanReproduce;
                     return flag;
@@ -71,13 +79,7 @@ namespace CyberLife.Simple2DWorld
 
         public EnergyState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
         {
-            _isDead = false;
-        }
 
-
-        public EnergyState(StateMetadata metadata) : base(metadata)
-        {
-            _isDead = false;
         }
 
         #endregion

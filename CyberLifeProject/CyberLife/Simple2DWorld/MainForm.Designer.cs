@@ -59,7 +59,8 @@
             // 
             // ColorTypeButton
             // 
-            this.ColorTypeButton.Location = new System.Drawing.Point(115, 50);
+            this.ColorTypeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ColorTypeButton.Location = new System.Drawing.Point(156, 109);
             this.ColorTypeButton.Name = "ColorTypeButton";
             this.ColorTypeButton.Size = new System.Drawing.Size(131, 65);
             this.ColorTypeButton.TabIndex = 2;
@@ -77,7 +78,7 @@
             this.Controls.Add(this.mapPicture);
             this.MaximumSize = new System.Drawing.Size(10000, 10000);
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "NoMetadata version";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.mapPicture)).EndInit();

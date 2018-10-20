@@ -20,8 +20,8 @@ namespace CyberLife.Simple2DWorld
         {
             world = (Simple2DWorld)simple2DWorld;
             InitializeComponent();
-            mapPicture.Height = world.Environment.Size.Height;
-            mapPicture.Width = world.Environment.Size.Width;
+            mapPicture.Height = world.Size.Height;
+            mapPicture.Width = world.Size.Width;
             this.Size = Screen.PrimaryScreen.Bounds.Size;
             while (true)
             {
@@ -34,7 +34,6 @@ namespace CyberLife.Simple2DWorld
                     break;
                 }
             }
-           // statsLabel.Location = mapPicture.Width
 
         }
 
@@ -48,7 +47,10 @@ namespace CyberLife.Simple2DWorld
             while (true)
             {
                 world.Update();
-                Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() + "\r\nТекущий ход " + world.Age.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
+                Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() + 
+                    "\r\nКол-во органики " + world.Organic.Count.ToString() + 
+                    "\r\nТекущий ход " + world.Age.ToString()+ 
+                    "\r\nТекущий сезон "+((SeasonsPhenomen) world.NaturalPhenomena["SeasonsPhenomen"]).CurSeason.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
             }
         }
 
@@ -79,7 +81,7 @@ namespace CyberLife.Simple2DWorld
         {
             foreach(var bot in world.LifeForms.Values)
             {
-                ((ColorState)bot.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // работает плохо
+             ((ColorState) world.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // пофиксить отображение энергии в colorstate,пока что все желтые
                     
             }
         }

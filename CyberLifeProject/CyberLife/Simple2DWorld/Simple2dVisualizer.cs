@@ -32,21 +32,23 @@ namespace CyberLife.Simple2DWorld
         /// Вызывает обновление цветов форм жизни
         /// </summary>
         /// <param name="metadata"></param>
-        public void Update(WorldMetadata metadata)
+        public void Update(World world)
         {
-            map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);            
-            map = new Bitmap(metadata.EnvironmentMetadata.Size.Width, metadata.EnvironmentMetadata.Size.Height);
-            foreach (var pair in metadata)
+            map = new Bitmap(world.Size.Width, world.Size.Height);            
+            map = new Bitmap(world.Size.Width, world.Size.Height);
+            foreach (var bot in world.LifeForms.Values)
             {
-                Color color = ColorTranslator.FromHtml(pair.Value["ColorState"]["Color"]);
-                map.SetPixel(pair.Value.Place.Points[0].X, pair.Value.Place.Points[0].Y, color);
+                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y,((BotLifeForm)bot)._color);
             }
-            // form.UpdatePicture(map);
-            if (i % 10 == 0)
+            foreach(var bot in ((Simple2DWorld)world).Organic.Values)
             {
-                map.Save(@"D:\" + i.ToString() + ".jpg");
-             }
-             i ++;
+                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
+            }
+           // if (i % 100 == 0)
+           // {
+           //     map.Save(@"D:\" + i.ToString() + ".jpg");
+           //  }
+           //  i ++;
 
         }
 

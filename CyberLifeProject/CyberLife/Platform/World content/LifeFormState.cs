@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using CyberLife.Simple2DWorld;
 
 namespace CyberLife
 {
@@ -39,23 +40,13 @@ namespace CyberLife
 
         #region methods
 
-        /// <summary>
-        /// Формирует метаданные этого состояния формы жизни
-        /// </summary>
-        /// <returns>Метаданные состояния</returns>
-        public virtual StateMetadata GetMetadata()
-        {
-            return new StateMetadata(_name, _value,_params);
-        }
+
 
 
         
-        public virtual void Update(WorldMetadata lifeFormMetadata, StateMetadata stateMetadata)
+        public virtual void Update(Simple2DWorld.Simple2DWorld world)
         {
-            if (stateMetadata.Name != _name)
-                throw new ArgumentException("metadata of another state given.", nameof(stateMetadata));
-            _value += stateMetadata.Value; 
-            
+ 
         }
 
         #endregion
@@ -78,22 +69,6 @@ namespace CyberLife
             _params = Params ?? new Dictionary<string, string>();
             _name = name;
             _value = value;
-        }
-
-
-        /// <summary>
-        /// Инициализирует состояние формы жизни по
-        /// его метаданным
-        /// </summary>
-        /// <param name="metadata"></param>
-        public LifeFormState(StateMetadata metadata)
-        {
-            if (metadata == null)
-                throw new ArgumentNullException(nameof(metadata));
-
-            _name = metadata.Name;
-            _value = metadata.Value;
-            _params = metadata;
         }
 
         #endregion

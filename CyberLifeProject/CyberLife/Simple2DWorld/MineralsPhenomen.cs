@@ -15,7 +15,6 @@ namespace CyberLife.Simple2DWorld
         
         private const int MineralsSpread = 100;
         private const int PercentOfMap = 50;    
-        private const string ActionExtractionName = "Extraction";
 
         #region fields
 
@@ -40,55 +39,21 @@ namespace CyberLife.Simple2DWorld
         /// <param name="point">Точка</param>
         /// <param name="lifeFormMetadataMetadata">метаданные форммы жизни, находящейся в этой точке</param>
         /// <returns>Эффект воздействия феномена</returns>
-        public List<StateMetadata> GetEffects(Point point, LifeFormMetadata lifeFormMetadata)
+        public void GetEffects(LifeForm bot)
         {
-            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", point.X.ToString(), point.Y.ToString());
-            if (point == null)
+            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            if (bot == null)
             {
-                ArgumentNullException ex = new ArgumentNullException(nameof(point));
+                ArgumentNullException ex = new ArgumentNullException(nameof(bot));
                 log.Error(LogPhenomenMessages.NullArgument,"Point",ex);
                 throw ex;
             }
-
-            if (lifeFormMetadata == null)
+            Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            if (isIn(botPoint))
             {
-                ArgumentNullException ex = new ArgumentNullException(nameof(lifeFormMetadata));
-                log.Error(LogPhenomenMessages.NullArgument, "LifeFormMetadata",ex);
-                throw ex;
+                double depthFactor = 1 / (1 + ((_place[1].Y - botPoint.Y) / _place[0].Y));
+                ((BotLifeForm)bot)._energy += (int)(MineralsSpread * depthFactor);
             }
-
-            if (!isIn(point))
-            {
-                ArgumentException ex = new ArgumentException("Point isn't in phenomen area.", nameof(point));
-                log.Error(LogPhenomenMessages.PointNotFound + ex);
-                throw ex;
-            }
-
-            if (!lifeFormMetadata.ContainsKey("GenotypeState"))
-            {
-                ArgumentException ex = new ArgumentException("life form metadata isn't contains Genotype state metadata", nameof(lifeFormMetadata));
-                log.Error(LogPhenomenMessages.GenotypeStateNotFound + ex);
-                throw ex;
-            }
-
-
-            if (!lifeFormMetadata["GenotypeState"].ContainsKey("Action") ||
-            lifeFormMetadata["GenotypeState"]["Action"] != ActionExtractionName )
-            {
-                log.Info(LogPhenomenMessages.GenotypeStateAction);
-                return new List<StateMetadata>(0);
-            }
-
-
-            double depthFactor = 1 / (1 + ((_place[1].Y-point.Y)/ _place[0].Y));
-            log.Info(LogPhenomenMessages.DepthFactorCalc, depthFactor.ToString());
-
-
-            StateMetadata stateMetadata = new StateMetadata("EnergyState", MineralsSpread * depthFactor, null);
-            List<StateMetadata> ret = new List<StateMetadata>(1);
-            ret.Add(stateMetadata);
-            log.Trace(LogPhenomenMessages.EndMethod, "MineralsPhenomen.GetEffects");
-            return ret;
         }
 
 
@@ -101,22 +66,6 @@ namespace CyberLife.Simple2DWorld
         {
             log.Debug(LogPhenomenMessages.GetPlace, "MineralsPhenomen");
             return _place;
-        }
-
-
-
-        /// <summary>
-        /// Получает метаданные этого природного явления
-        /// </summary>
-        /// <returns>Метаданные</returns>
-        public PhenomenMetadata GetMetadata()
-        {
-            log.Debug(LogPhenomenMessages.GetMetadata, "MineralsPhenomen");
-            Dictionary<string, string> param = new Dictionary<string, string>(1);
-            param.Add("Percent", PercentOfMap.ToString());
-            PhenomenMetadata ret = new PhenomenMetadata("MineralsPhenomen", _place, this.GetType().Name, param);
-            log.Trace(LogPhenomenMessages.EndMethod, "MineralsPhenomen.GetMetadata");
-            return ret;
         }
 
 
@@ -141,7 +90,7 @@ namespace CyberLife.Simple2DWorld
 
 
 
-        public void Update(WorldMetadata worldMetadata)
+        public void Update(World worldMetadata)
         {
             
         }

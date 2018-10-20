@@ -51,7 +51,7 @@ namespace CyberLife.Simple2DWorld
         /// Обновляет действия бота в соответствии с геномом
         /// </summary>
         /// <param name="metadata"></param>
-        public void Update(Simple2DWorld world)
+        public override void Update(Simple2DWorld world)
         {
             foreach (BotLifeForm lifeForm in world.LifeForms.Values)
             {
@@ -77,7 +77,7 @@ namespace CyberLife.Simple2DWorld
                     NextStep(lifeForm);
                     lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
-                    SetAction(lifeForm);
+                   // SetAction(lifeForm);
                     break;
                 case 2:
                     lifeForm._action = Actions.Photosynthesis;                    
@@ -114,7 +114,7 @@ namespace CyberLife.Simple2DWorld
                     lifeForm._action = Actions.None;
                     lifeForm._direction = Directions.None;
                     NextStep(lifeForm);
-                    SetAction(lifeForm);
+                   // SetAction(lifeForm);
 
                     break;
                 case 6:
@@ -146,7 +146,7 @@ namespace CyberLife.Simple2DWorld
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
             long id = GetFreeId(sworld.LifeForms,sworld.Organic);
-            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id,((BotLifeForm)bot)._genom);
+            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)),id,((BotLifeForm)bot));
             sworld.LifeForms.Add(id, lifeForm);
         }
 

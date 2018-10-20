@@ -14,12 +14,13 @@ namespace CyberLife.Simple2DWorld
 
         public List<byte> _genom;
         public Color _color;
-        public  Queue<Actions> _lastEnergyReactions;
+        public  Queue<Actions> _lastEnergyActions;
         public byte YTK;
         public Directions _direction;
         public Actions _action;
         public bool _dead;
         public EnergyStates _energyState;
+        public int _energy;
 
         #endregion
 
@@ -63,18 +64,26 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         /// <param name="place">Пространство, занимаемое ботом</param>
         /// <param name="states">Состояния бота</param>
-        public BotLifeForm(Place place, long id, List<byte> genom = null) : base(place,id)
+        public BotLifeForm(Place place, long id, BotLifeForm byBot = null) : base(place,id)
         {
             _dead = false;
-            if (genom == null)
+            if (byBot == null)
+            {
                 _genom = GetCommonGenom();
+                _lastEnergyActions = new Queue<Actions> { };
+            }
             else
-                _genom = genom;
+            {
+                _lastEnergyActions = byBot._lastEnergyActions;
+                _genom = byBot._genom;
+                _color = byBot._color;
+            }
             const byte mutationPercent = 10;
             if (rnd.Next(1, (100 / mutationPercent) + 1) == 1)
             {
                 _genom[rnd.Next(0, 64)] = (Byte)rnd.Next(0, 64);
             }
+            _energy = 300;
         }
 
 
@@ -82,7 +91,7 @@ namespace CyberLife.Simple2DWorld
         /// Инициирует бота базовыми состояниями и случайной точкой на карте.
         /// </summary>
         /// <param name="mapsize">Размер карты</param>
-        public BotLifeForm(MapSize mapsize,long id, List<byte> genom = null) :this(Place.RandomPlace(mapsize),id,genom)
+        public BotLifeForm(MapSize mapsize,long id, BotLifeForm byBot = null) :this(Place.RandomPlace(mapsize),id,byBot)
         {
 
         }

@@ -20,8 +20,10 @@ namespace CyberLife
         public delegate void ReactionDelegate(World world);
 
         #region fields
+
+        protected Dictionary<string,IPhenomen> _naturalPhenomena;
+        protected MapSize _size;
         protected string _name;
-        protected Environment _environment;
         protected IVisualizer _visualizer;
         protected Dictionary<Int64, LifeForm> _lifeForms;
         protected int _age;
@@ -32,11 +34,13 @@ namespace CyberLife
 
 
         #region properties
+
         public string Name { get => _name; set => _name = value; }
         public Dictionary<Int64, LifeForm> LifeForms { get => _lifeForms;  }
-        public Environment Environment { get => _environment;  }
         public IVisualizer Visualizer { get => _visualizer; set => _visualizer = value; }//todo
         public int Age { get { return _age; } }
+        internal Dictionary<string, IPhenomen> NaturalPhenomena { get => _naturalPhenomena; }
+        internal MapSize Size { get => _size; }
 
         #endregion
 
@@ -45,54 +49,9 @@ namespace CyberLife
         /// <summary>
         /// Вызывает обновление всех компонентов мира. 
         /// </summary>
-        public void Update()
+        public virtual void Update()
         {
-            log.Trace(CommonLogMessages.Update, "World");
-            WorldMetadata metadata = GetMetadata();
-            log.Trace(CommonLogMessages.SetMetadata, "WorldMetadata", "World");
-            _environment.Update(metadata);
-            foreach (var bot in LifeForms.Values)
-            {
-                EnergyState energy = ((EnergyState)bot.States["EnergyState"]);
-                GenotypeState genotype = ((GenotypeState)bot.States["GenotypeState"]);
-                ColorState color = ((ColorState)bot.States["ColorState"]);
-                genotype._id = bot.Id;
-                color.LifeFormId = bot.Id;
-                energy.Update(metadata);
-                genotype.Update(metadata);
-                color.Update(metadata);
-            }
-            foreach (var lifeForm in LifeForms.Values.ToList())
-            {
-                
-                lifeForm.Update(metadata, _environment.GetEffects(lifeForm.GetMetadata()));
-            }
-
-            foreach (var reaction in _reactions.Values)
-            {
-                reaction(this);
-            }
-            log.Trace("Текущий Age = " + _age.ToString());
-            _age++;
-            _visualizer?.Update(this.GetMetadata());
-            log.Trace(CommonLogMessages.EndMethod, "World.Update");
-        }
-
-
-
-        /// <summary>
-        /// Получает метадату этого мира.
-        /// </summary>
-        /// <returns></returns>
-        public WorldMetadata GetMetadata()
-        {
-            log.Trace(CommonLogMessages.GetMetadata, "World");
-            Dictionary<long, LifeFormMetadata> lifeFormsMetadata = new Dictionary<long, LifeFormMetadata>();
-            foreach(var lifeFormRec in _lifeForms)
-            {
-                lifeFormsMetadata.Add(lifeFormRec.Key, lifeFormRec.Value.GetMetadata());
-            }
-            return new WorldMetadata(_environment.GetMetadata(), lifeFormsMetadata, _name, _age); 
+          // nothing?
         }
         
 
@@ -102,6 +61,8 @@ namespace CyberLife
         /// <param name="fileName">Имя файла для сохранения</param>
         public void SaveToFile(string fileName)
         {
+            //todo
+            /*
             log.Trace(CommonLogMessages.ProtobuffFromSome, "World");
             Protobuff.Metadata.WorldMetadata metadata = this.GetMetadata().GetProtoMetadata();
 
@@ -118,6 +79,7 @@ namespace CyberLife
                 throw;
             }
             log.Trace(CommonLogMessages.OkProtobuffFromSome);
+            */
         }
 
 
@@ -127,9 +89,10 @@ namespace CyberLife
         /// <param name="fileName">Имя файла для загрузки</param>
         /// <param name="fabrica">Фабрика природных явлений</param>
         /// <returns>Загруженный мир</returns>
-        public static World LoadFromFile(string fileName, IPhenomenaFabrica fabrica)
+       /* public static World LoadFromFile(string fileName IPhenomenaFabrica fabrica)
         {
-            ///TODO Fix for other worlds prototype
+            // todo
+            
             Logger log = LogManager.GetCurrentClassLogger();
             log.Trace("Загружаем экземпляр World из файла");
             World world;
@@ -151,7 +114,8 @@ namespace CyberLife
             }
             log.Trace("Экземпляр успешно загружен");
             return world;
-        }
+            
+        }*/
 
         
         /// <summary>
@@ -218,7 +182,7 @@ namespace CyberLife
         /// <param name="environment">Окружающая среда для этого мира</param>
         /// <param name="visualizer">Визуализатор, предназначенный для отрисовки компонентов мира</param>
         /// <param name="lifeForms">Формы жизни</param>
-        public World(string name, Environment environment, IVisualizer visualizer, List<LifeForm> lifeForms)
+        public World(string name, IVisualizer visualizer, List<LifeForm> lifeForms, Dictionary<string, IPhenomen> phenomens,MapSize mapSize)
         {
             if (lifeForms == null)
             {
@@ -240,10 +204,10 @@ namespace CyberLife
                 log.Error(CommonLogMessages.NullArgument, "string name");
                 throw ex;
             }
-            if(environment ==null)
+            if(phenomens ==null)
             {
-                ArgumentNullException ex = new ArgumentNullException(nameof(environment));
-                log.Error(CommonLogMessages.NullArgument, "Environment environment");
+                ArgumentNullException ex = new ArgumentNullException(nameof(phenomens));
+                log.Error(CommonLogMessages.NullArgument, "phenomens environment");
                 throw ex;
             }
             if(visualizer ==null)
@@ -252,8 +216,14 @@ namespace CyberLife
                 log.Error(CommonLogMessages.NullArgument, "IVisualizer visualizer");
                 throw ex;
             }
-
-            _environment = environment;
+            if (mapSize == null)
+            {
+                ArgumentNullException ex = new ArgumentNullException(nameof(mapSize));
+                log.Error(CommonLogMessages.NullArgument, "mapSize");
+                throw ex;
+            }
+            _size = mapSize;
+            _naturalPhenomena = phenomens;
             _visualizer = visualizer;
             _name = name;
             _lifeForms = new Dictionary<long, LifeForm>();
@@ -270,32 +240,6 @@ namespace CyberLife
         }
 
 
-        
-        /// <summary>
-        /// Инициализирует экземпляр мира из его метадаты 
-        /// и фабрики природных явлений
-        /// </summary>
-        /// <param name="metadata">метаданные мира</param>
-        /// <param name="phenomenaFabrica">Фабрика для разбора прородных явлений, содержащихся в метаданных</param>
-        public World(WorldMetadata metadata, IPhenomenaFabrica phenomenaFabrica)
-        {
-            log.Trace(CommonLogMessages.Constructor, "World"); 
-            _environment = new Environment(metadata.EnvironmentMetadata, phenomenaFabrica);
-            _name = metadata.Name;
-            _age = metadata.Age;
-            _lifeForms = new Dictionary<long, LifeForm>();
-            foreach (var lifeFormMetadata in metadata.Values)
-            {
-                _lifeForms.Add(lifeFormMetadata.Id, new LifeForm(lifeFormMetadata));
-            }
-
-
-            _reactions = new Dictionary<string, ReactionDelegate>();
-
-            log.Info("Кол-во форм жизни " + _lifeForms.Count.ToString());
-            log.Trace(CommonLogMessages.OkConstructor);
-
-        }
         
         #endregion
     }

@@ -22,9 +22,6 @@ namespace CyberLife.Simple2DWorld
         private const double SunDepthFactor = 0.5; 
 
 
-        private const string ActionPhotosynthesisName = "Photosynthesis";
-
-
         #region fields
 
         private double _powerFactor;
@@ -49,25 +46,17 @@ namespace CyberLife.Simple2DWorld
         /// Вызывает обновление интенсивности в зависимости от текущего сезона
         /// </summary>
         /// <param name="worldMetadata">Метаданные мира. В окружающей среде должен быть феномен времен года.</param>
-        public void Update(WorldMetadata worldMetadata)
+        public void Update(World world)
         {
             log.Trace(LogPhenomenMessages.PhenomenUpdate, "SunPhenomen");
-            if (!worldMetadata.EnvironmentMetadata.ContainsKey("SeasonsPhenomen"))
+            if (!world.NaturalPhenomena.ContainsKey("SeasonsPhenomen"))
             {
-               ArgumentException ex = new ArgumentException("world metadata isn't contains SeasonPhenomen metadata", nameof(worldMetadata));
+               ArgumentException ex = new ArgumentException("world metadata isn't contains SeasonPhenomen metadata", nameof(world));
                 log.Error(LogPhenomenMessages.BadInputMetadata, "SeasonsPhenomen");
                 throw ex;
             }
 
-
-            if (!worldMetadata.EnvironmentMetadata["SeasonsPhenomen"].ContainsParameter("season"))
-            {
-                ArgumentException ex = new ArgumentException("SeasonsPhenomen metadata isn't contains the parameter named \"season\"");
-                log.Error(LogPhenomenMessages.BadInputMetadata, "SeasonsPhenomen");
-                throw ex;
-            }
-
-            Season season = SeasonsPhenomen.ParseSeason(worldMetadata.EnvironmentMetadata["SeasonsPhenomen"]["season"]);
+            Season season = ((SeasonsPhenomen)world.NaturalPhenomena["SeasonsPhenomen"]).CurSeason;
             log.Info(LogPhenomenMessages.CurrentSeason, season.ToString());
             switch (season)
             {
@@ -110,58 +99,22 @@ namespace CyberLife.Simple2DWorld
         /// <param name="point">Точка</param>
         /// <param name="lifeFormMetadataMetadata">метаданные форммы жизни, находящейся в этой точке</param>
         /// <returns>Эффект воздействия феномена</returns>
-        public List<StateMetadata> GetEffects(Point point, LifeFormMetadata lifeFormMetadataMetadata)
+        public void GetEffects(LifeForm bot)
         {
-            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "SunPhenomen", point.X, point.Y);
-            if (point == null)
+            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "SunPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            if (bot == null)
             {
-                ArgumentException ex = new ArgumentNullException(nameof(point));
-                log.Error(LogPhenomenMessages.NullArgument, "Point",ex);
+                ArgumentException ex = new ArgumentNullException(nameof(bot));
+                log.Error(LogPhenomenMessages.NullArgument, "bot", ex);
                 throw ex;
             }
 
-            if (lifeFormMetadataMetadata == null)
+            Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            if (isIn(botPoint))
             {
-                ArgumentNullException ex = new ArgumentNullException(nameof(lifeFormMetadataMetadata));
-                log.Error(LogPhenomenMessages.NullArgument, "LifeFormMetadata", ex);
-                throw ex;
+                double depthFactor = 1 / (1 + (botPoint.Y - _place[0].Y) / _place[1].Y);
+                ((BotLifeForm)bot)._energy +=(int)( BaseIntensity * _powerFactor * depthFactor);
             }
-
-
-            if (!isIn(point))
-            {
-                ArgumentException ex = new ArgumentException("Point isn't in phenomen area.", nameof(point));
-                log.Error(LogPhenomenMessages.PointNotFound);
-                throw ex;
-            }
-
-
-            if (!lifeFormMetadataMetadata.ContainsKey("GenotypeState"))
-            {
-                ArgumentException ex = new ArgumentException("life form metadata isn't contains Genotype state metadata", nameof(lifeFormMetadataMetadata));
-                log.Error(LogPhenomenMessages.GenotypeStateNotFound);
-                throw ex;
-            }
-
-
-            if (!lifeFormMetadataMetadata["GenotypeState"].ContainsKey("Action") ||
-            lifeFormMetadataMetadata["GenotypeState"]["Action"] != ActionPhotosynthesisName)
-            {
-                log.Info(LogPhenomenMessages.GenotypeStateAction);
-                return  new List<StateMetadata>(0);
-            }
-
-
-            double depthFactor =  1 / (1 + (point.Y - _place[0].Y)/_place[1].Y);
-
-
-            log.Info(LogPhenomenMessages.DepthFactorCalc, depthFactor.ToString());
-            StateMetadata stateMetadata = new StateMetadata("EnergyState", BaseIntensity * _powerFactor  * depthFactor, null);
-
-            List<StateMetadata> ret = new List<StateMetadata>(1);
-            ret.Add(stateMetadata);
-            log.Trace(LogPhenomenMessages.EndMethod, "SunPhenomen.GetEffects");
-            return ret;
 
         }
 
@@ -197,21 +150,7 @@ namespace CyberLife.Simple2DWorld
             return _place;
         }
 
-        
-        /// <inheritdoc />
-        /// <summary>
-        /// Получает метаданные этого природного явления
-        /// </summary>
-        /// <returns>Метаданные</returns>
-        public PhenomenMetadata GetMetadata()
-        {
-            log.Debug(LogPhenomenMessages.GetMetadata, "SunPhenomen");
-            Dictionary<string, string> param = new Dictionary<string, string>(1);
-            param.Add("Intensity",(BaseIntensity * _powerFactor).ToString(CultureInfo.InvariantCulture));
-            PhenomenMetadata ret = new PhenomenMetadata("SunPhenomen", _place, this.GetType().Name, param);
-            log.Trace(LogPhenomenMessages.EndMethod, "SunPhenomen.GetMetadata");
-            return ret;
-        }
+      
 
 
         #endregion

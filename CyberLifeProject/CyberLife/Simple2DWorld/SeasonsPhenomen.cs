@@ -41,23 +41,6 @@ namespace CyberLife.Platform.World_content
 
         #region methods
 
-        /// <summary>
-        /// Получает эффекты воздействия этого феномена на точку пространства.
-        /// Использует метаданные попавшей под воздействия формы жизни для корректировки 
-        /// эффектов.
-        /// </summary>
-        /// <param name="point">Точка пространства</param>
-        /// <param name="lifeFormMetadata">Метаданные формы жизни</param>
-        /// <returns></returns>
-        public List<StateMetadata> GetEffects(Point point, LifeFormMetadata lifeFormMetadata)
-        {
-            List<StateMetadata> stateMetadata = new List<StateMetadata> { };
-
-            //Реализация GetEffects(Point point, LifeFormMetadata lifeFormMetadata)
-
-            return stateMetadata;
-        }
-
 
 
         /// <summary>
@@ -68,23 +51,6 @@ namespace CyberLife.Platform.World_content
         {
             log.Debug(LogPhenomenMessages.GetPlace, "SeasonsPhenomen");
             return _place;
-        }
-
-
-
-        /// <summary>
-        /// Получает метаданные этого природного явления.
-        /// </summary>
-        /// <returns></returns>
-        public PhenomenMetadata GetMetadata()
-        {
-            log.Debug(LogPhenomenMessages.GetMetadata, "SeasonsPhenomen");
-            Dictionary<string, string> data = new Dictionary<string, string> { };
-            data.Add("step", Convert.ToString(_step));
-            data.Add("season", _season.ToString());
-            PhenomenMetadata phenomenMetadata = new PhenomenMetadata("SeasonsPhenomen", _place, this.GetType().Name, data);
-            log.Trace(LogPhenomenMessages.EndMethod, "SeasonsPhenomen.GetMetadata");
-            return phenomenMetadata;
         }
 
 
@@ -106,7 +72,7 @@ namespace CyberLife.Platform.World_content
         /// метаданных окружающей среды.
         /// </summary>
         /// <param name="worldMetadata">Метаданные окружающей среды.</param>
-        public void Update( WorldMetadata worldMetadata)
+        public void Update(World worldMetadata)
         {
             log.Trace(LogPhenomenMessages.PhenomenUpdate, "SeasonsPhenomen");
             _step = worldMetadata.Age;
@@ -156,6 +122,12 @@ namespace CyberLife.Platform.World_content
                 }
             }
         }
+
+        public void GetEffects(LifeForm lifeForm)
+        {
+            // none
+        }
+
         #endregion
 
 

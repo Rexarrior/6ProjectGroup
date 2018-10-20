@@ -24,49 +24,15 @@ namespace CyberLife
 
 
         #region methods
-        /// <summary>
-        /// Получает эффект воздействия окружающей среды на данную форму жизни
-        /// на основании ее метаданных
-        /// </summary>
-        /// <param name="metadata">Метаданные формы жизни</param>
-        /// <returns></returns>
-        public List<StateMetadata> GetEffects(LifeFormMetadata metadata)
-        {
-            List<StateMetadata> ret = new List<StateMetadata>();
-
-            foreach (var phenomen in _naturalPhenomena)
-            {
-                // Получаем список точек, находящихся в области действия природного явления.
-                List<Point> points = phenomen.GetItPlace().Intersect(metadata.Place).Points;
-                // Получаем воздействие природного явления на каждую точку. 
-                foreach (var point in points)
-                {
-                    ret.AddRange(phenomen.GetEffects(point, metadata));
-                }
-            }
-
-            return ret;
-        }
-
-
-        /// <summary>
-        /// Получает метаданные этой окружающей среды. 
-        /// </summary>
-        /// <returns>Метаданные окружающей среды</returns>
-        public EnvironmentMetadata GetMetadata()
-        {
-            return new EnvironmentMetadata(_size,  _naturalPhenomena.Select(x => x.GetMetadata()).ToList());
-        }
-
-        
+      
         /// <summary>
         /// Вызывает операцию обновления для всех природных явлений, 
         /// принадлежащих этой окружающей среде. 
         /// </summary>
-        public void Update(WorldMetadata metadata)
+        public void Update(World world)
         {
             foreach (IPhenomen phenomen in _naturalPhenomena)
-                phenomen.Update(metadata);
+                phenomen.Update(world);
         }
         #endregion
 
@@ -84,27 +50,6 @@ namespace CyberLife
             _size = size;
         }
 
-
-
-
-        /// <summary>
-        /// Инициализирует экземпляр окружающей среды из ее метаданныхи фабрики природных явлений.
-        /// Фабрика природных явлений должна "уметь" разбирать 
-        /// все природные являения, содержащиеся в метаданных.
-        /// </summary>
-        /// <param name="environmentMetadata">Метаданные окружающей среды</param>
-        /// <param name="phenomenaFabrica">Фабрика природных явлений</param>
-        public Environment(EnvironmentMetadata environmentMetadata, IPhenomenaFabrica phenomenaFabrica)
-        {
-            _size = environmentMetadata.Size;
-
-            _naturalPhenomena = new List<IPhenomen>();
-            foreach (var phenomenMetadata in environmentMetadata.Values)
-            {
-
-                _naturalPhenomena.Add(phenomenaFabrica.ReconstructPhenomen(phenomenMetadata));
-            }
-        }
 
         #endregion
     }
