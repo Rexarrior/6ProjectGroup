@@ -15,7 +15,7 @@ namespace CyberLife.Simple2DWorld
     {
         Logger log = LogManager.GetCurrentClassLogger();
 
-        private const int BaseIntensity = 100;
+        private const int BaseIntensity = 300;
         private const double NormalPowerFactor = 1;
         private const double LowPowerFactor = 0.5;
         private const double HightPowerFactor = 1.5;
@@ -112,7 +112,7 @@ namespace CyberLife.Simple2DWorld
             Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
             if (isIn(botPoint))
             {
-                double depthFactor = 1 / (1 + (botPoint.Y - _place[0].Y) / _place[1].Y);
+                double depthFactor = 1 / (1 + (double)(botPoint.Y - _place[0].Y) / _place[1].Y);
                 ((BotLifeForm)bot)._energy +=(int)( BaseIntensity * _powerFactor * depthFactor);
             }
 

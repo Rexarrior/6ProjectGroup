@@ -93,7 +93,7 @@ namespace CyberLife.Simple2DWorld
                     bot._color = Color.FromArgb((part * R), (part * G), (part * B));
                     break;
                 case ColorType.EnergyDisplay:
-                    const int MaxBotEnergy = 1500;
+                    const int MaxBotEnergy = 10000;
                     R = 255;
                     G = (byte)(255 - (bot._energy / (double)MaxBotEnergy) * 255);
                     bot._color = Color.FromArgb(R, G, B);

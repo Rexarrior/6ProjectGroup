@@ -16,7 +16,7 @@ namespace CyberLife.Simple2DWorld
     }
     class EnergyState : LifeFormState
     {
-        public const int MaxEnergy = 1500;
+        public const int MaxEnergy = 10000;
 
         #region fields
 
@@ -62,7 +62,7 @@ namespace CyberLife.Simple2DWorld
                     flag = EnergyStates.ForsedReproduction;
                     return flag;
                 }
-                if (bot._energy >= 500)
+                if (bot._energy >= 1000)
                 {
                     flag = EnergyStates.CanReproduce;
                     return flag;

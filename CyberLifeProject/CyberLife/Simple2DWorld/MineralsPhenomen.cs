@@ -13,7 +13,7 @@ namespace CyberLife.Simple2DWorld
     {
         Logger log = LogManager.GetCurrentClassLogger();
 
-        private const int MineralsSpread = 100;
+        private const int MineralsSpread = 300;
         private const int PercentOfMap = 50;
 
         #region fields
@@ -51,7 +51,7 @@ namespace CyberLife.Simple2DWorld
             Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
             if (isIn(botPoint))
             {
-                double depthFactor = 1 / (1 + ((_place[1].Y - botPoint.Y) / _place[0].Y));
+                double depthFactor = 1 / (1 + ((double)(_place[1].Y - botPoint.Y) / _place[0].Y));
                 ((BotLifeForm)bot)._energy += (int)(MineralsSpread * depthFactor);
             }
         }

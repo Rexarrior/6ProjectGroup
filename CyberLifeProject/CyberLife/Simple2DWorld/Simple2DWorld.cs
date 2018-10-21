@@ -137,7 +137,7 @@ namespace CyberLife.Simple2DWorld
             foreach (BotLifeForm bot in sworld.LifeForms.Values.ToList())
 
             {
-                bot._energy -= 10;
+                bot._energy -= 20;
 
                 BotLifeForm botOnPlace;
                 int X = bot.LifeFormPlace.Points[0].X;
