@@ -84,42 +84,43 @@ namespace CyberLife.Simple2DWorld
                     NextStep(lifeForm);
                     break;
                 case 3:
-                    lifeForm._action = Actions.Move;
-                    NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    lifeForm._action = Actions.Extraction;
                     NextStep(lifeForm);
                     break;
                 case 4:
-                    lifeForm._action = Actions.Eat;
-                    NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
-                    NextStep(lifeForm);
-                    break;
-                case 5:
                     lifeForm._action = Actions.DoDescendant;
                     NextStep(lifeForm);
                     lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
+                case 5:
+                    lifeForm._action = Actions.Eat;
+                    NextStep(lifeForm);
+                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    NextStep(lifeForm);
+                    break;
+                case 6:
+                    lifeForm._action = Actions.Move;
+                    NextStep(lifeForm);
+                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    NextStep(lifeForm);
+                    break;
+
+
                 default:
                     try
                     {
-                        lifeForm.YTK = Convert.ToByte(lifeForm.YTK + lifeForm._genom[lifeForm.YTK] - 1);
+                        lifeForm.YTK = Convert.ToByte(((lifeForm.YTK + lifeForm._genom[lifeForm.YTK])%63));
                     }
                     catch (Exception e)
                     {
-                        throw new ArgumentException("Недопустимое значение YTK", (lifeForm.YTK + lifeForm._genom[lifeForm.YTK] - 1).ToString(), e);
+                        throw new ArgumentException("Недопустимое значение YTK", (((lifeForm.YTK + lifeForm._genom[lifeForm.YTK]) % 63)).ToString(), e);
                     }
-                    NextStep(lifeForm);
                     lifeForm._action = Actions.None;
                     lifeForm._direction = Directions.None;
                     NextStep(lifeForm);
                     // SetAction(lifeForm);
 
-                    break;
-                case 6:
-                    lifeForm._action = Actions.Extraction;
-                    NextStep(lifeForm);
                     break;
 
             }

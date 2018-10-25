@@ -46,7 +46,6 @@ namespace CyberLife.Simple2DWorld
         /// <param name="worldMetadata">Метаданные мира. В окружающей среде должен быть феномен времен года.</param>
         public void Update(World world)
         {
-            log.Trace(LogPhenomenMessages.PhenomenUpdate, "SunPhenomen");
             if (!world.NaturalPhenomena.ContainsKey("SeasonsPhenomen"))
             {
                ArgumentException ex = new ArgumentException("world metadata isn't contains SeasonPhenomen metadata", nameof(world));
@@ -99,7 +98,7 @@ namespace CyberLife.Simple2DWorld
         /// <returns>Эффект воздействия феномена</returns>
         public void GetEffects(LifeForm bot)
         {
-            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "SunPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "SunPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y +" Id бота = "+bot.Id.ToString()+" его энергия = " + ((BotLifeForm)bot)._energy.ToString());
             if (bot == null)
             {
                 ArgumentException ex = new ArgumentNullException(nameof(bot));
@@ -113,6 +112,7 @@ namespace CyberLife.Simple2DWorld
                 double depthFactor = 1 / (1 + (double)(botPoint.Y - _place[0].Y) / _place[1].Y);
                 ((BotLifeForm)bot)._energy +=(int)( BaseIntensity * _powerFactor * depthFactor);
                 ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Photosynthesis);
+                log.Info("Бот " + bot.Id + " получает " + (BaseIntensity * _powerFactor * depthFactor).ToString() + " энергии");
             }
 
         }

@@ -41,7 +41,7 @@ namespace CyberLife.Simple2DWorld
         /// <returns>Эффект воздействия феномена</returns>
         public void GetEffects(LifeForm bot)
         {
-            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y + " Id бота = " + bot.Id.ToString()+ " его энергия = "+((BotLifeForm)bot)._energy.ToString());
             if (bot == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(bot));
@@ -54,6 +54,7 @@ namespace CyberLife.Simple2DWorld
                 double depthFactor = 1 / (1 + ((double)(_place[1].Y - botPoint.Y) / _place[0].Y));
                 ((BotLifeForm)bot)._energy += (int)(MineralsSpread * depthFactor);
                 ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Extraction);
+                log.Info("Бот " + bot.Id + " получает " + (MineralsSpread * depthFactor).ToString() + " энергии");
             }
         }
 

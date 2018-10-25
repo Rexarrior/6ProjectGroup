@@ -39,6 +39,9 @@ namespace CyberLife.Simple2DWorld
 
         public bool IsLoading;
         Simple2DWorld world;
+        bool colortype = true;
+        delegate void Changed(string str, Bitmap map);
+        Changed changed;
         public MainForm(World simple2DWorld)
         {
             world = (Simple2DWorld)simple2DWorld;
@@ -60,11 +63,7 @@ namespace CyberLife.Simple2DWorld
 
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-        }
 
-        Changed changed;
         public void UpdateMap()
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -83,17 +82,13 @@ namespace CyberLife.Simple2DWorld
             }
         }
 
-        private void mapPicture_Click(object sender, EventArgs e)
-        {
-        }
-
         private void MainForm_Shown(object sender, EventArgs e)
         {
             Thread thread = new Thread(UpdateMap);
             thread.Start();
 
         }
-        delegate void Changed(string str, Bitmap map);
+
         public void Invoke(string str, Bitmap map)
         {
             changed = new Changed(Change);
@@ -106,7 +101,6 @@ namespace CyberLife.Simple2DWorld
             mapPicture2.Image = map;
 
         }
-        bool colortype = true;
         private void ColorTypeButton_Click(object sender, EventArgs e)
         {
             if (colortype)
@@ -121,5 +115,6 @@ namespace CyberLife.Simple2DWorld
             }
 
         }
+
     }
 }

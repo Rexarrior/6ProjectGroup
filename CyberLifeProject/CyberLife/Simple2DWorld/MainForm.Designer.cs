@@ -60,7 +60,7 @@
             // 
             this.mapPicture2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mapPicture2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            this.mapPicture2.Location = new System.Drawing.Point(9, 9);
+            this.mapPicture2.Location = new System.Drawing.Point(9, 12);
             this.mapPicture2.Margin = new System.Windows.Forms.Padding(0);
             this.mapPicture2.Name = "mapPicture2";
             this.mapPicture2.Size = new System.Drawing.Size(100, 100);
@@ -79,7 +79,6 @@
             this.MaximumSize = new System.Drawing.Size(10000, 10000);
             this.Name = "MainForm";
             this.Text = "NoMetadata version";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.mapPicture2)).EndInit();
             this.ResumeLayout(false);

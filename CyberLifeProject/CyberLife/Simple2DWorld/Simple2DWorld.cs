@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using CyberLife.Platform.Logging.LogMessages;
 using CyberLife.Platform.World_content;
 using System.Threading;
+using NLog;
 
 namespace CyberLife.Simple2DWorld
 {
     public class Simple2DWorld : World
     {
+
         public const double OrganicZeroEnergyFactor = 0.1;
         public const double OrganicCollapseEnergyFactor = 0.3;
         public const double OutflowEnergyFactor = 0.01;
@@ -170,7 +172,7 @@ namespace CyberLife.Simple2DWorld
                         break;
                     case Actions.DoDescendant:
                         GetXY(ref X, ref Y, bot);
-                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace)&& bot._energyState == EnergyStates.CanReproduce)
                         {
                             GenotypeState.DoDescendant(sworld, bot, X, Y);
                             bot._energy -= descendantPrice;

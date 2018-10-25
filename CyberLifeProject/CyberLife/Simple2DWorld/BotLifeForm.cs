@@ -34,8 +34,9 @@ namespace CyberLife.Simple2DWorld
 
         public List<byte> GetCommonGenom()
         {
-            List<byte> Genom = new List<byte> {/*1,6,3,63,6,62,7,3,54,6,4,6,3,7,4,1,5,3,1,3,1,4,1,5,1,4,1,5,2,6,25,2,5,25,2,63,25,63,63,26,36,4,4,6,3,63,25,26,2,5,1,0,4,2,7,5,7,3,7,35,1,3,4,6*/ };
-            List<int> workingList = Enumerable.Repeat(1, 10)
+            List<byte> Genom = new List<byte>
+            { 3,3,2,2,2,3,4,3,4,5,2,3,2,2,2,4,4,5,5,3,5,4,2,3,5,5,5,4,4,2,3,5,2,5,2,2,5,2,5,3,4,5,5,2,4,4,3,2,3,5,3,3,5,4,4,5,2,4,3,2,3,5,5,4 };
+           /* List<int> workingList = Enumerable.Repeat(1, 10)
                                   .Concat(Enumerable.Repeat(2, 10))
                                   .Concat(Enumerable.Repeat(3, 10))
                                   .Concat(Enumerable.Repeat(4, 10))
@@ -44,7 +45,7 @@ namespace CyberLife.Simple2DWorld
             foreach (int i in workingList)
             {
                 Genom.Add(Convert.ToByte(i));
-            }
+            }*/
             return Genom;
         }
 
@@ -79,7 +80,11 @@ namespace CyberLife.Simple2DWorld
                 {
                     _lastEnergyActions.Enqueue(byBot._lastEnergyActions.Peek());
                 }
-                _genom = byBot._genom;
+                _genom = new List<byte> { };
+                foreach(byte i in byBot._genom)
+                {
+                    _genom.Add(i);
+                }
                 _color = byBot._color;
             }
             const byte mutationPercent = 20;

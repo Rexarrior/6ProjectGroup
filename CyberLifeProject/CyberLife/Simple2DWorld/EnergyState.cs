@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ namespace CyberLife.Simple2DWorld
     }
     class EnergyState : LifeFormState
     {
+        Logger log = LogManager.GetCurrentClassLogger();
         public const int MaxEnergy = 10000;
 
         #region fields
@@ -47,22 +49,24 @@ namespace CyberLife.Simple2DWorld
             EnergyStates flag;
                 if (bot._energy < 0)
                 {
-                   flag = EnergyStates.Dead;
+                    log.Info("Бот умер от недостатка энергии,его энергия "+ bot._energy+"его id "+bot.Id);
+                    flag = EnergyStates.Dead;
                     bot._dead = true;
                     return flag;
                 }
                 if (bot._energy >= MaxEnergy)
                 {
-                    flag = EnergyStates.EnergyCollapse;
+                log.Info("Бот умер от переизбытка энергии,его энергия " + bot._energy + "его id " + bot.Id);
+                flag = EnergyStates.EnergyCollapse;
                     bot._dead = true;
                     return flag;
                 }
-                if (bot._energy >= MaxEnergy * 0.9)
+                if (bot._energy >= MaxEnergy * 0.8)
                 {
                     flag = EnergyStates.ForsedReproduction;
                     return flag;
                 }
-                if (bot._energy >= 1000)
+                if (bot._energy >= MaxEnergy* 0.3)
                 {
                     flag = EnergyStates.CanReproduce;
                     return flag;
