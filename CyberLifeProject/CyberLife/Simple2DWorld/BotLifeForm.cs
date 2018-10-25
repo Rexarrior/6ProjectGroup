@@ -74,7 +74,11 @@ namespace CyberLife.Simple2DWorld
             }
             else
             {
-                _lastEnergyActions = byBot._lastEnergyActions;
+                _lastEnergyActions = new Queue<Actions> { };
+                if (byBot._lastEnergyActions.Count != 0)
+                {
+                    _lastEnergyActions.Enqueue(byBot._lastEnergyActions.Peek());
+                }
                 _genom = byBot._genom;
                 _color = byBot._color;
             }

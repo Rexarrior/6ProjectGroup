@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace CyberLife.Simple2DWorld
 {
@@ -35,6 +36,7 @@ namespace CyberLife.Simple2DWorld
                 base.OnPaint(pe);
             }
         }
+
         public bool IsLoading;
         Simple2DWorld world;
         public MainForm(World simple2DWorld)
@@ -65,13 +67,19 @@ namespace CyberLife.Simple2DWorld
         Changed changed;
         public void UpdateMap()
         {
+            Stopwatch stopwatch = new Stopwatch();
             while (true)
             {
+              //  stopwatch.Start();
                 world.Update();
                 Invoke("Кол-во форм жизни " + world.LifeForms.Count.ToString() +
                     "\r\nКол-во органики " + world.Organic.Count.ToString() +
                     "\r\nТекущий ход " + world.Age.ToString() +
                     "\r\nТекущий сезон " + ((SeasonsPhenomen)world.NaturalPhenomena["SeasonsPhenomen"]).CurSeason.ToString(), ((Simple2dVisualizer)world.Visualizer).Map);
+
+                //stopwatch.Stop();
+               // MessageBox.Show(stopwatch.ElapsedMilliseconds.ToString());
+              //  stopwatch.Reset();
             }
         }
 
@@ -104,7 +112,7 @@ namespace CyberLife.Simple2DWorld
             if (colortype)
             {
                 colortype = false;
-                ((ColorState)world.States["ColorState"]).ColorType = ColorType.EnergyDisplay; // пофиксить отображение энергии в colorstate,пока что все желтые
+                ((ColorState)world.States["ColorState"]).ColorType = ColorType.EnergyDisplay;
             }
             else
             {

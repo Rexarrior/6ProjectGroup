@@ -60,10 +60,10 @@
             // 
             this.mapPicture2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mapPicture2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            this.mapPicture2.Location = new System.Drawing.Point(23, 12);
+            this.mapPicture2.Location = new System.Drawing.Point(9, 9);
             this.mapPicture2.Margin = new System.Windows.Forms.Padding(0);
             this.mapPicture2.Name = "mapPicture2";
-            this.mapPicture2.Size = new System.Drawing.Size(167, 154);
+            this.mapPicture2.Size = new System.Drawing.Size(100, 100);
             this.mapPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.mapPicture2.TabIndex = 3;
             this.mapPicture2.TabStop = false;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CyberLife.Platform.Logging.LogMessages;
 using CyberLife.Platform.World_content;
+using System.Threading;
 
 namespace CyberLife.Simple2DWorld
 {
@@ -31,13 +32,13 @@ namespace CyberLife.Simple2DWorld
 
 
         #region methods
-
+   
         public override void Update()
         {
             foreach (IPhenomen phenomen in _naturalPhenomena.Values)
                 phenomen.Update(this);
             foreach (var state in _states.Values)
-            {
+            {               
                 state.Update(this);
             }
             _energyReaction(this);
@@ -91,7 +92,7 @@ namespace CyberLife.Simple2DWorld
         /// EnergyState у форм жизни
         /// </summary>
         /// <param name="world">Обрабатываемый мир</param>
-        private static void _energyReaction(World world)
+        private void _energyReaction(World world)
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
 
@@ -127,7 +128,7 @@ namespace CyberLife.Simple2DWorld
 
 
 
-        private static void _genotypeReaction(World world)
+        private void _genotypeReaction(World world)
         {
             const int descendantPrice = 500;
             Simple2DWorld sworld = (Simple2DWorld)world;
@@ -135,67 +136,23 @@ namespace CyberLife.Simple2DWorld
             int worldHeight = sworld.Size.Height;
 
             foreach (BotLifeForm bot in sworld.LifeForms.Values.ToList())
-
             {
-                bot._energy -= 20;
-
+                bot._energy -= 10;
                 BotLifeForm botOnPlace;
                 int X = bot.LifeFormPlace.Points[0].X;
-                int Y = bot.LifeFormPlace.Points[0].Y;
-                if (bot._direction != Directions.None)
-                {
-                    switch (bot._direction)
-                    {
-                        case Directions.TopLeft:
-                            X--;
-                            Y++;
-                            break;
-                        case Directions.Top:
-                            Y++;
-                            break;
-                        case Directions.TopRight:
-                            X++;
-                            Y++;
-                            break;
-                        case Directions.Right:
-                            X++;
-                            break;
-                        case Directions.BottomRight:
-                            X++;
-                            Y--;
-                            break;
-                        case Directions.Bottom:
-                            Y--;
-                            break;
-                        case Directions.BottomLeft:
-                            X--;
-                            Y--;
-                            break;
-                        case Directions.Left:
-                            X--;
-                            break;
-                        default:
-                            throw new ArgumentException("Неопределенное направление  " + bot._direction);
-                    }
-                    if (Y > worldHeight - 1)
-                        Y = worldHeight - 1;
-                    if (Y < 0)
-                        Y = 0;
-                    if (X > worldWidth - 1)
-                        X = 0;
-                    if (X < 0)
-                        X = worldWidth - 1;
-                }
+                int Y = bot.LifeFormPlace.Points[0].Y;                
                 switch (bot._action)
                 {
                     case Actions.Move:
+                        GetXY(ref X, ref Y, bot);
                         if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
                             bot.LifeFormPlace.Points[0].X = X;
-                            bot.LifeFormPlace.Points[0].Y = Y;
+                            bot.LifeFormPlace.Points[0].Y = Y;                            
                         }
                         break;
                     case Actions.Eat:
+                        GetXY(ref X, ref Y, bot);
                         if (!sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
                             if (botOnPlace._dead)
@@ -212,6 +169,7 @@ namespace CyberLife.Simple2DWorld
                         }
                         break;
                     case Actions.DoDescendant:
+                        GetXY(ref X, ref Y, bot);
                         if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
                             GenotypeState.DoDescendant(sworld, bot, X, Y);
@@ -226,18 +184,10 @@ namespace CyberLife.Simple2DWorld
                         }
                         break;
                     case Actions.Photosynthesis:
-                        if (((SunPhenomen)sworld.NaturalPhenomena["SunPhenomen"]).isIn(bot.LifeFormPlace[0]))
-                        {
-                            sworld.NaturalPhenomena["SunPhenomen"].GetEffects(bot);
-                            bot._lastEnergyActions.Enqueue(Actions.Photosynthesis);
-                        }
+                        sworld.NaturalPhenomena["SunPhenomen"].GetEffects(bot);
                         break;
                     case Actions.Extraction:
-                        if (((MineralsPhenomen)sworld.NaturalPhenomena["MineralsPhenomen"]).isIn(bot.LifeFormPlace[0]))
-                        {
-                            sworld.NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
-                            bot._lastEnergyActions.Enqueue(Actions.Extraction);
-                        }
+                        sworld.NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
                         break;
                     case Actions.CheckEnergy:
                         //todo
@@ -248,12 +198,55 @@ namespace CyberLife.Simple2DWorld
 
 
 
-        private static void _colorReaction(World world)
+        private void _colorReaction(World world)
         {
 
         }
 
-
+        public void GetXY(ref int X,ref int Y,BotLifeForm bot)
+        {
+            switch (bot._direction)
+            {
+                case Directions.TopLeft:
+                    X--;
+                    Y++;
+                    break;
+                case Directions.Top:
+                    Y++;
+                    break;
+                case Directions.TopRight:
+                    X++;
+                    Y++;
+                    break;
+                case Directions.Right:
+                    X++;
+                    break;
+                case Directions.BottomRight:
+                    X++;
+                    Y--;
+                    break;
+                case Directions.Bottom:
+                    Y--;
+                    break;
+                case Directions.BottomLeft:
+                    X--;
+                    Y--;
+                    break;
+                case Directions.Left:
+                    X--;
+                    break;
+                default:
+                    throw new ArgumentException("Неопределенное направление  " + bot._direction);
+            }
+            if (Y > _size.Height - 1)
+                Y = this._size.Height - 1;
+            if (Y < 0)
+                Y = 0;
+            if (X > this._size.Width - 1)
+                X = 0;
+            if (X < 0)
+                X = this._size.Width - 1;
+        }
 
         /// <summary>
         /// Определяет,свободна ли выбранная клетка,и если нет,то возвращает форму жизни в данной клетке

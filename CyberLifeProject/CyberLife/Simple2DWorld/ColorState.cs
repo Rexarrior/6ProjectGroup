@@ -69,8 +69,6 @@ namespace CyberLife.Simple2DWorld
             switch (_colorType)
             {
                 case ColorType.Default:
-                    if (bot._lastEnergyActions == null)
-                        throw new ArgumentNullException();
                     foreach (Actions Action in bot._lastEnergyActions)
                     {
                         switch (Action)

@@ -31,8 +31,6 @@ namespace CyberLife.Simple2DWorld
         #endregion
 
 
-
-
         #region  properties
 
 
@@ -114,6 +112,7 @@ namespace CyberLife.Simple2DWorld
             {
                 double depthFactor = 1 / (1 + (double)(botPoint.Y - _place[0].Y) / _place[1].Y);
                 ((BotLifeForm)bot)._energy +=(int)( BaseIntensity * _powerFactor * depthFactor);
+                ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Photosynthesis);
             }
 
         }

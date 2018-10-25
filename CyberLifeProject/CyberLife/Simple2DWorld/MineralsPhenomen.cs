@@ -53,6 +53,7 @@ namespace CyberLife.Simple2DWorld
             {
                 double depthFactor = 1 / (1 + ((double)(_place[1].Y - botPoint.Y) / _place[0].Y));
                 ((BotLifeForm)bot)._energy += (int)(MineralsSpread * depthFactor);
+                ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Extraction);
             }
         }
 
