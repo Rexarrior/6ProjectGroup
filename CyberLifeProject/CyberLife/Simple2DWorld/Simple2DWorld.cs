@@ -136,7 +136,6 @@ namespace CyberLife.Simple2DWorld
             Simple2DWorld sworld = (Simple2DWorld)world;
             int worldWidth = sworld.Size.Width;
             int worldHeight = sworld.Size.Height;
-
             foreach (BotLifeForm bot in sworld.LifeForms.Values.ToList())
             {
                 bot._energy -= 10;
@@ -195,7 +194,7 @@ namespace CyberLife.Simple2DWorld
                         //todo
                         break;
                 }
-            }
+           }
         }
 
 

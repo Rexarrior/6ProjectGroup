@@ -34,18 +34,18 @@ namespace CyberLife.Simple2DWorld
 
         public List<byte> GetCommonGenom()
         {
-            List<byte> Genom = new List<byte>
-            { 3,3,2,2,2,3,4,3,4,5,2,3,2,2,2,4,4,5,5,3,5,4,2,3,5,5,5,4,4,2,3,5,2,5,2,2,5,2,5,3,4,5,5,2,4,4,3,2,3,5,3,3,5,4,4,5,2,4,3,2,3,5,5,4 };
-           /* List<int> workingList = Enumerable.Repeat(1, 10)
-                                  .Concat(Enumerable.Repeat(2, 10))
-                                  .Concat(Enumerable.Repeat(3, 10))
-                                  .Concat(Enumerable.Repeat(4, 10))
-                                  .Concat(Enumerable.Repeat(5, 10))
-                                  .Concat(Enumerable.Repeat(6, 14)).ToList();
-            foreach (int i in workingList)
-            {
-                Genom.Add(Convert.ToByte(i));
-            }*/
+            List<byte> Genom = new List<byte> 
+             { 6,6,4,5,5,6,3,3,6,5,2,3,6,4,4,4,3,4,2,2,5,3,4,4,3,5,3,4,4,6,3,2,4,2,5,5,3,6,2,6,6,4,6,2,5,4,2,4,2,2,4,5,2,3,6,4,4,2,4,2,5,6,5,6 };
+          // List<int> workingList = Enumerable.Repeat(2, 64).ToList();
+                                 // .Concat(Enumerable.Repeat(2, 10))
+                                 // .Concat(Enumerable.Repeat(3, 10))
+                                 // .Concat(Enumerable.Repeat(4, 10))
+                                 // .Concat(Enumerable.Repeat(5, 10))
+                                //  .Concat(Enumerable.Repeat(6, 14)).ToList();
+           // foreach (int i in workingList)
+           // {
+           //     Genom.Add(Convert.ToByte(i));
+          // }
             return Genom;
         }
 
@@ -87,7 +87,7 @@ namespace CyberLife.Simple2DWorld
                 }
                 _color = byBot._color;
             }
-            const byte mutationPercent = 20;
+            const byte mutationPercent = 100;
             if (rnd.Next(1, (100 / mutationPercent) + 1) == 1)
             {
                 _genom[rnd.Next(0, 64)] = (Byte)rnd.Next(0, 64);
