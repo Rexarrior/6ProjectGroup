@@ -41,20 +41,20 @@ namespace CyberLife.Simple2DWorld
         /// <returns>Эффект воздействия феномена</returns>
         public void GetEffects(LifeForm bot)
         {
-            log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y + " Id бота = " + bot.Id.ToString()+ " его энергия = "+((BotLifeForm)bot)._energy.ToString());
+        //    log.Trace(LogPhenomenMessages.PhenomenGetEffects, "MineralsPhenomen", bot.LifeFormPoint.X, bot.LifeFormPoint.Y + " Id бота = " + bot.Id.ToString()+ " его энергия = "+((BotLifeForm)bot)._energy.ToString());
             if (bot == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(bot));
                 log.Error(LogPhenomenMessages.NullArgument, "Point", ex);
                 throw ex;
             }
-            Point botPoint = new Point(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y);
+            Point botPoint = new Point(bot.LifeFormPoint.X, bot.LifeFormPoint.Y);
             if (isIn(botPoint))
             {
                 double depthFactor = 1 / (1 + ((double)(_place[1].Y - botPoint.Y) / _place[0].Y));
                 ((BotLifeForm)bot)._energy += (int)(MineralsSpread * depthFactor);
                 ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Extraction);
-                log.Info("Бот " + bot.Id + " получает " + (MineralsSpread * depthFactor).ToString() + " энергии");
+               // log.Info("Бот " + bot.Id + " получает " + (MineralsSpread * depthFactor).ToString() + " энергии");
             }
         }
 
@@ -80,12 +80,6 @@ namespace CyberLife.Simple2DWorld
         public bool isIn(Point point)
         {
             log.Trace(LogPhenomenMessages.PhenomenIsIn, "MineralsPhenomen");
-            if (point == null)
-            {
-                ArgumentNullException ex = new ArgumentNullException(nameof(point));
-                log.Error(LogPhenomenMessages.NullArgument, "Point", ex);
-                throw ex;
-            }
 
             return _place.IsIn(point);
         }

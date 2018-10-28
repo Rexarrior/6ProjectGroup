@@ -147,7 +147,7 @@ namespace CyberLife.Simple2DWorld
         {
             Simple2DWorld sworld = (Simple2DWorld)world;
             long id = GetFreeId(sworld.LifeForms, sworld.Organic);
-            BotLifeForm lifeForm = new BotLifeForm(new Place(PlaceType.Array, new Point(X, Y)), id, ((BotLifeForm)bot));
+            BotLifeForm lifeForm = new BotLifeForm(new Point(X, Y), id, ((BotLifeForm)bot));
             sworld.LifeForms.Add(id, lifeForm);
         }
 

@@ -25,7 +25,7 @@ namespace CyberLife
         protected MapSize _size;
         protected string _name;
         protected IVisualizer _visualizer;
-        protected Dictionary<Int64, LifeForm> _lifeForms;
+        protected Dictionary<long, LifeForm> _lifeForms;
         protected int _age;
 
         protected Dictionary<string, ReactionDelegate> _reactions; 
@@ -36,7 +36,7 @@ namespace CyberLife
         #region properties
 
         public string Name { get => _name; set => _name = value; }
-        public Dictionary<Int64, LifeForm> LifeForms { get => _lifeForms;  }
+        public Dictionary<long, LifeForm> LifeForms { get => _lifeForms;  }
         public IVisualizer Visualizer { get => _visualizer; set => _visualizer = value; }//todo
         public int Age { get { return _age; } }
         internal Dictionary<string, IPhenomen> NaturalPhenomena { get => _naturalPhenomena; }

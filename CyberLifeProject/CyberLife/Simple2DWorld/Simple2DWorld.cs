@@ -101,7 +101,7 @@ namespace CyberLife.Simple2DWorld
             IEnumerable<Int64> deadBots = sworld.LifeForms
                 .Where(
                     x => ((BotLifeForm)x.Value)._dead == true
-                ).Select(x => x.Key).ToArray();
+                ).Select(x =>(long) x.Key).ToArray();
             foreach (var botId in deadBots)
             {
                 BotLifeForm bot = (BotLifeForm)sworld.LifeForms[botId];
@@ -140,16 +140,16 @@ namespace CyberLife.Simple2DWorld
             {
                 bot._energy -= 10;
                 BotLifeForm botOnPlace;
-                int X = bot.LifeFormPlace.Points[0].X;
-                int Y = bot.LifeFormPlace.Points[0].Y;                
+                int X = bot.LifeFormPoint.X;
+                int Y = bot.LifeFormPoint.Y;                
                 switch (bot._action)
                 {
                     case Actions.Move:
                         GetXY(ref X, ref Y, bot);
                         if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
                         {
-                            bot.LifeFormPlace.Points[0].X = X;
-                            bot.LifeFormPlace.Points[0].Y = Y;                            
+                            bot.LifeFormPoint.X = X;
+                            bot.LifeFormPoint.Y = Y;                            
                         }
                         break;
                     case Actions.Eat:
@@ -260,8 +260,8 @@ namespace CyberLife.Simple2DWorld
         {
             foreach (var Bot in LifeForms.Values)
             {
-                if (Bot.LifeFormPlace.Points[0].X == X &&
-                    Bot.LifeFormPlace.Points[0].Y == Y)
+                if (Bot.LifeFormPoint.X == X &&
+                    Bot.LifeFormPoint.Y == Y)
                 {
                     botOnPlace = (BotLifeForm)Bot;
                     return false;
@@ -269,8 +269,8 @@ namespace CyberLife.Simple2DWorld
             }
             foreach (var Bot in Organic.Values)
             {
-                if (Bot.LifeFormPlace.Points[0].X == X &&
-                    Bot.LifeFormPlace.Points[0].Y == Y)
+                if (Bot.LifeFormPoint.X == X &&
+                    Bot.LifeFormPoint.Y == Y)
                 {
                     botOnPlace = (BotLifeForm)Bot;
                     return false;

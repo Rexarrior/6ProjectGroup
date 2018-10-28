@@ -49,14 +49,14 @@ namespace CyberLife.Simple2DWorld
             EnergyStates flag;
                 if (bot._energy < 0)
                 {
-                    log.Info("Бот умер от недостатка энергии,его энергия "+ bot._energy+"его id "+bot.Id);
+                   // log.Info("Бот умер от недостатка энергии,его энергия "+ bot._energy+"его id "+bot.Id);
                     flag = EnergyStates.Dead;
                     bot._dead = true;
                     return flag;
                 }
                 if (bot._energy >= MaxEnergy)
                 {
-                log.Info("Бот умер от переизбытка энергии,его энергия " + bot._energy + "его id " + bot.Id);
+               // log.Info("Бот умер от переизбытка энергии,его энергия " + bot._energy + "его id " + bot.Id);
                 flag = EnergyStates.EnergyCollapse;
                     bot._dead = true;
                     return flag;

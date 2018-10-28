@@ -38,11 +38,11 @@ namespace CyberLife.Simple2DWorld
             map = new Bitmap(world.Size.Width, world.Size.Height);
             foreach (var bot in world.LifeForms.Values)
             {
-                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
+                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot)._color);
             }
             foreach (var bot in ((Simple2DWorld)world).Organic.Values)
             {
-                map.SetPixel(bot.LifeFormPlace[0].X, bot.LifeFormPlace[0].Y, ((BotLifeForm)bot)._color);
+                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot)._color);
             }
             // if (i % 50 == 0)
             //  {

@@ -8,7 +8,7 @@ namespace CyberLife
         #region fields
 
         private Int64 _id; 
-        private Place _lifeFormPlace;
+        private Point _lifeFormPoint;
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace CyberLife
         /// <summary>
         /// Пространство, которое занимает эта форма жизни
         /// </summary>
-        public Place LifeFormPlace { get => _lifeFormPlace; set => _lifeFormPlace = value; }
+        public Point LifeFormPoint { get => _lifeFormPoint; set => _lifeFormPoint = value; }
 
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace CyberLife
         /// </summary>
         /// <param name="place">Пространство, которое будет занимать эта форма жизни</param>
         /// <param name="states">Состояния этой формы жизни</param>
-        public LifeForm(Place place, long id)
+        public LifeForm(Point point, long id)
         {
-            _lifeFormPlace = place ?? throw new ArgumentNullException(nameof(place));
+            _lifeFormPoint = point ?? throw new ArgumentNullException(nameof(point));
             _id = id;
         }
 

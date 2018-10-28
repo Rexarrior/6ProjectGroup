@@ -269,16 +269,16 @@ namespace CyberLife
 
                     if (_points[0].X > _points[1].X)
                     {
-                        var tmp = _points[0].X;
-                        _points[0].X = _points[1].X;
-                        _points[1].X = tmp;
+                       // var tmp = _points[0].X;
+                       // _points[0].X = _points[1].X;
+                        //_points[1].X = tmp;
                     }
 
                     if (_points[0].Y > _points[1].Y)
                     {
-                        var tmp = _points[0].Y;
-                        _points[0].Y = _points[1].Y;
-                        _points[1].Y = tmp;
+                      //  var tmp = _points[0].Y;
+                       // _points[0].Y = _points[1].Y;
+                       // _points[1].Y = tmp;
                     }
                 }
                 else

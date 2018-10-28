@@ -6,6 +6,7 @@ namespace CyberLife
     /// </summary>
     public class Point
     {
+        static Random rnd = new Random();
         #region fields
 
         int _x;
@@ -97,6 +98,12 @@ namespace CyberLife
             return ret;
         }
 
+
+
+        public static Point RandomPoint(MapSize map)
+        {
+            return new Point(rnd.Next(0, map.Width), rnd.Next(0, map.Height));
+        }
         #endregion
 
 
