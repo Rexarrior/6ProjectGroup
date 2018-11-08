@@ -24,7 +24,7 @@ namespace CyberLife
         /// <summary>
         /// Подконтрольные миры
         /// </summary>
-        public List<World> Worlds { get => _worlds;  }
+        public List<World> Worlds { get => _worlds; }
         #endregion
 
 

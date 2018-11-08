@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CyberLife.Simple2DWorld
 {
-    class RemoteVisualizer: IVisualizer
+    class RemoteVisualizer : IVisualizer
     {
         #region fields
 

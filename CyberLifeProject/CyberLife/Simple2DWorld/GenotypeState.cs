@@ -55,54 +55,53 @@ namespace CyberLife.Simple2DWorld
         {
             foreach (BotLifeForm lifeForm in world.LifeForms.Values)
             {
-                if (lifeForm._energyState == EnergyStates.ForsedReproduction)
+                if (lifeForm.EnergyState == EnergyStates.ForsedReproduction)
                 {
-                    lifeForm._action = Actions.ForsedReproduction;
+                    lifeForm.Action = Actions.ForsedReproduction;
                     NextStep(lifeForm);
                 }
                 else
                 {
                     SetAction(lifeForm);
-
                 }
             }
         }
 
         private void SetAction(BotLifeForm lifeForm)
         {
-            switch (lifeForm._genom[lifeForm.YTK])
+            switch (lifeForm.Genom[lifeForm.YTK])
             {
                 case 1:
-                    lifeForm._action = Actions.CheckEnergy;
+                    lifeForm.Action = Actions.CheckEnergy;
                     NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    lifeForm.Direction = (Directions)((lifeForm.Genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     // SetAction(lifeForm);
                     break;
                 case 2:
-                    lifeForm._action = Actions.Photosynthesis;
+                    lifeForm.Action = Actions.Photosynthesis;
                     NextStep(lifeForm);
                     break;
                 case 3:
-                    lifeForm._action = Actions.Extraction;
+                    lifeForm.Action = Actions.Extraction;
                     NextStep(lifeForm);
                     break;
                 case 4:
-                    lifeForm._action = Actions.DoDescendant;
+                    lifeForm.Action = Actions.DoDescendant;
                     NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    lifeForm.Direction = (Directions)((lifeForm.Genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
                 case 5:
-                    lifeForm._action = Actions.Eat;
+                    lifeForm.Action = Actions.Eat;
                     NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    lifeForm.Direction = (Directions)((lifeForm.Genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
                 case 6:
-                    lifeForm._action = Actions.Move;
+                    lifeForm.Action = Actions.Move;
                     NextStep(lifeForm);
-                    lifeForm._direction = (Directions)((lifeForm._genom[lifeForm.YTK] / 8) + 1);
+                    lifeForm.Direction = (Directions)((lifeForm.Genom[lifeForm.YTK] / 8) + 1);
                     NextStep(lifeForm);
                     break;
 
@@ -110,14 +109,14 @@ namespace CyberLife.Simple2DWorld
                 default:
                     try
                     {
-                        lifeForm.YTK = Convert.ToByte(((lifeForm.YTK + lifeForm._genom[lifeForm.YTK])%63));
+                        lifeForm.YTK = Convert.ToByte(((lifeForm.YTK + lifeForm.Genom[lifeForm.YTK]) % 63));
                     }
                     catch (Exception e)
                     {
-                        throw new ArgumentException("Недопустимое значение YTK", (((lifeForm.YTK + lifeForm._genom[lifeForm.YTK]) % 63)).ToString(), e);
+                        throw new ArgumentException("Недопустимое значение YTK", (((lifeForm.YTK + lifeForm.Genom[lifeForm.YTK]) % 63)).ToString(), e);
                     }
-                    lifeForm._action = Actions.None;
-                    lifeForm._direction = Directions.None;
+                    lifeForm.Action = Actions.None;
+                    lifeForm.Direction = Directions.None;
                     NextStep(lifeForm);
                     // SetAction(lifeForm);
 
@@ -133,22 +132,10 @@ namespace CyberLife.Simple2DWorld
 
 
 
-        public static Int64 GetFreeId(Dictionary<long, LifeForm> lifeForms, Dictionary<long, LifeForm> organic)
+        public static void DoDescendant(Dictionary<Point, LifeForm> lifeForms, LifeForm bot, int X, int Y)
         {
-            return Enumerable.Range(0, lifeForms.Count + organic.Count + 1).
-                               Select(x => (Int64)x).
-                               First(x => !lifeForms.ContainsKey(x) && !organic.ContainsKey(x));
-
-        }
-
-
-
-        public static void DoDescendant(World world, LifeForm bot, int X, int Y)
-        {
-            Simple2DWorld sworld = (Simple2DWorld)world;
-            long id = GetFreeId(sworld.LifeForms, sworld.Organic);
-            BotLifeForm lifeForm = new BotLifeForm(new Point(X, Y), id, ((BotLifeForm)bot));
-            sworld.LifeForms.Add(id, lifeForm);
+            BotLifeForm lifeForm = new BotLifeForm(new Point(X, Y), ((BotLifeForm)bot));
+            lifeForms.Add(lifeForm.LifeFormPoint, lifeForm);
         }
 
         #endregion
@@ -156,7 +143,7 @@ namespace CyberLife.Simple2DWorld
 
         #region constructors
 
-        public GenotypeState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public GenotypeState(string name, double value) : base(name, value)
         {
 
         }

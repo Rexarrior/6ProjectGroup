@@ -34,6 +34,6 @@ namespace CyberLife
         /// </summary>
         /// <returns></returns>
         Place GetItPlace();
-        
+
     }
 }

@@ -13,8 +13,6 @@ namespace CyberLife.Simple2DWorld
         #region fields
 
         private Bitmap map;
-        int i = 0;
-
 
         #endregion
 
@@ -35,21 +33,14 @@ namespace CyberLife.Simple2DWorld
         public void Update(World world)
         {
             map = new Bitmap(world.Size.Width, world.Size.Height);
-            map = new Bitmap(world.Size.Width, world.Size.Height);
             foreach (var bot in world.LifeForms.Values)
             {
-                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot)._color);
+                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot).Color);
             }
             foreach (var bot in ((Simple2DWorld)world).Organic.Values)
             {
-                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot)._color);
+                map.SetPixel(bot.LifeFormPoint.X, bot.LifeFormPoint.Y, ((BotLifeForm)bot).Color);
             }
-            // if (i % 50 == 0)
-            //  {
-            //      map.Save(@"D:\" + i.ToString() + ".jpg");
-            // }
-            //  i ++;
-
         }
 
 

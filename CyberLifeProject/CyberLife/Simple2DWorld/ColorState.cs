@@ -16,6 +16,7 @@ namespace CyberLife.Simple2DWorld
     class ColorState : LifeFormState
     {
         #region fields
+
         private ColorType _colorType;
 
         #endregion
@@ -42,15 +43,15 @@ namespace CyberLife.Simple2DWorld
         {
             foreach (BotLifeForm bot in world.LifeForms.Values)
             {
-                if (!bot._dead)
+                if (!bot.Dead)
                 {
-                    if (bot._lastEnergyActions.Count >= 10)
-                        bot._lastEnergyActions.Dequeue();
+                    if (bot.LastEnergyActions.Count >= 10)
+                        bot.LastEnergyActions.Dequeue();
                     SetRGB(bot);
                 }
                 else
                 {
-                    bot._color = Color.FromArgb(132, 132, 132);
+                    bot.Color = Color.FromArgb(132, 132, 132);
                 }
             }
         }
@@ -62,6 +63,7 @@ namespace CyberLife.Simple2DWorld
         /// </summary>
         public void SetRGB(BotLifeForm bot)
         {
+            const int MaxBotEnergy = 10000;
             byte R = 0;
             byte G = 0;
             byte B = 0;
@@ -69,7 +71,7 @@ namespace CyberLife.Simple2DWorld
             switch (_colorType)
             {
                 case ColorType.Default:
-                    foreach (Actions Action in bot._lastEnergyActions)
+                    foreach (Actions Action in bot.LastEnergyActions)
                     {
                         switch (Action)
                         {
@@ -88,13 +90,12 @@ namespace CyberLife.Simple2DWorld
                         throw new ArgumentException("Один из параметров RGB был отрицательным");
                     if (R + G + B != 0)
                         part = Convert.ToByte(255 / (R + G + B));
-                    bot._color = Color.FromArgb((part * R), (part * G), (part * B));
+                    bot.Color = Color.FromArgb((part * R), (part * G), (part * B));
                     break;
                 case ColorType.EnergyDisplay:
-                    const int MaxBotEnergy = 10000;
                     R = 255;
-                    G = (byte)(255 - (bot._energy / (double)MaxBotEnergy) * 255);
-                    bot._color = Color.FromArgb(R, G, B);
+                    G = (byte)(255 - (bot.Energy / (double)MaxBotEnergy) * 255);
+                    bot.Color = Color.FromArgb(R, G, B);
                     break;
             }
         }
@@ -104,7 +105,7 @@ namespace CyberLife.Simple2DWorld
 
         #region constructors
 
-        public ColorState(string name, double value, ColorType colorType, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public ColorState(string name, double value, ColorType colorType) : base(name, value)
         {
             this._colorType = colorType;
         }

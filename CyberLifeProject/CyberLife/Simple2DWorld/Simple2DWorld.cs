@@ -19,7 +19,7 @@ namespace CyberLife.Simple2DWorld
 
         #region fields
 
-        private Dictionary<long, LifeForm> _organic;
+        private Dictionary<Point, LifeForm> _organic;
         private Dictionary<string, LifeFormState> _states;
 
         #endregion
@@ -27,25 +27,25 @@ namespace CyberLife.Simple2DWorld
 
         #region properties
 
-        public Dictionary<long, LifeForm> Organic { get => _organic; set => _organic = value; }
+        public Dictionary<Point, LifeForm> Organic { get => _organic; set => _organic = value; }
         public Dictionary<string, LifeFormState> States { get => _states; }
 
         #endregion
 
 
         #region methods
-   
+
         public override void Update()
         {
             foreach (IPhenomen phenomen in _naturalPhenomena.Values)
                 phenomen.Update(this);
             foreach (var state in _states.Values)
-            {               
+            {
                 state.Update(this);
             }
-            _energyReaction(this);
-            _genotypeReaction(this);
-            _colorReaction(this);
+            _energyReaction();
+            _genotypeReaction();
+            _colorReaction();
             _visualizer.Update(this);
             _age++;
         }
@@ -58,13 +58,14 @@ namespace CyberLife.Simple2DWorld
         /// <param name="width">Ширина карты</param>
         /// <param name="height">Высота карты</param>
         /// <returns></returns>
-        private static List<LifeForm> _getLifeForms(int count, int width, int height)
+        private static Dictionary<Point,LifeForm> _getLifeForms(int count, int width, int height)
         {
             MapSize mapsize = new MapSize(width, height);
-            List<LifeForm> lifeForms = new List<LifeForm>(count);
+            Dictionary<Point, LifeForm> lifeForms =new Dictionary<Point, LifeForm>(count);
             for (int i = 0; i < count; i++)
             {
-                lifeForms.Add(new BotLifeForm(mapsize, i));
+                BotLifeForm bot = new BotLifeForm(mapsize, lifeForms);
+                lifeForms.Add(bot.LifeFormPoint,bot);
             }
 
             return lifeForms;
@@ -94,119 +95,126 @@ namespace CyberLife.Simple2DWorld
         /// EnergyState у форм жизни
         /// </summary>
         /// <param name="world">Обрабатываемый мир</param>
-        private void _energyReaction(World world)
+        private void _energyReaction()
         {
-            Simple2DWorld sworld = (Simple2DWorld)world;
 
-            IEnumerable<Int64> deadBots = sworld.LifeForms
+            IEnumerable<Point> deadBots = LifeForms
                 .Where(
-                    x => ((BotLifeForm)x.Value)._dead == true
-                ).Select(x =>(long) x.Key).ToArray();
-            foreach (var botId in deadBots)
+                    x => ((BotLifeForm)x.Value).Dead == true
+                ).Select(x => (Point)x.Key).ToArray();
+            foreach (var botPoint in deadBots)
             {
-                BotLifeForm bot = (BotLifeForm)sworld.LifeForms[botId];
-                sworld.Organic.Add(botId, bot);
-                sworld.LifeForms.Remove(botId);
-                bot._energy = (int)(EnergyState.MaxEnergy * (
-                    bot._energyState == EnergyStates.EnergyCollapse ?
+                BotLifeForm bot = (BotLifeForm)LifeForms[botPoint];
+                Organic.Add(botPoint, bot);
+                LifeForms.Remove(botPoint);
+                bot.Energy = (int)(EnergyState.MaxEnergy * (
+                    bot.EnergyState == EnergyStates.EnergyCollapse ?
                         OrganicCollapseEnergyFactor :
                                       OrganicZeroEnergyFactor));
             }
 
-            foreach (BotLifeForm bot in sworld.Organic.Values)
+            foreach (BotLifeForm bot in Organic.Values)
             {
-                bot._energy -= (int)(bot._energy * OutflowEnergyFactor);
+                bot.Energy -= (int)(bot.Energy * OutflowEnergyFactor);
             }
 
-            Int64[] rottenOrganic = sworld.Organic.Where(x => ((BotLifeForm)x.Value)._energy <= 0)
+            Point[] rottenOrganic = Organic.Where(x => ((BotLifeForm)x.Value).Energy <= 0)
                 .Select(x => x.Key).ToArray();
 
             foreach (var botId in rottenOrganic)
             {
-                sworld.Organic.Remove(botId);
+                Organic.Remove(botId);
             }
 
         }
 
 
 
-        private void _genotypeReaction(World world)
+        private void _genotypeReaction()
         {
             const int descendantPrice = 500;
-            Simple2DWorld sworld = (Simple2DWorld)world;
-            int worldWidth = sworld.Size.Width;
-            int worldHeight = sworld.Size.Height;
-            foreach (BotLifeForm bot in sworld.LifeForms.Values.ToList())
+            int worldWidth = Size.Width;
+            int worldHeight = Size.Height;
+            BotLifeForm botOnPlace;
+            int X;
+            int Y;
+            foreach (BotLifeForm bot in LifeForms.Values.ToList())
             {
-                bot._energy -= 10;
-                BotLifeForm botOnPlace;
-                int X = bot.LifeFormPoint.X;
-                int Y = bot.LifeFormPoint.Y;                
-                switch (bot._action)
+                bot.Energy -= 10;
+                switch (bot.Action)
                 {
                     case Actions.Move:
-                        GetXY(ref X, ref Y, bot);
-                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        X = bot.LifeFormPoint.X;
+                        Y = bot.LifeFormPoint.Y;
+                        GetXY(ref X, ref Y, bot.Direction);
+                        if (IsPlaceEmpty(X, Y, out botOnPlace))
                         {
-                            bot.LifeFormPoint.X = X;
-                            bot.LifeFormPoint.Y = Y;                            
+                            LifeForms.Remove(bot.LifeFormPoint);
+                            bot.LifeFormPoint = new Point(X, Y);
+                            LifeForms.Add(bot.LifeFormPoint, bot);
                         }
                         break;
                     case Actions.Eat:
-                        GetXY(ref X, ref Y, bot);
-                        if (!sworld.IsPlaceEmpty(X, Y, out botOnPlace))
+                        X = bot.LifeFormPoint.X;
+                        Y = bot.LifeFormPoint.Y;
+                        GetXY(ref X, ref Y, bot.Direction);
+                        if (!IsPlaceEmpty(X, Y, out botOnPlace))
                         {
-                            if (botOnPlace._dead)
+                            if (botOnPlace.Dead)
                             {
-                                bot._energy += botOnPlace._energy;
-                                sworld._organic.Remove(botOnPlace.Id);
+                                bot.Energy += botOnPlace.Energy;
+                                _organic.Remove(botOnPlace.LifeFormPoint);
                             }
                             else
                             {
-                                bot._energy += (int)(botOnPlace._energy * OrganicCollapseEnergyFactor);
-                                sworld.LifeForms.Remove(botOnPlace.Id);
+                                bot.Energy += (int)(botOnPlace.Energy * OrganicCollapseEnergyFactor);
+                                LifeForms.Remove(botOnPlace.LifeFormPoint);
                             }
-                            bot._lastEnergyActions.Enqueue(Actions.Eat);
+                            bot.LastEnergyActions.Enqueue(Actions.Eat);
                         }
                         break;
                     case Actions.DoDescendant:
-                        GetXY(ref X, ref Y, bot);
-                        if (sworld.IsPlaceEmpty(X, Y, out botOnPlace)&& bot._energyState == EnergyStates.CanReproduce)
+                        X = bot.LifeFormPoint.X;
+                        Y = bot.LifeFormPoint.Y;
+                        GetXY(ref X, ref Y, bot.Direction);
+                        if (IsPlaceEmpty(X, Y, out botOnPlace) && bot.EnergyState == EnergyStates.CanReproduce)
                         {
-                            GenotypeState.DoDescendant(sworld, bot, X, Y);
-                            bot._energy -= descendantPrice;
+                            GenotypeState.DoDescendant(this.LifeForms, bot, X, Y);
+                            bot.Energy -= descendantPrice;
                         }
                         break;
                     case Actions.ForsedReproduction:
-                        if (sworld.IsAroundEmpty(ref X, ref Y))
+                        X = bot.LifeFormPoint.X;
+                        Y = bot.LifeFormPoint.Y;
+                        if (IsAroundEmpty(ref X, ref Y))
                         {
-                            GenotypeState.DoDescendant(sworld, bot, X, Y);
-                            bot._energy -= descendantPrice;
+                            GenotypeState.DoDescendant(this.LifeForms, bot, X, Y);
+                            bot.Energy -= descendantPrice;
                         }
                         break;
                     case Actions.Photosynthesis:
-                        sworld.NaturalPhenomena["SunPhenomen"].GetEffects(bot);
+                        NaturalPhenomena["SunPhenomen"].GetEffects(bot);
                         break;
                     case Actions.Extraction:
-                        sworld.NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
+                        NaturalPhenomena["MineralsPhenomen"].GetEffects(bot);
                         break;
                     case Actions.CheckEnergy:
                         //todo
                         break;
                 }
-           }
+            }
         }
 
 
 
-        private void _colorReaction(World world)
+        private void _colorReaction()
         {
 
         }
 
-        public void GetXY(ref int X,ref int Y,BotLifeForm bot)
+        public void GetXY(ref int X, ref int Y, Directions direction)
         {
-            switch (bot._direction)
+            switch (direction)
             {
                 case Directions.TopLeft:
                     X--;
@@ -237,7 +245,7 @@ namespace CyberLife.Simple2DWorld
                     X--;
                     break;
                 default:
-                    throw new ArgumentException("Неопределенное направление  " + bot._direction);
+                    throw new ArgumentException("Неопределенное направление  " + direction);
             }
             if (Y > _size.Height - 1)
                 Y = this._size.Height - 1;
@@ -258,23 +266,15 @@ namespace CyberLife.Simple2DWorld
         /// <returns></returns>
         public bool IsPlaceEmpty(int X, int Y, out BotLifeForm botOnPlace)
         {
-            foreach (var Bot in LifeForms.Values)
+            if (LifeForms.ContainsKey(new Point(X, Y)))
             {
-                if (Bot.LifeFormPoint.X == X &&
-                    Bot.LifeFormPoint.Y == Y)
-                {
-                    botOnPlace = (BotLifeForm)Bot;
-                    return false;
-                }
+                botOnPlace = (BotLifeForm)LifeForms[new Point(X, Y)];
+                return false;
             }
-            foreach (var Bot in Organic.Values)
+            if (Organic.ContainsKey(new Point(X, Y)))
             {
-                if (Bot.LifeFormPoint.X == X &&
-                    Bot.LifeFormPoint.Y == Y)
-                {
-                    botOnPlace = (BotLifeForm)Bot;
-                    return false;
-                }
+                botOnPlace = (BotLifeForm)Organic[new Point(X, Y)];
+                return false;
             }
             botOnPlace = null;
             return true;
@@ -383,17 +383,17 @@ namespace CyberLife.Simple2DWorld
         /// <param name="visualizer">Визуализатор для мира</param>
         /// <param name="lifeForms">Формы жизни</param>
         /// <param name="organic">"мертвые" формы жизни, являющиеся органикой</param>
-        public Simple2DWorld(string name, IVisualizer visualizer, List<LifeForm> lifeForms, List<LifeForm> organic, Dictionary<string, IPhenomen> phenomens, MapSize map) :
+        public Simple2DWorld(string name, IVisualizer visualizer, Dictionary<Point, LifeForm> lifeForms, List<LifeForm> organic, Dictionary<string, IPhenomen> phenomens, MapSize map) :
             base(name, visualizer, lifeForms, phenomens, map)
         {
             log.Trace(LogMetadataMessages.Constructor, "Simple2DWorld");
 
-            _organic = new Dictionary<Int64, LifeForm>();
+            _organic = new Dictionary<Point, LifeForm>();
             if (organic != null)
             {
                 foreach (var lifeForm in organic)
                 {
-                    _organic.Add(lifeForm.Id, lifeForm);
+                    _organic.Add(lifeForm.LifeFormPoint, lifeForm);
                 }
             }
 

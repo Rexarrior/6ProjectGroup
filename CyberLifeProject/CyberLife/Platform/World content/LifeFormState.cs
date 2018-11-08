@@ -11,7 +11,6 @@ namespace CyberLife
 
         private string _name;
         private double _value;
-        private Dictionary<string, string> _params;
 
         #endregion
 
@@ -22,31 +21,21 @@ namespace CyberLife
         /// Название состояния формы жизни
         /// </summary>
         public string Name { get => _name; }
-        
+
 
         /// <summary>
         /// Числовое значение состояния формы жизни. 
         /// </summary>
         public double Value { get => _value; set => _value = value; }
 
-
-        /// <summary>
-        /// Дополнительные параметры формы жихни. 
-        /// </summary>
-        public Dictionary<string, string> Params { get; set; }
-
         #endregion
 
 
         #region methods
 
-
-
-
-        
         public virtual void Update(Simple2DWorld.Simple2DWorld world)
         {
- 
+
         }
 
         #endregion
@@ -60,13 +49,12 @@ namespace CyberLife
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        public LifeFormState(string name, double value, Dictionary<string, string> Params)
+        public LifeFormState(string name, double value)
         {
             if (name == "")
                 throw new ArgumentException("name shouldn't be empty", nameof(name));
             if (double.IsNaN(value))
                 throw new ArgumentException("value shouldn't be NaN", nameof(value));
-            _params = Params ?? new Dictionary<string, string>();
             _name = name;
             _value = value;
         }

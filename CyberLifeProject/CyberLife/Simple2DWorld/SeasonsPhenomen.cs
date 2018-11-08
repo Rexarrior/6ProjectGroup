@@ -18,8 +18,8 @@ namespace CyberLife.Platform.World_content
 
         #region field
 
-        private Season _season = 0;
-        private int _step = 0;
+        private Season _season;
+        private int _step;
         private Place _place;
 
         #endregion
@@ -59,7 +59,7 @@ namespace CyberLife.Platform.World_content
         /// <param name="point">Точка пространства</param>
         /// <returns>Попадает?</returns>
         public bool isIn(Point point)
-        {           
+        {
             return true;
         }
 
@@ -69,11 +69,11 @@ namespace CyberLife.Platform.World_content
         /// Вызывает обновление этого природного явления на основании
         /// метаданных окружающей среды.
         /// </summary>
-        /// <param name="worldMetadata">Метаданные окружающей среды.</param>
-        public void Update(World worldMetadata)
+        /// <param name="world">Метаданные окружающей среды.</param>
+        public void Update(World world)
         {
             log.Trace(LogPhenomenMessages.PhenomenUpdate, "SeasonsPhenomen");
-            _step = worldMetadata.Age;
+            _step = world.Age;
             ChangeSeason();
         }
 
@@ -91,36 +91,6 @@ namespace CyberLife.Platform.World_content
 
 
 
-
-        public static Season ParseSeason(string season)
-        {
-            switch (season)
-            {
-                case "Winter":
-                {
-                    return Season.Winter;
-                }
-                case "Autumn":
-                {
-                    return Season.Autumn;
-                }
-                case "Summer":
-                {
-                    return Season.Summer;
-
-                }
-                case "Spring":
-                {
-                    return Season.Spring;
-
-                }
-                default:
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
         public void GetEffects(LifeForm lifeForm)
         {
             // none
@@ -137,6 +107,7 @@ namespace CyberLife.Platform.World_content
             _place = Place.Everything();
             _place.PlaceType = PlaceType.Rectangle;
             log.Trace(LogPhenomenMessages.OkConstructor, "SeasonsPhenomen");
+            _step = 0;
         }
 
         #endregion

@@ -17,8 +17,8 @@ namespace CyberLife
         /// <summary>
         /// Описание с помощью задания множества точек пространства
         /// </summary>
-        Array = 0, 
-        
+        Array = 0,
+
         /// <summary>
         /// Описание с помощью задания двух
         /// диагонально противоположных точек прямоугольника
@@ -100,7 +100,6 @@ namespace CyberLife
         /// <returns>Строка вида </returns>
         public static Place FromString(string str)
         {
-
             return new Place(str);
         }
 
@@ -154,7 +153,7 @@ namespace CyberLife
 
             return true;
         }
-    
+
 
 
         /// <summary>
@@ -215,21 +214,6 @@ namespace CyberLife
 
 
 
-        /// <summary>
-        /// Формирует прототип LifeFormPlace
-        /// </summary>
-        /// <returns>прототип GoogleProtobuf</returns>
-        public Protobuff.Place GetProtoPlace()
-        {
-            Protobuff.Place ret = new Protobuff.Place();
-            foreach (var point in _points)
-            {
-                ret.Points.Add(point.GetProtoPoint());
-            }
-
-            ret.PlaceType = (int)PlaceType;
-            return ret;
-        }
 
 
 
@@ -240,7 +224,7 @@ namespace CyberLife
         public static Place Everything()
         {
 
-            return new Place((new Point[2] { new Point(-1, -1), new Point(1, 1) }).ToList(),PlaceType.Rectangle);
+            return new Place((new Point[2] { new Point(-1, -1), new Point(1, 1) }).ToList(), PlaceType.Rectangle);
         }
 
         #endregion
@@ -260,32 +244,32 @@ namespace CyberLife
                 _points = points ?? throw new ArgumentNullException(nameof(points));
             else
                 if (placeType == PlaceType.Rectangle)
+            {
+                _points = points ?? throw new ArgumentNullException(nameof(points));
+                if (points.Count != 2)
+                    throw new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
+                                                "If more or less points has been defined, Exception will be thrown.",
+                        nameof(points));
+
+                if (_points[0].X > _points[1].X)
                 {
-                    _points = points ?? throw new ArgumentNullException(nameof(points));
-                    if (points.Count != 2)
-                        throw new ArgumentException("To use 'Rectangle' place type need define  2 points. " +
-                                                    "If more or less points has been defined, Exception will be thrown.",
-                            nameof(points));
-
-                    if (_points[0].X > _points[1].X)
-                    {
-                       // var tmp = _points[0].X;
-                       // _points[0].X = _points[1].X;
-                        //_points[1].X = tmp;
-                    }
-
-                    if (_points[0].Y > _points[1].Y)
-                    {
-                      //  var tmp = _points[0].Y;
-                       // _points[0].Y = _points[1].Y;
-                       // _points[1].Y = tmp;
-                    }
+                    var tmp = _points[0].X;
+                    _points[0] = new Point(_points[1].X, _points[0].Y);
+                    _points[1] = new Point(tmp, points[1].Y);
                 }
-                else
+
+                if (_points[0].Y > _points[1].Y)
                 {
-                      throw new NotImplementedException();
-
+                    var tmp = _points[0].Y;
+                    _points[0] = new Point(_points[0].X, _points[1].Y);
+                    _points[1] = new Point(_points[1].X, tmp);
                 }
+            }
+            else
+            {
+                throw new NotImplementedException();
+
+            }
 
         }
 
@@ -300,8 +284,8 @@ namespace CyberLife
         {
 
         }
-            
-        
+
+
         /// <summary>
         /// Инициализирует экземпляр LifeFormPlace из 
         /// специальной инициализирующей строки
@@ -315,7 +299,7 @@ namespace CyberLife
 
                 _points = new List<Point>();
                 var str2 = strPlace.Split('+');
-                PlaceType placeType = (PlaceType) int.Parse(str2[0]);
+                PlaceType placeType = (PlaceType)int.Parse(str2[0]);
 
                 foreach (var point in str2[1].Trim(' ').Split(' '))
                 {
@@ -338,21 +322,10 @@ namespace CyberLife
                                             " Possible strPlace isn't an initializing string for LifeFormPlace type.",
                     nameof(strPlace), e);
             }
-           
+
 
         }
 
-
-        /// <summary>
-        /// Инициализирует экземпляр класса из его прототипа.
-        /// </summary>
-        /// <param name="protoPlace">GoogleProtobuf прототип</param>
-        public Place(Protobuff.Place protoPlace)
-        {
-            _points = new List<Point>();
-            _points.AddRange(protoPlace.Points.Select(x=>new Point(x)));
-            _placeType = (PlaceType)protoPlace.PlaceType;
-        }
 
 
         /// <summary>

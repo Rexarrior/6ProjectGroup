@@ -82,6 +82,7 @@ namespace CyberLife.Simple2DWorld
         private void MainForm_Shown(object sender, EventArgs e)
         {
             Thread thread = new Thread(UpdateMap);
+            thread.Priority = ThreadPriority.Highest;
             thread.Start();
 
         }

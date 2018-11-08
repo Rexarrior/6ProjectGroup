@@ -19,7 +19,7 @@ namespace CyberLife.Simple2DWorld
         private const double NormalPowerFactor = 1;
         private const double LowPowerFactor = 0.5;
         private const double HightPowerFactor = 1.5;
-        private const double SunDepthFactor = 0.5; 
+        private const double SunDepthFactor = 0.5;
 
 
         #region fields
@@ -48,7 +48,7 @@ namespace CyberLife.Simple2DWorld
         {
             if (!world.NaturalPhenomena.ContainsKey("SeasonsPhenomen"))
             {
-               ArgumentException ex = new ArgumentException("world metadata isn't contains SeasonPhenomen metadata", nameof(world));
+                ArgumentException ex = new ArgumentException("world metadata isn't contains SeasonPhenomen metadata", nameof(world));
                 log.Error(LogPhenomenMessages.BadInputMetadata, "SeasonsPhenomen");
                 throw ex;
             }
@@ -79,7 +79,7 @@ namespace CyberLife.Simple2DWorld
                 default:
                     {
                         Exception ex = new Exception("Impossible");
-                        log.Error("Сезоны отвалились,текущий сезон равен: "+season.ToString()+"  "+ ex);
+                        log.Error("Сезоны отвалились,текущий сезон равен: " + season.ToString() + "  " + ex);
                         throw ex;
                     }
 
@@ -98,21 +98,18 @@ namespace CyberLife.Simple2DWorld
         /// <returns>Эффект воздействия феномена</returns>
         public void GetEffects(LifeForm bot)
         {
-           // log.Trace(LogPhenomenMessages.PhenomenGetEffects, "SunPhenomen", bot.LifeFormPoint.X, bot.LifeFormPoint.Y +" Id бота = "+bot.Id.ToString()+" его энергия = " + ((BotLifeForm)bot)._energy.ToString());
             if (bot == null)
             {
                 ArgumentException ex = new ArgumentNullException(nameof(bot));
                 log.Error(LogPhenomenMessages.NullArgument, "bot", ex);
                 throw ex;
             }
-
             Point botPoint = new Point(bot.LifeFormPoint.X, bot.LifeFormPoint.Y);
             if (isIn(botPoint))
             {
                 double depthFactor = 1 / (1 + (double)(botPoint.Y - _place[0].Y) / _place[1].Y);
-                ((BotLifeForm)bot)._energy +=(int)( BaseIntensity * _powerFactor * depthFactor);
-                ((BotLifeForm)bot)._lastEnergyActions.Enqueue(Actions.Photosynthesis);
-              //  log.Info("Бот " + bot.Id + " получает " + (BaseIntensity * _powerFactor * depthFactor).ToString() + " энергии");
+                ((BotLifeForm)bot).Energy += (int)(BaseIntensity * _powerFactor * depthFactor);
+                ((BotLifeForm)bot).LastEnergyActions.Enqueue(Actions.Photosynthesis);
             }
 
         }
@@ -143,7 +140,7 @@ namespace CyberLife.Simple2DWorld
             return _place;
         }
 
-      
+
 
 
         #endregion
@@ -167,7 +164,7 @@ namespace CyberLife.Simple2DWorld
                 throw ex;
             }
             List<Point> points = new List<Point>(2);
-            points.Add(new Point(0, 0));            
+            points.Add(new Point(0, 0));
             points.Add(new Point(mapSize.Width, (int)Math.Round(mapSize.Height * SunDepthFactor)));
             _place = new Place(points, PlaceType.Rectangle);
             _place.PlaceType = PlaceType.Rectangle;

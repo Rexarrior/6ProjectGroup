@@ -34,9 +34,9 @@ namespace CyberLife.Simple2DWorld
 
         public override void Update(Simple2DWorld world)
         {
-            foreach(BotLifeForm bot in world.LifeForms.Values)
+            foreach (BotLifeForm bot in world.LifeForms.Values)
             {
-                bot._energyState = GetState(bot);
+                bot.EnergyState = GetState(bot);
             }
         }
 
@@ -47,33 +47,31 @@ namespace CyberLife.Simple2DWorld
         private EnergyStates GetState(BotLifeForm bot)
         {
             EnergyStates flag;
-                if (bot._energy < 0)
-                {
-                   // log.Info("Бот умер от недостатка энергии,его энергия "+ bot._energy+"его id "+bot.Id);
-                    flag = EnergyStates.Dead;
-                    bot._dead = true;
-                    return flag;
-                }
-                if (bot._energy >= MaxEnergy)
-                {
-               // log.Info("Бот умер от переизбытка энергии,его энергия " + bot._energy + "его id " + bot.Id);
-                flag = EnergyStates.EnergyCollapse;
-                    bot._dead = true;
-                    return flag;
-                }
-                if (bot._energy >= MaxEnergy * 0.8)
-                {
-                    flag = EnergyStates.ForsedReproduction;
-                    return flag;
-                }
-                if (bot._energy >= MaxEnergy* 0.3)
-                {
-                    flag = EnergyStates.CanReproduce;
-                    return flag;
-                }
-                flag = EnergyStates.Alive;
+            if (bot.Energy < 0)
+            {
+                flag = EnergyStates.Dead;
+                bot.Dead = true;
                 return flag;
-            
+            }
+            if (bot.Energy >= MaxEnergy)
+            {
+                flag = EnergyStates.EnergyCollapse;
+                bot.Dead = true;
+                return flag;
+            }
+            if (bot.Energy >= MaxEnergy * 0.8)
+            {
+                flag = EnergyStates.ForsedReproduction;
+                return flag;
+            }
+            if (bot.Energy >= MaxEnergy * 0.3)
+            {
+                flag = EnergyStates.CanReproduce;
+                return flag;
+            }
+            flag = EnergyStates.Alive;
+            return flag;
+
         }
 
         #endregion
@@ -81,7 +79,7 @@ namespace CyberLife.Simple2DWorld
 
         #region constructors
 
-        public EnergyState(string name, double value, Dictionary<string, string> Params = null) : base(name, value, Params)
+        public EnergyState(string name, double value) : base(name, value)
         {
 
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using  System.IO;
+using System.IO;
 using Google.Protobuf;
 using NLog;
 using CyberLife.Platform.Logging.LogMessages;
@@ -17,18 +17,18 @@ namespace CyberLife
     {
         protected Logger log = LogManager.GetCurrentClassLogger();
 
-        public delegate void ReactionDelegate(World world);
+        public delegate void ReactionDelegate();
 
         #region fields
 
-        protected Dictionary<string,IPhenomen> _naturalPhenomena;
+        protected Dictionary<string, IPhenomen> _naturalPhenomena;
         protected MapSize _size;
         protected string _name;
         protected IVisualizer _visualizer;
-        protected Dictionary<long, LifeForm> _lifeForms;
+        protected Dictionary<Point, LifeForm> _lifeForms;
         protected int _age;
 
-        protected Dictionary<string, ReactionDelegate> _reactions; 
+        protected Dictionary<string, ReactionDelegate> _reactions;
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace CyberLife
         #region properties
 
         public string Name { get => _name; set => _name = value; }
-        public Dictionary<long, LifeForm> LifeForms { get => _lifeForms;  }
+        public Dictionary<Point, LifeForm> LifeForms { get => _lifeForms; }
         public IVisualizer Visualizer { get => _visualizer; set => _visualizer = value; }//todo
         public int Age { get { return _age; } }
         internal Dictionary<string, IPhenomen> NaturalPhenomena { get => _naturalPhenomena; }
@@ -46,78 +46,17 @@ namespace CyberLife
 
 
         #region methods
+
         /// <summary>
         /// Вызывает обновление всех компонентов мира. 
         /// </summary>
         public virtual void Update()
         {
-          // nothing?
-        }
-        
-
-        /// <summary>
-        /// Cохраняет этот мир в бинарном формате по протоколу googleProtobuff
-        /// </summary>
-        /// <param name="fileName">Имя файла для сохранения</param>
-        public void SaveToFile(string fileName)
-        {
-            //todo
-            /*
-            log.Trace(CommonLogMessages.ProtobuffFromSome, "World");
-            Protobuff.Metadata.WorldMetadata metadata = this.GetMetadata().GetProtoMetadata();
-
-            try
-            {
-
-                FileStream fs = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write);
-                metadata.WriteTo(fs);
-                fs.Close();
-            }
-            catch (Exception e)
-            {
-                log.Error("Что-то отвалилось в World.SaveToFile,текст Exception   " + e);
-                throw;
-            }
-            log.Trace(CommonLogMessages.OkProtobuffFromSome);
-            */
+            // nothing?
         }
 
 
-        /// <summary>
-        /// Загружает мир из бинарного файла в формате googleProtobuff. 
-        /// </summary>
-        /// <param name="fileName">Имя файла для загрузки</param>
-        /// <param name="fabrica">Фабрика природных явлений</param>
-        /// <returns>Загруженный мир</returns>
-       /* public static World LoadFromFile(string fileName IPhenomenaFabrica fabrica)
-        {
-            // todo
-            
-            Logger log = LogManager.GetCurrentClassLogger();
-            log.Trace("Загружаем экземпляр World из файла");
-            World world;
-            try
-            {
-                FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-                world = new World(new WorldMetadata(Protobuff.Metadata.WorldMetadata.Parser.ParseFrom(fs)), fabrica);
-                fs.Close();
-            }
-            catch (FileNotFoundException ex)
-            {
-                log.Error("Файл не найден", ex);
-                throw;
-            }
-            catch(Exception ex)
-            {
-                log.Error("Что - то отвалилось в World.LoadFromFile, текст Exception   " + ex);
-                throw;
-            }
-            log.Trace("Экземпляр успешно загружен");
-            return world;
-            
-        }*/
 
-        
         /// <summary>
         /// Добавляет данную реакцию под данным именем. 
         /// Имя является уникальным идентификатором.
@@ -134,7 +73,6 @@ namespace CyberLife
             log.Trace(CommonLogMessages.EndMethod, "AddReaction");
             return true;
         }
-
 
 
 
@@ -182,7 +120,7 @@ namespace CyberLife
         /// <param name="environment">Окружающая среда для этого мира</param>
         /// <param name="visualizer">Визуализатор, предназначенный для отрисовки компонентов мира</param>
         /// <param name="lifeForms">Формы жизни</param>
-        public World(string name, IVisualizer visualizer, List<LifeForm> lifeForms, Dictionary<string, IPhenomen> phenomens,MapSize mapSize)
+        public World(string name, IVisualizer visualizer, Dictionary<Point, LifeForm> lifeForms, Dictionary<string, IPhenomen> phenomens, MapSize mapSize)
         {
             if (lifeForms == null)
             {
@@ -204,13 +142,13 @@ namespace CyberLife
                 log.Error(CommonLogMessages.NullArgument, "string name");
                 throw ex;
             }
-            if(phenomens ==null)
+            if (phenomens == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(phenomens));
                 log.Error(CommonLogMessages.NullArgument, "phenomens environment");
                 throw ex;
             }
-            if(visualizer ==null)
+            if (visualizer == null)
             {
                 ArgumentNullException ex = new ArgumentNullException(nameof(visualizer));
                 log.Error(CommonLogMessages.NullArgument, "IVisualizer visualizer");
@@ -226,11 +164,9 @@ namespace CyberLife
             _naturalPhenomena = phenomens;
             _visualizer = visualizer;
             _name = name;
-            _lifeForms = new Dictionary<long, LifeForm>();
-            foreach (var lifeForm in lifeForms)
-            {
-                _lifeForms.Add(lifeForm.Id, lifeForm);
-            }
+            _lifeForms = new Dictionary<Point, LifeForm>();
+            _lifeForms = lifeForms;
+
 
             _reactions = new Dictionary<string, ReactionDelegate>();
 
@@ -239,8 +175,6 @@ namespace CyberLife
 
         }
 
-
-        
         #endregion
     }
 }

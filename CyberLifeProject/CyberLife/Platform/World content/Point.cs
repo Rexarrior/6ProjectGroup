@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace CyberLife
 {
-    /// <summary>
-    /// Точка двумерного пространства
-    /// </summary>
-    public class Point
+    public struct Point
     {
         static Random rnd = new Random();
         #region fields
@@ -23,7 +25,7 @@ namespace CyberLife
         public int X
         {
             get => _x;
-            set => _x=value;
+            set => _x = value;
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace CyberLife
             {
                 var coords = str.Trim(' ').Split('|');
 
-                pnt = new Point(int.Parse(coords[0]), int.Parse(coords[1])); 
+                pnt = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
 
             }
             catch (FormatException)
@@ -83,27 +85,18 @@ namespace CyberLife
 
 
 
-        /// <summary>
-        /// Формирует из этой точки прототип googleProtobuf
-        /// </summary>
-        /// <returns>Прототип googleProtobuf</returns>
-        public Protobuff.Point GetProtoPoint()
+        public static Point RandomPoint(MapSize map,Dictionary<Point,LifeForm> lifeForms =null)
         {
-            Protobuff.Point ret = new Protobuff.Point
+            if(lifeForms == null)
+                return new Point(rnd.Next(0, map.Width), rnd.Next(0, map.Height));
+            while (true)
             {
-                X = _x,
-                Y = _y
-            };
-
-            return ret;
+                Point point = new Point(rnd.Next(0, map.Width), rnd.Next(0, map.Height));
+                if (!lifeForms.ContainsKey(point))
+                    return point;
+            }
         }
 
-
-
-        public static Point RandomPoint(MapSize map)
-        {
-            return new Point(rnd.Next(0, map.Width), rnd.Next(0, map.Height));
-        }
         #endregion
 
 
@@ -118,19 +111,6 @@ namespace CyberLife
         {
             _x = x;
             _y = y;
-        }
-
-
-        /// <summary>
-        /// Инициализирует экземпляр точки из прототипа
-        /// </summary>
-        /// <param name="protoPoint">Прототип googleProtobuf</param>
-        public Point(Protobuff.Point protoPoint)
-        {
-            if (protoPoint == null)
-                throw  new ArgumentNullException(nameof(protoPoint));
-            _x = protoPoint.X;
-            _y = protoPoint.Y;
         }
 
         #endregion
