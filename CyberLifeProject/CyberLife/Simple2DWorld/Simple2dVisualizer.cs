@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace CyberLife.Simple2DWorld
 {

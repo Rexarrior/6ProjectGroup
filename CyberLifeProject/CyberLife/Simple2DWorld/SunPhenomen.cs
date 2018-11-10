@@ -98,12 +98,6 @@ namespace CyberLife.Simple2DWorld
         /// <returns>Эффект воздействия феномена</returns>
         public void GetEffects(LifeForm bot)
         {
-            if (bot == null)
-            {
-                ArgumentException ex = new ArgumentNullException(nameof(bot));
-                log.Error(LogPhenomenMessages.NullArgument, "bot", ex);
-                throw ex;
-            }
             Point botPoint = new Point(bot.LifeFormPoint.X, bot.LifeFormPoint.Y);
             if (isIn(botPoint))
             {

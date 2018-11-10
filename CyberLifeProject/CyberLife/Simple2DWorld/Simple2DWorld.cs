@@ -113,9 +113,19 @@ namespace CyberLife.Simple2DWorld
                                       OrganicZeroEnergyFactor));
             }
 
-            foreach (BotLifeForm bot in Organic.Values)
+            foreach (BotLifeForm bot in Organic.Values.ToList())
             {
                 bot.Energy -= (int)(bot.Energy * OutflowEnergyFactor);
+                int Y = bot.LifeFormPoint.Y + 1;
+                BotLifeForm bot1 = null;
+                if (IsPlaceEmpty(bot.LifeFormPoint.X, Y, out bot1))
+                {
+                    Organic.Remove(bot.LifeFormPoint);
+                    if (Y >= Size.Height)
+                        Y = Size.Height -1;
+                    bot.LifeFormPoint = new Point(bot.LifeFormPoint.X, Y);
+                    Organic.Add(bot.LifeFormPoint, bot);
+                }
             }
 
             Point[] rottenOrganic = Organic.Where(x => ((BotLifeForm)x.Value).Energy <= 0)

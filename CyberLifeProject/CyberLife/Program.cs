@@ -16,7 +16,7 @@ namespace CyberLife
         {
             Logger log = LogManager.GetCurrentClassLogger();
             log.Debug("Начало работы");
-            Simple2DWorld.Simple2DWorld world = new Simple2DWorld.Simple2DWorld(1000, 1000, 5000);
+            Simple2DWorld.Simple2DWorld world = new Simple2DWorld.Simple2DWorld(100,100, 5000);
             IVisualizer visualizer = new Simple2dVisualizer();
             world.Visualizer = visualizer;
             MainForm mainForm = new MainForm(world);

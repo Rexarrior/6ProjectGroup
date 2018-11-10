@@ -45,7 +45,7 @@ namespace CyberLife.Simple2DWorld
             {
                 if (!bot.Dead)
                 {
-                    if (bot.LastEnergyActions.Count >= 10)
+                    if (bot.LastEnergyActions.Count >= 20)
                         bot.LastEnergyActions.Dequeue();
                     SetRGB(bot);
                 }

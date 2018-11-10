@@ -67,7 +67,6 @@ namespace CyberLife.Simple2DWorld
 
         public void UpdateMap()
         {
-            double a = 0;
             while (true)
             {
                 world.Update();
